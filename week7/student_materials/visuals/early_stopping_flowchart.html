@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EarlyStopping Flowchart - Week 7</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 1.8rem;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        h2 {
+            font-size: 1.1rem;
+            color: #7f8c8d;
+            font-weight: normal;
+            font-style: italic;
+            margin-top: 0;
+        }
+        .mermaid {
+            max-width: 900px;
+            width: 100%;
+        }
+        .example-box {
+            margin-top: 20px;
+            padding: 15px 25px;
+            background: #fef9e7;
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            max-width: 500px;
+        }
+        .example-box strong {
+            color: #2c3e50;
+        }
+        .best { color: #27ae60; font-weight: bold; }
+        .wait { color: #f39c12; }
+        .stop { color: #e74c3c; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>EarlyStopping: "The Validation Alarm"</h1>
+    <h2>Automatically stops training when the model stops improving</h2>
+
+    <div class="mermaid">
+flowchart TD
+    A["🚀 Start Training<br/><code>patience_counter = 0</code>"]:::startNode --> B["⚡ Train One Epoch"]:::trainNode
+
+    B --> C{"Did val_loss<br/>improve?"}:::decisionNode
+
+    C -- "✅ YES" --> D["Reset counter = 0<br/>💾 Save best weights"]:::yesNode
+    D --> B
+
+    C -- "❌ NO" --> E["patience_counter += 1"]:::noNode
+    E --> F{"counter ≥<br/>patience?"}:::decisionNode
+
+    F -- "Not yet" --> B
+    F -- "⚠️ YES" --> G["🛑 STOP Training!<br/>Restore best weights"]:::stopNode
+
+    classDef startNode fill:#3498db,stroke:#2c3e50,stroke-width:2px,color:white,font-size:14px
+    classDef trainNode fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:white,font-size:14px
+    classDef decisionNode fill:#f39c12,stroke:#e67e22,stroke-width:2px,color:white,font-size:14px
+    classDef yesNode fill:#2ecc71,stroke:#27ae60,stroke-width:2px,color:white,font-size:14px
+    classDef noNode fill:#e67e22,stroke:#d35400,stroke-width:2px,color:white,font-size:14px
+    classDef stopNode fill:#e74c3c,stroke:#c0392b,stroke-width:3px,color:white,font-size:15px
+    </div>
+
+    <div class="example-box">
+        <strong>Example with patience=3:</strong><br/>
+        <span class="best">Epoch 10: val_loss=0.45 ← Best! (counter=0)</span><br/>
+        <span class="wait">Epoch 11: val_loss=0.46 (counter=1)</span><br/>
+        <span class="wait">Epoch 12: val_loss=0.48 (counter=2)</span><br/>
+        <span class="stop">Epoch 13: val_loss=0.47 (counter=3) → STOP!</span><br/>
+        <span class="best">↩ Restore weights from Epoch 10</span>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                fontSize: '14px',
+                fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif'
+            },
+            flowchart: {
+                curve: 'basis',
+                padding: 15,
+                nodeSpacing: 30,
+                rankSpacing: 40
+            }
+        });
+    </script>
+</body>
+</html>

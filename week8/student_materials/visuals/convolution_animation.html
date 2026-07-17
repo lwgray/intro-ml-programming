@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Convolution Animation — Week 8</title>
+<style>
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: #f5f5f7;
+    margin: 0;
+    padding: 30px;
+    color: #1d1d1f;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  h1 { color: #1d1d1f; margin-top: 0; }
+  .subtitle { color: #6e6e73; margin-bottom: 20px; }
+  .controls {
+    margin: 20px 0;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    background: #3498db;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  button:hover { background: #2980b9; }
+  button:disabled { background: #bdc3c7; cursor: not-allowed; }
+  .grids-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  .grid-section { text-align: center; }
+  .grid-title {
+    font-size: 14px;
+    color: #6e6e73;
+    margin-bottom: 8px;
+    font-weight: 600;
+  }
+  .grid {
+    display: grid;
+    gap: 2px;
+    background: #d2d2d7;
+    padding: 2px;
+    border-radius: 4px;
+  }
+  .cell {
+    width: 50px;
+    height: 50px;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-family: monospace;
+    transition: all 0.3s;
+  }
+  .cell.highlight {
+    background: rgba(231, 76, 60, 0.3);
+    border: 2px solid #e74c3c;
+  }
+  .cell.output-active {
+    background: #27ae60;
+    color: white;
+    font-weight: bold;
+  }
+  .cell.output-empty {
+    background: #ecf0f1;
+    color: #95a5a6;
+  }
+  .computation {
+    margin: 20px 0;
+    padding: 16px;
+    background: #fff9c4;
+    border-left: 4px solid #f39c12;
+    border-radius: 4px;
+    font-family: monospace;
+    font-size: 14px;
+  }
+  .step-label {
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 8px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Convolution: A Sliding Detector</h1>
+  <p class="subtitle">A 3×3 filter slides across a 5×5 image, computing dot products at each position. The output is a 3×3 feature map.</p>
+
+  <div class="controls">
+    <button id="prev">← Previous</button>
+    <button id="next">Next →</button>
+    <button id="play">▶ Auto-play</button>
+    <span id="step-info" style="margin-left: 12px; color: #6e6e73;"></span>
+  </div>
+
+  <div class="grids-container">
+    <div class="grid-section">
+      <div class="grid-title">Input (5×5)</div>
+      <div id="input-grid" class="grid" style="grid-template-columns: repeat(5, 50px);"></div>
+    </div>
+
+    <div class="grid-section">
+      <div class="grid-title">Filter (3×3) — Vertical edge detector</div>
+      <div id="filter-grid" class="grid" style="grid-template-columns: repeat(3, 50px);"></div>
+    </div>
+
+    <div class="grid-section">
+      <div class="grid-title">Output feature map (3×3)</div>
+      <div id="output-grid" class="grid" style="grid-template-columns: repeat(3, 50px);"></div>
+    </div>
+  </div>
+
+  <div class="computation">
+    <div class="step-label">Computation:</div>
+    <div id="computation-text">Click "Next →" to start sliding the filter.</div>
+  </div>
+
+  <p style="font-size: 12px; color: #6e6e73; margin-top: 30px;">
+    The same filter (9 weights) is applied at every position. This is parameter sharing — the key efficiency win of CNNs.
+  </p>
+</div>
+
+<script>
+  // Input image (5x5)
+  const input = [
+    [1, 2, 3, 1, 2],
+    [4, 5, 6, 2, 1],
+    [7, 8, 9, 3, 2],
+    [2, 3, 4, 5, 1],
+    [1, 2, 3, 1, 0],
+  ];
+
+  // Vertical edge detector
+  const filter = [
+    [-1, 0, 1],
+    [-1, 0, 1],
+    [-1, 0, 1],
+  ];
+
+  // Render filter
+  const filterGrid = document.getElementById('filter-grid');
+  filter.forEach(row => {
+    row.forEach(val => {
+      const cell = document.createElement('div');
+      cell.className = 'cell';
+      cell.style.background = val > 0 ? '#d6eaf8' : val < 0 ? '#fadbd8' : 'white';
+      cell.textContent = val;
+      filterGrid.appendChild(cell);
+    });
+  });
+
+  let currentStep = -1;
+  // Generate all 9 positions (3x3 output)
+  const positions = [];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      positions.push([i, j]);
+    }
+  }
+
+  // Output values
+  const outputs = positions.map(([i, j]) => {
+    let sum = 0;
+    for (let m = 0; m < 3; m++) {
+      for (let n = 0; n < 3; n++) {
+        sum += input[i + m][j + n] * filter[m][n];
+      }
+    }
+    return sum;
+  });
+
+  function render() {
+    // Render input grid
+    const inputGrid = document.getElementById('input-grid');
+    inputGrid.innerHTML = '';
+    let activeI = -1, activeJ = -1;
+    if (currentStep >= 0) {
+      [activeI, activeJ] = positions[currentStep];
+    }
+
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 5; j++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        cell.textContent = input[i][j];
+        if (activeI >= 0 && i >= activeI && i < activeI + 3 && j >= activeJ && j < activeJ + 3) {
+          cell.classList.add('highlight');
+        }
+        inputGrid.appendChild(cell);
+      }
+    }
+
+    // Render output grid
+    const outputGrid = document.getElementById('output-grid');
+    outputGrid.innerHTML = '';
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        const cell = document.createElement('div');
+        cell.className = 'cell';
+        const idx = i * 3 + j;
+        if (idx <= currentStep) {
+          cell.classList.add('output-active');
+          cell.textContent = outputs[idx];
+        } else {
+          cell.classList.add('output-empty');
+          cell.textContent = '?';
+        }
+        outputGrid.appendChild(cell);
+      }
+    }
+
+    // Update computation text
+    const compText = document.getElementById('computation-text');
+    if (currentStep < 0) {
+      compText.textContent = 'Click "Next →" to start sliding the filter.';
+    } else {
+      const [i, j] = positions[currentStep];
+      const patch = [];
+      for (let m = 0; m < 3; m++) {
+        for (let n = 0; n < 3; n++) {
+          patch.push(`${input[i+m][j+n]}×${filter[m][n]}`);
+        }
+      }
+      compText.innerHTML = `Position (${i},${j}): ${patch.join(' + ')} = <strong>${outputs[currentStep]}</strong>`;
+    }
+
+    // Update step info
+    document.getElementById('step-info').textContent =
+      currentStep < 0 ? 'Step 0 / 9' : `Step ${currentStep + 1} / 9`;
+    document.getElementById('prev').disabled = currentStep < 0;
+    document.getElementById('next').disabled = currentStep >= positions.length - 1;
+  }
+
+  document.getElementById('next').onclick = () => {
+    if (currentStep < positions.length - 1) currentStep++;
+    render();
+  };
+  document.getElementById('prev').onclick = () => {
+    if (currentStep >= 0) currentStep--;
+    render();
+  };
+
+  let playInterval = null;
+  document.getElementById('play').onclick = () => {
+    if (playInterval) {
+      clearInterval(playInterval);
+      playInterval = null;
+      document.getElementById('play').textContent = '▶ Auto-play';
+    } else {
+      currentStep = -1;
+      render();
+      playInterval = setInterval(() => {
+        if (currentStep < positions.length - 1) {
+          currentStep++;
+          render();
+        } else {
+          clearInterval(playInterval);
+          playInterval = null;
+          document.getElementById('play').textContent = '▶ Auto-play';
+        }
+      }, 800);
+      document.getElementById('play').textContent = '⏸ Stop';
+    }
+  };
+
+  render();
+</script>
+</body>
+</html>

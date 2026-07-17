@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!-- saved from url=(0253)https://daca2dd9-1d68-4844-baf3-78c3b51b86af.frame.claudeusercontent.com/_f/1784209099-d327/?__frame_t=sQ1pEqh5oSO-oVl5TrJFCSyr.5bad497c-b5d3-4b43-8e14-513bb2194a0c.a703476d-bcd1-49e3-b760-7a7987f8f049.1784224686&__frame_v=manifest.4af8359bd414963e.json -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!--<base href="/_f/1784209099-d327/">--><base href="."><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.DUzXFHNF.js","mcp":"mcp.CLzOm9JX.js","permissions":"permissions.C9OCnDjh.js","self":"self.DqF_PxOe.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.Dp6RDy7J.js"}</script><script>(function(){"use strict";const ce="modulepreload",le=function(e){return"/"+e},ue={},x=function(t,n,u){let o=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return o.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})},K=["light","dark","system"];function G(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_init;return t!=null&&typeof t=="object"}function J(e){return e!=null&&typeof e=="object"&&e.__frame_size_poke===!0}function V(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_theme;if(t==null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&K.includes(n)}function Y(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}function z(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){n=a;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const u=n.getAttribute("href");if(!u)return;let o,s;try{o=new URL(u,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(o.protocol==="http:"||o.protocol==="https:")&&o.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:o.href},"*"))}const D={};function T(e){if(window===top)return;const t=Date.now();t-(D[e]||0)<500||(D[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const Q=2e3,U=["wheel","touchstart","touchmove","keydown","pointerdown"];let B=0;function X(e){e.isTrusted&&(B=Date.now())}function Z(){addEventListener("click",z,!0),addEventListener("auxclick",z,!0)}function ee(){for(let e=0;e<U.length;e++)addEventListener(U[e],X,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-B<Q&&T("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&T("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&T("click")},{capture:!0,passive:!0})}function te(e,t,n){const u=[...t.values()].filter(o=>o.targets.some(s=>s.startsWith(e+".")));return{wrap(o,s){const f=`${e}.${o}`,a=u.filter(i=>i.targets.includes(f));return a.length===0?(...i)=>{try{return s(...i)}catch(p){return Promise.reject(p)}}:(...i)=>{let p=i;for(const c of a){const l=c.module.parameters;if(l)try{p=l(p)}catch{return Promise.reject({code:"transform_error",id:c.id,scope:e,message:"parameters transform failed"})}}let h;try{h=s(...p)}catch(c){h=Promise.reject(c)}return h.then(c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.returns;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"returns"}),c}}return c},c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.throws;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"throws"}),Promise.reject(c)}}return Promise.reject(c)})}}}}function ne(e,t,n,u=()=>{}){const o=new Set(e.changes??[]),s=new Map;for(const f of o){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:o,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>te(f,s,u)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let u=0;for(let o=0;o<n.length;o++){const s=n[o];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&u++}if(u&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:u},"*")}catch{}})();const re=1e4,oe=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function se(e){for(const t of oe)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities??{}}),A=window.__FRAME_PREAMBLE?.transforms,k=window.__FRAME_PREAMBLE?.comments,C=/^[\w.-]+\.js$/,ie=/^[a-z][a-z0-9_-]{0,63}$/;let F=null,v=null;function N(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let I=!1;function H(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,I=!0):I&&(delete t.dataset.theme,t.style.colorScheme="",I=!1)}const E={mcp:{watchTool:{handlerArg:3}}},P=new Map;function ae(e,t){const n=P.get(e);if(!n)return;Object.assign(n.impl,t),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const u=n.queue;n.queue=[];for(const o of u){const s=t[o.method];if(s)if(E[e]?.[o.method])try{o.resolve(s(...o.args))}catch{O(o,E[e][o.method].handlerArg,{code:"transform_error",message:`${e}.${o.method} rejected its arguments`})}else s(...o.args).then(o.resolve,o.reject);else{const f={code:"capability_removed",message:`${e}.${o.method} is not in this runtime`},a=E[e]?.[o.method];if(a){O(o,a.handlerArg,f);continue}o.reject(f)}}}function $(e,t){const n=P.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const u=n.queue;n.queue=[];for(const o of u){const s=E[e]?.[o.method];if(s){O(o,s.handlerArg,t);continue}o.reject(t)}}function O(e,t,n){if(e.syncState?.dead)return;const u=e.args[t];typeof u=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{u({type:"error",error:n})}catch(o){Y(o)}})}const q=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(q&&q.writable===!1)){Z(),ee();const e=q?.value??{};N(window,"claude",e);const t=i=>{const p={impl:Object.create(null),queue:[]};P.set(i,p);const h=new Proxy(p.impl,{get:(c,l)=>{if(typeof l!="string"||l==="then"||l==="toJSON"||l==="valueOf")return;if(l==="toString")return Object.prototype.toString;const m=E[i]?.[l];return m?(...d)=>{if(typeof d[m.handlerArg]!="function")throw new TypeError(`${i}.${l} requires a handler function`);const g=c[l];if(g)return g(...d);if(c.__settled){const _={dead:!1},S={args:[...d],syncState:_};return c.__settled().catch(j=>O(S,m.handlerArg,j)),()=>{_.dead=!0}}let y=null;const w={dead:!1};return p.queue.push({method:l,args:d,resolve:_=>{y=typeof _=="function"?_:null,w.dead&&y?.()},reject:()=>{},syncState:w}),()=>{w.dead=!0,y?.()}}:(...d)=>{const g=c[l]??c.__settled;return g?g(...d):new Promise((y,w)=>{p.queue.push({method:l,args:d,resolve:y,reject:w})})}},set:()=>!1});N(e,i,h)};for(const i of Object.keys(R)){if(e[i]!==void 0){N(e,i,e[i]);continue}t(i)}let n=null,u=null,o=0;const s=i=>{i.source!==parent||!se(i.origin)||G(i.data)&&(n=i.data.__frame_init,v=i.origin,removeEventListener("message",s),clearTimeout(o),u?.())};addEventListener("message",s),parent.postMessage({__frame_connect:!0},"*");const f=new Promise(i=>{u=i,o=setTimeout(()=>{removeEventListener("message",s),i()},re)}),a=document.readyState==="loading"?new Promise(i=>document.addEventListener("DOMContentLoaded",()=>i(),{once:!0})):Promise.resolve();f.then(async()=>{if(!n||!v){for(const r of P.keys())$(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}H(n.theme);const i=v;let p=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==i)return;V(r.data)&&H(r.data.__frame_theme.theme);const b=r.data?.__fc_mode;b&&typeof b=="object"&&!p&&k&&C.test(k)&&(p=!0,h(k).then(L=>L.install?.(i,b.on===!0)).catch(()=>{}))});const h=r=>x(()=>import("/_runtime/"+r),void 0),c=Object.keys(n.capabilities??{});for(const r of c)Object.hasOwn(R,r)||ie.test(r)&&e[r]===void 0&&(t(r),$(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const l=c.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&C.test(r[1])),[m,...d]=await Promise.allSettled([A&&C.test(A)?h(A):Promise.resolve({}),...l.map(([,r])=>h(r))]),g=v;F=ne(n,m.status==="fulfilled"&&m.value?.TRANSFORMS||{},{shellOrigin:g,mount:ae},r=>parent.postMessage({__frame_cap_telemetry:r},g));const y=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},g),w=F;d.forEach((r,b)=>{const L=l[b][0];if(r.status!=="fulfilled"){y(L);return}try{r.value?.install?.(w)}catch{y(L)}});for(const[r,b]of P)b.queue.length===0&&Object.keys(b.impl).length>0||$(r,{code:c.includes(r)?"capability_disabled":"not_granted",message:"capability not available in this session"});await a,parent.postMessage({__frame_ready:!0},v);let _=-1,S=0;const j=()=>{S=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==_&&(_=r,parent.postMessage({__frame_size:!0,h:r},g))},M=()=>{S||(S=setTimeout(j,200))},W=new ResizeObserver(M);W.observe(document.documentElement),document.body&&W.observe(document.body),document.addEventListener("load",M,!0),document.fonts?.ready.then(M,()=>{}),addEventListener("beforeprint",()=>{_=-1,j()}),M(),addEventListener("message",r=>{r.source!==parent||r.origin!==g||J(r.data)&&(_=-1,M())})})}})();</script><!-- /frame-runtime --><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Filter Size &amp; Weights: 3×3 vs 5×5</title>
+<style>
+  :root {
+    --bg: #f5f8f8;
+    --surface: #fdfefe;
+    --ink: #182528;
+    --muted: #5a6b70;
+    --line: #d3dee0;
+    --accent: #0a8a9e;
+    --accent-soft: rgba(10, 138, 158, 0.16);
+    --pad: #d2622f;
+    --pad-soft: rgba(210, 98, 47, 0.14);
+    --weight: #6d5fae;
+    --weight-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0;
+    --on-accent: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+      --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.22);
+      --pad: #d96c2c; --pad-soft: rgba(217, 108, 44, 0.20);
+      --weight: #8e7dd6; --weight-soft: rgba(142, 125, 214, 0.26);
+      --chip-bg: #1e2d32; --on-accent: #0c1517;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+    --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.22);
+    --pad: #d96c2c; --pad-soft: rgba(217, 108, 44, 0.20);
+    --weight: #8e7dd6; --weight-soft: rgba(142, 125, 214, 0.26);
+    --chip-bg: #1e2d32; --on-accent: #0c1517;
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f8f8; --surface: #fdfefe; --ink: #182528; --muted: #5a6b70;
+    --line: #d3dee0; --accent: #0a8a9e; --accent-soft: rgba(10, 138, 158, 0.16);
+    --pad: #d2622f; --pad-soft: rgba(210, 98, 47, 0.14);
+    --weight: #6d5fae; --weight-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0; --on-accent: #ffffff;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Avenir Next", "Seravek", system-ui, sans-serif;
+    line-height: 1.6; padding: 3rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+
+  header .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; text-wrap: balance; margin-bottom: 0.6rem; }
+  header p.lede { color: var(--muted); max-width: 46rem; font-size: 1.02rem; }
+  header p.lede strong { color: var(--ink); }
+
+  .label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; color: var(--muted);
+  }
+  section { display: flex; flex-direction: column; gap: 0.9rem; }
+  section h2 { font-size: 1.22rem; font-weight: 600; text-wrap: balance; }
+  section > p { max-width: 46rem; }
+  .t-weight { color: var(--weight); font-weight: 600; }
+  .t-pad { color: var(--pad); font-weight: 600; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.25rem; overflow-x: auto;
+  }
+
+  /* section 1: side-by-side conv cases */
+  .cases { display: flex; gap: 2rem; min-width: 720px; }
+  .case { flex: 1; display: flex; flex-direction: column; gap: 0.75rem; }
+  .case h3 { font-size: 1rem; font-weight: 600; }
+  .case h3 code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em;
+    background: var(--chip-bg); padding: 0.1em 0.4em; border-radius: 4px;
+  }
+  .flowrow { display: flex; align-items: center; gap: 0.75rem; }
+  .figblock { display: flex; flex-direction: column; gap: 0.35rem; align-items: center; }
+  .figcap {
+    font-size: 0.72rem; color: var(--muted); text-align: center; line-height: 1.4;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .arrow { color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+
+  .pgrid { display: grid; gap: 2px; width: max-content; }
+  .pgrid .c { width: 15px; height: 15px; background: var(--chip-bg); border-radius: 2px; }
+  .pgrid .c.padc { background: transparent; border: 1.5px dashed var(--line); }
+  .pgrid .c.win { background: var(--accent-soft); box-shadow: inset 0 0 0 1px var(--accent); }
+  .pgrid .c.winpad { background: var(--pad-soft); border: 1.5px dashed var(--pad); box-shadow: none; }
+  .pgrid .c.hot { background: var(--accent); }
+
+  .stamp { display: grid; gap: 2px; width: max-content; }
+  .stamp .c { width: 15px; height: 15px; background: var(--weight-soft); box-shadow: inset 0 0 0 1px var(--weight); border-radius: 2px; }
+  .stampline { display: flex; align-items: center; gap: 1rem; }
+  .stampnote { font-size: 0.85rem; max-width: 15rem; }
+  .stampnote strong { color: var(--weight); }
+  .stampnote .sub { color: var(--muted); font-size: 0.8rem; }
+
+  /* section 2: parameter bars */
+  .barsgroup { display: flex; flex-direction: column; gap: 1.4rem; }
+  .bargroup h3 { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.55rem; }
+  .bargroup h3 code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em;
+    background: var(--chip-bg); padding: 0.1em 0.4em; border-radius: 4px;
+  }
+  .barrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.45rem; }
+  .barrow .blab {
+    width: 3.2rem; font-size: 0.8rem; font-weight: 600; text-align: right; flex-shrink: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .bartrack { flex: 1; max-width: 430px; height: 18px; background: var(--chip-bg); border-radius: 4px; }
+  .barfill { height: 100%; border-radius: 4px; }
+  .barfill.k3 { background: var(--accent); }
+  .barfill.k5 { background: var(--pad); }
+  .barrow .bval {
+    font-size: 0.8rem; color: var(--muted); flex-shrink: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums;
+  }
+  .barrow .bval strong { color: var(--ink); }
+  .formula {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.88rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.7rem 1rem; overflow-x: auto; white-space: nowrap;
+  }
+  .formula .hi { color: var(--weight); font-weight: 700; }
+  .formula .cm { color: var(--muted); }
+
+  /* section 3: stacked 3x3 */
+  .stackpaths { display: flex; gap: 2.5rem; min-width: 700px; }
+  .path { flex: 1; display: flex; flex-direction: column; gap: 0.6rem; }
+  .path h3 { font-size: 0.95rem; font-weight: 600; }
+  .path .flowrow { flex-wrap: nowrap; }
+  .opchip {
+    font-size: 0.72rem; font-weight: 600; background: var(--chip-bg); border-radius: 999px;
+    padding: 0.2rem 0.6rem; white-space: nowrap; text-align: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .path .total { font-size: 0.9rem; }
+  .path .total strong { color: var(--weight); }
+  .path .total .sub { color: var(--muted); font-size: 0.82rem; display: block; }
+
+  .note {
+    border-left: 3px solid var(--pad); background: var(--surface);
+    border-radius: 0 10px 10px 0; padding: 0.9rem 1.1rem; max-width: 46rem;
+    font-size: 0.9rem; color: var(--muted);
+  }
+  .note strong { color: var(--ink); }
+
+  .takeaway {
+    border-left: 3px solid var(--accent); padding: 0.35rem 0 0.35rem 1.1rem;
+    font-size: 1.02rem; font-weight: 500; max-width: 46rem; text-wrap: balance;
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ELI5 · Convolutional networks</div>
+    <h1>Why a 5×5 Filter Costs ~3× the Weights of a 3×3</h1>
+    <p class="lede">With <strong>padding="same"</strong>, both filters produce the <strong>exact same
+    output size</strong> — that's the point of "same." What changes is the stamp itself:
+    every output number is now a blend of 25 inputs instead of 9, and each of those 25
+    positions is a learned weight.</p>
+  </header>
+
+  <section>
+    <div class="label">1 · Same output, bigger stamp</div>
+    <h2>Padding keeps the map size; the kernel sets the weight count</h2>
+    <p>Below, both convolutions compute the <em>corner</em> output cell of an 8×8 map.
+    "Same" padding adds a ring of <span class="t-pad">imaginary zeros</span> (dashed) so the
+    window can sit on the edge — a 3×3 filter needs a 1-cell ring, a 5×5 needs a 2-cell ring.
+    Those zeros are <strong>not weights</strong>. The <span class="t-weight">purple stamp</span>
+    is the weights.</p>
+    <div class="panel">
+      <div class="cases">
+        <div class="case">
+          <h3><code>Conv2D(k=(3,3), padding="same")</code></h3>
+          <div class="flowrow">
+            <div class="figblock">
+              <div class="pgrid" data-pg="8,1,3" style="grid-template-columns: repeat(10, 15px);"><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c winpad"></div><div class="c win"></div><div class="c win"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c winpad"></div><div class="c win"></div><div class="c win"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div></div>
+              <div class="figcap">input 8×8 + zero ring</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="figblock">
+              <div class="pgrid" data-out="8" style="grid-template-columns: repeat(8, 15px);"><div class="c hot"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+              <div class="figcap">output 8×8<br>(same!)</div>
+            </div>
+          </div>
+          <div class="stampline">
+            <div class="stamp" data-stamp="3" style="grid-template-columns: repeat(3, 15px);"><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+            <div class="stampnote"><strong>9 weights</strong> + 1 bias
+              <div class="sub">per filter, per input channel</div>
+            </div>
+          </div>
+        </div>
+        <div class="case">
+          <h3><code>Conv2D(k=(5,5), padding="same")</code></h3>
+          <div class="flowrow">
+            <div class="figblock">
+              <div class="pgrid" data-pg="8,2,5" style="grid-template-columns: repeat(12, 15px);"><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c winpad"></div><div class="c winpad"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div><div class="c padc"></div></div>
+              <div class="figcap">input 8×8 + two zero rings</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="figblock">
+              <div class="pgrid" data-out="8" style="grid-template-columns: repeat(8, 15px);"><div class="c hot"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+              <div class="figcap">output 8×8<br>(still the same!)</div>
+            </div>
+          </div>
+          <div class="stampline">
+            <div class="stamp" data-stamp="5" style="grid-template-columns: repeat(5, 15px);"><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div><div class="c"></div></div>
+            <div class="stampnote"><strong>25 weights</strong> + 1 bias
+              <div class="sub">per filter, per input channel — 2.8× the stamp area</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><strong>The clarification worth saying out loud:</strong> padding never adds
+    or removes weights — the zero ring is imaginary, not learned. Weights depend only on
+    kernel size × channels. "Same" just guarantees both setups produce an identical 8×8 output,
+    so the <em>only</em> difference left is the stamp area: 9 vs 25.</div>
+  </section>
+
+  <section>
+    <div class="label">2 · Count them in your own model</div>
+    <h2>The parameter formula, with Week-8 numbers</h2>
+    <div class="formula">
+      params = <span class="hi">k_h · k_w</span> · C_in · C_out + C_out
+      <span class="cm">// the kernel area multiplies EVERYTHING else</span>
+    </div>
+    <div class="panel">
+      <div class="barsgroup">
+        <div class="bargroup">
+          <h3>Layer 1 — <code>Conv2D(32, k, input 28×28×1)</code></h3>
+          <div class="barrow">
+            <div class="blab">3×3</div>
+            <div class="bartrack"><div class="barfill k3" style="width:38.5%"></div></div>
+            <div class="bval"><strong>320</strong> params (3·3·1·32 + 32)</div>
+          </div>
+          <div class="barrow">
+            <div class="blab">5×5</div>
+            <div class="bartrack"><div class="barfill k5" style="width:100%"></div></div>
+            <div class="bval"><strong>832</strong> params (5·5·1·32 + 32) — ×2.6</div>
+          </div>
+        </div>
+        <div class="bargroup">
+          <h3>Layer 2 — <code>Conv2D(32, k)</code> on 32 input channels</h3>
+          <div class="barrow">
+            <div class="blab">3×3</div>
+            <div class="bartrack"><div class="barfill k3" style="width:36.1%"></div></div>
+            <div class="bval"><strong>9,248</strong> params (3·3·32·32 + 32)</div>
+          </div>
+          <div class="barrow">
+            <div class="blab">5×5</div>
+            <div class="bartrack"><div class="barfill k5" style="width:100%"></div></div>
+            <div class="bval"><strong>25,632</strong> params (5·5·32·32 + 32) — ×2.8</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>Notice the kernel area is a <em>multiplier</em> on channels-in × channels-out — so the
+    9-vs-25 gap gets amplified everywhere channels are wide. Students can verify every one of
+    these numbers with <code style="font-family: ui-monospace, &#39;SF Mono&#39;, Menlo, monospace; font-size: 0.85em; background: var(--chip-bg); padding: 0.1em 0.4em; border-radius: 4px;">model.summary()</code>.</p>
+  </section>
+
+  <section>
+    <div class="label">3 · The modern trick</div>
+    <h2>Two stacked 3×3s see 5×5 — for 18 weights, not 25</h2>
+    <div class="panel">
+      <div class="stackpaths">
+        <div class="path">
+          <h3>Stack two 3×3 convs</h3>
+          <div class="flowrow">
+            <div class="figblock"><div class="pgrid" data-plain="5,win" style="grid-template-columns: repeat(5, 15px);"><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div></div><div class="figcap">5×5 view</div></div>
+            <div class="figblock"><div class="opchip">3×3 · 9w</div><div class="figcap">+ ReLU</div></div>
+            <div class="figblock"><div class="pgrid" data-plain="3,win" style="grid-template-columns: repeat(3, 15px);"><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div></div><div class="figcap">3×3</div></div>
+            <div class="figblock"><div class="opchip">3×3 · 9w</div><div class="figcap">&nbsp;</div></div>
+            <div class="figblock"><div class="pgrid" data-plain="1,hot" style="grid-template-columns: repeat(1, 15px);"><div class="c hot"></div></div><div class="figcap">1 value</div></div>
+          </div>
+          <div class="total"><strong>18 weights</strong>, two ReLUs
+            <span class="sub">same 5×5 receptive field, cheaper, and more nonlinearity</span>
+          </div>
+        </div>
+        <div class="path">
+          <h3>One 5×5 conv</h3>
+          <div class="flowrow">
+            <div class="figblock"><div class="pgrid" data-plain="5,win" style="grid-template-columns: repeat(5, 15px);"><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div><div class="c win"></div></div><div class="figcap">5×5 view</div></div>
+            <div class="figblock"><div class="opchip">5×5 · 25w</div><div class="figcap">&nbsp;</div></div>
+            <div class="figblock"><div class="pgrid" data-plain="1,hot" style="grid-template-columns: repeat(1, 15px);"><div class="c hot"></div></div><div class="figcap">1 value</div></div>
+          </div>
+          <div class="total"><strong>25 weights</strong>, one ReLU
+            <span class="sub">same view of the image, more parameters, less depth</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>This is why VGG (2014) and nearly everything since builds almost entirely from 3×3 filters:
+    stacking small stamps buys the same view for fewer weights, plus an extra nonlinearity
+    between them.</p>
+  </section>
+
+  <p class="takeaway">"Same" padding fixes the output size, so filter size becomes a pure
+  price tag on the stamp: 3×3 pays 9 weights per channel for its view, 5×5 pays 25 for a view
+  you could have built from two 3×3s at 18 — which is why small filters won.</p>
+</div>
+
+<script>
+  (function () {
+    // padded input grids: data-pg="core,pad,k" — corner window k×k highlighted
+    document.querySelectorAll(".pgrid[data-pg]").forEach(function (g) {
+      var p = g.getAttribute("data-pg").split(",");
+      var core = +p[0], pad = +p[1], k = +p[2], n = core + 2 * pad;
+      g.style.gridTemplateColumns = "repeat(" + n + ", 15px)";
+      for (var r = 0; r < n; r++) {
+        for (var c = 0; c < n; c++) {
+          var d = document.createElement("div");
+          var isPad = r < pad || c < pad || r >= n - pad || c >= n - pad;
+          var inWin = r < k && c < k;
+          d.className = "c" + (isPad ? " padc" : "");
+          if (inWin) d.className = "c " + (isPad ? "winpad" : "win");
+          g.appendChild(d);
+        }
+      }
+    });
+    // output grids: data-out="n" — corner cell hot
+    document.querySelectorAll(".pgrid[data-out]").forEach(function (g) {
+      var n = +g.getAttribute("data-out");
+      g.style.gridTemplateColumns = "repeat(" + n + ", 15px)";
+      for (var i = 0; i < n * n; i++) {
+        var d = document.createElement("div");
+        d.className = "c" + (i === 0 ? " hot" : "");
+        g.appendChild(d);
+      }
+    });
+    // plain grids for section 3: data-plain="n,style"
+    document.querySelectorAll(".pgrid[data-plain]").forEach(function (g) {
+      var p = g.getAttribute("data-plain").split(",");
+      var n = +p[0], style = p[1];
+      g.style.gridTemplateColumns = "repeat(" + n + ", 15px)";
+      for (var i = 0; i < n * n; i++) {
+        var d = document.createElement("div");
+        d.className = "c " + (style === "hot" ? "hot" : "win");
+        g.appendChild(d);
+      }
+    });
+    // weight stamps: data-stamp="k"
+    document.querySelectorAll(".stamp[data-stamp]").forEach(function (g) {
+      var k = +g.getAttribute("data-stamp");
+      g.style.gridTemplateColumns = "repeat(" + k + ", 15px)";
+      for (var i = 0; i < k * k; i++) {
+        var d = document.createElement("div");
+        d.className = "c";
+        g.appendChild(d);
+      }
+    });
+  })();
+</script>
+
+</body></html>

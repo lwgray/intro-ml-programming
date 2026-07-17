@@ -1,0 +1,269 @@
+
+<style>
+  .btn { padding:7px 14px; border-radius:var(--border-radius-md); border:0.5px solid var(--color-border-secondary); background:transparent; color:var(--color-text-primary); cursor:pointer; font-size:13px; }
+  .btn:hover { background:var(--color-background-secondary); }
+  .btn-primary { background:var(--color-background-info); color:var(--color-text-info); border-color:var(--color-border-info); }
+  .stat-grid { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin:12px 0; }
+  .stat { background:var(--color-background-secondary); border-radius:var(--border-radius-md); padding:10px 12px; }
+  .stat-l { font-size:11px; color:var(--color-text-secondary); margin-bottom:3px; }
+  .stat-v { font-size:17px; font-weight:500; color:var(--color-text-primary); }
+  .explain-box { font-size:13px; color:var(--color-text-secondary); line-height:1.6; padding:10px 14px; border-left:2px solid var(--color-border-secondary); margin:8px 0 10px; border-radius:0 var(--border-radius-md) var(--border-radius-md) 0; }
+  .phase-title { font-size:15px; font-weight:500; color:var(--color-text-primary); margin-bottom:4px; }
+</style>
+
+<div style="padding:4px 0;">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:6px;">
+    <div style="flex:1;">
+      <div class="phase-title" id="ptitle">Step 1 — Forward pass</div>
+      <div class="explain-box" id="pexplain">We push x=2 through the network. Multiply by weight, add bias, squeeze through sigmoid.</div>
+    </div>
+    <div style="display:flex;gap:6px;flex-shrink:0;align-items:flex-start;padding-top:2px;">
+      <button class="btn" onclick="prevStep()">← Back</button>
+      <button class="btn btn-primary" onclick="nextStep()">Next →</button>
+    </div>
+  </div>
+
+  <canvas id="nn" style="width:100%;display:block;" height="300"></canvas>
+
+  <div class="stat-grid">
+    <div class="stat"><div class="stat-l">hidden h</div><div class="stat-v" id="sv-h">—</div></div>
+    <div class="stat"><div class="stat-l">prediction</div><div class="stat-v" id="sv-o">—</div></div>
+    <div class="stat"><div class="stat-l">target</div><div class="stat-v">1.00</div></div>
+    <div class="stat"><div class="stat-l">mean squared error</div><div class="stat-v" id="sv-loss">—</div></div>
+  </div>
+
+  <div style="margin-bottom:10px;">
+    <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;">Mean squared error over training steps</div>
+    <canvas id="lc" height="60" style="width:100%;display:block;"></canvas>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+    <button class="btn" onclick="runEpoch()">1 step</button>
+    <button class="btn" onclick="runN(10)">10 steps</button>
+    <button class="btn" onclick="runN(100)">100 steps</button>
+    <button class="btn" onclick="reset()">Reset</button>
+    <span style="font-size:13px;color:var(--color-text-secondary);margin-left:6px;">lr:</span>
+    <input type="range" min="1" max="40" step="1" value="10" id="lrsl" style="width:80px;" oninput="document.getElementById('lrv').textContent=(+this.value/100).toFixed(2)">
+    <span style="font-size:13px;font-weight:500;color:var(--color-text-primary);" id="lrv">0.10</span>
+    <span style="font-size:13px;color:var(--color-text-secondary);margin-left:8px;">epoch:</span>
+    <span style="font-size:13px;font-weight:500;color:var(--color-text-primary);" id="sv-ep">0</span>
+  </div>
+</div>
+
+<script>
+const sig  = z => 1/(1+Math.exp(-z));
+const sigD = z => { const s=sig(z); return s*(1-s); };
+
+let S = { w:0.5, bh:0.1, v:0.5, bo:0.1, x:2, y:1,
+          zh:0, h:0, zo:0, o:0, loss:0,
+          epoch:0, step:0, hist:[],
+          dw:0, dbh:0, dv:0, dbo:0 };
+
+const PHASES = [
+  { title:'Step 1 — Forward pass',
+    explain:'x=2 travels right. At the hidden neuron: z = w·x + b, then h = sigmoid(z). At the output: z = v·h + b, then o = sigmoid(z).' },
+  { title:'Step 2 — Measure the mistake (mean squared error)',
+    explain:'MSE = (prediction − target)² = (o − 1.0)². The red ring shows how wrong we are — shrink it to zero.' },
+  { title:'Step 3 — Backprop: output side',
+    explain:'Working backwards: how much did v and b_output cause the error? Orange labels show their gradients.' },
+  { title:'Step 4 — Backprop: hidden side',
+    explain:'The blame travels back through v to reach w and b_hidden. Every weight now has a gradient.' },
+  { title:'Step 5 — Weights updated!',
+    explain:'All weights nudged by learning rate × gradient. Next forward pass = slightly better prediction. Repeat = training.' }
+];
+
+function forward() {
+  S.zh   = S.w * S.x + S.bh;
+  S.h    = sig(S.zh);
+  S.zo   = S.v * S.h + S.bo;
+  S.o    = sig(S.zo);
+  S.loss = Math.pow(S.o - S.y, 2);
+}
+
+function computeGrads() {
+  const dLdo  = 2 * (S.o - S.y);
+  const dLdzo = dLdo * sigD(S.zo);
+  S.dv  = dLdzo * S.h;
+  S.dbo = dLdzo;
+  const dLdh  = dLdzo * S.v;
+  const dLdzh = dLdh * sigD(S.zh);
+  S.dw  = dLdzh * S.x;
+  S.dbh = dLdzh;
+}
+
+function applyGrads() {
+  const lr = +document.getElementById('lrsl').value / 100;
+  S.w  -= lr * S.dw;
+  S.bh -= lr * S.dbh;
+  S.v  -= lr * S.dv;
+  S.bo -= lr * S.dbo;
+}
+
+function nextStep() {
+  if      (S.step===0) { forward(); S.step=1; }
+  else if (S.step===1) { S.step=2; }
+  else if (S.step===2) { computeGrads(); S.step=3; }
+  else if (S.step===3) { S.step=4; }
+  else                 { applyGrads(); S.epoch++; S.hist.push(S.loss); forward(); S.step=1; }
+  render();
+}
+
+function prevStep() { if(S.step>0){S.step--; render();} }
+
+function runEpoch() {
+  forward(); computeGrads(); applyGrads();
+  S.epoch++; S.hist.push(S.loss);
+  forward(); S.step=1; render();
+}
+
+function runN(n) {
+  for(let i=0;i<n;i++){forward();computeGrads();applyGrads();S.epoch++;S.hist.push(S.loss);}
+  forward(); S.step=1; render();
+}
+
+function reset() {
+  S={w:0.5,bh:0.1,v:0.5,bo:0.1,x:2,y:1,zh:0,h:0,zo:0,o:0,loss:0,epoch:0,step:0,hist:[],dw:0,dbh:0,dv:0,dbo:0};
+  render();
+}
+
+function render() {
+  const ph = PHASES[Math.min(S.step, PHASES.length-1)];
+  document.getElementById('ptitle').textContent   = ph.title;
+  document.getElementById('pexplain').textContent = ph.explain;
+  document.getElementById('sv-ep').textContent    = S.epoch;
+  document.getElementById('sv-h').textContent     = S.step>=1 ? S.h.toFixed(4) : '—';
+  document.getElementById('sv-o').textContent     = S.step>=1 ? S.o.toFixed(4) : '—';
+  document.getElementById('sv-loss').textContent  = S.step>=1 ? S.loss.toFixed(4) : '—';
+  drawNN();
+  drawLoss();
+}
+
+function drawNN() {
+  const canvas = document.getElementById('nn');
+  const dpr = window.devicePixelRatio||1;
+  const W = canvas.offsetWidth||640;
+  const H = 300;
+  canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr);
+  ctx.clearRect(0,0,W,H);
+
+  const isDark = window.matchMedia('(prefers-color-scheme:dark)').matches;
+  const colMuted = isDark?'#9c9a92':'#73726c';
+  const colBg    = isDark?'#2c2c2a':'#f1efe8';
+  const colBord  = isDark?'rgba(255,255,255,0.18)':'rgba(0,0,0,0.18)';
+
+  const R=34, xX=W*0.15, xH=W*0.50, xO=W*0.85, yN=H*0.44;
+
+  function activation2color(val) {
+    const v=Math.max(0,Math.min(1,val));
+    return { fill:`rgb(${Math.round(29+(216-29)*v)},${Math.round(158+(90-158)*v)},${Math.round(117+(48-117)*v)})` };
+  }
+
+  function drawConnection(x1,y1,x2,y2,weight,grad,showGrad) {
+    const absW=Math.min(Math.abs(weight),3);
+    const alpha=0.25+Math.min(0.6,absW*0.25);
+    const lineCol=weight>=0?`rgba(29,158,117,${alpha})`:`rgba(216,90,48,${alpha})`;
+    ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+    ctx.strokeStyle=lineCol; ctx.lineWidth=0.8+absW*1.2; ctx.stroke();
+
+    const mx=(x1+x2)/2, my=(y1+y2)/2;
+    ctx.font='500 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+
+    const wLabel='w='+weight.toFixed(3);
+    const tw=ctx.measureText(wLabel).width+8;
+    const wy=my-16;
+    ctx.fillStyle=isDark?'rgba(28,28,26,0.92)':'rgba(255,255,255,0.92)';
+    ctx.fillRect(mx-tw/2,wy-8,tw,16);
+    ctx.fillStyle=lineCol;
+    ctx.fillText(wLabel,mx,wy);
+
+    if(showGrad && grad!==undefined) {
+      const gLabel='grad='+grad.toFixed(4);
+      const gw=ctx.measureText(gLabel).width+8;
+      const gy=my+16;
+      ctx.fillStyle=isDark?'rgba(28,28,26,0.92)':'rgba(255,255,255,0.92)';
+      ctx.fillRect(mx-gw/2,gy-8,gw,16);
+      ctx.fillStyle='#D85A30';
+      ctx.fillText(gLabel,mx,gy);
+    }
+  }
+
+  function drawNeuron(cx,cy,val,topLabel,valLabel,active,showLoss) {
+    if(active) {
+      const {fill}=activation2color(val);
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+      ctx.fillStyle=fill; ctx.fill();
+      ctx.strokeStyle=fill; ctx.lineWidth=1.5; ctx.stroke();
+      if(showLoss && S.step>=1) {
+        const li=Math.min(1,S.loss*8);
+        ctx.beginPath(); ctx.arc(cx,cy,R+6,0,Math.PI*2);
+        ctx.strokeStyle=`rgba(216,90,48,${li*0.75})`; ctx.lineWidth=3; ctx.stroke();
+      }
+      ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillStyle='#ffffff';
+      ctx.font='500 13px sans-serif'; ctx.fillText(topLabel,cx,cy-9);
+      ctx.font='400 11px sans-serif'; ctx.fillText(valLabel,cx,cy+9);
+    } else {
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,Math.PI*2);
+      ctx.fillStyle=colBg; ctx.fill();
+      ctx.strokeStyle=colBord; ctx.lineWidth=0.5; ctx.stroke();
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=colMuted; ctx.font='500 14px sans-serif';
+      ctx.fillText(topLabel,cx,cy);
+    }
+  }
+
+  const fwd=S.step>=1;
+  drawConnection(xX+R,yN,xH-R,yN,S.w,S.dw,S.step>=4);
+  drawConnection(xH+R,yN,xO-R,yN,S.v,S.dv,S.step>=3);
+
+  drawNeuron(xX,yN,S.x/3,'x','val='+S.x.toFixed(1),true,false);
+  drawNeuron(xH,yN,fwd?S.h:0,'h',fwd?S.h.toFixed(3):'?',fwd,false);
+  drawNeuron(xO,yN,fwd?S.o:0,'o',fwd?S.o.toFixed(3):'?',fwd,true);
+
+  ctx.font='400 12px sans-serif'; ctx.textAlign='center'; ctx.fillStyle=colMuted;
+  ctx.fillText('input',xX,yN+R+18);
+  ctx.fillText('hidden  b='+S.bh.toFixed(3),xH,yN+R+18);
+  ctx.fillText('output  b='+S.bo.toFixed(3),xO,yN+R+18);
+
+  if(fwd) {
+    ctx.font='400 11px sans-serif'; ctx.textAlign='center'; ctx.fillStyle=colMuted;
+    ctx.fillText('z='+S.zh.toFixed(3),xH,yN-R-18);
+    ctx.fillText('z='+S.zo.toFixed(3),xO,yN-R-18);
+
+    ctx.font='500 11px sans-serif'; ctx.textAlign='center';
+    const mseLabel='MSE = ('+S.o.toFixed(3)+' - 1.0)² = '+S.loss.toFixed(4);
+    const mw=ctx.measureText(mseLabel).width+12;
+    const mx=W/2, my=H-18;
+    ctx.fillStyle=isDark?'rgba(28,28,26,0.9)':'rgba(255,255,255,0.9)';
+    ctx.fillRect(mx-mw/2,my-9,mw,18);
+    ctx.fillStyle='#D85A30';
+    ctx.fillText(mseLabel,mx,my);
+  }
+}
+
+function drawLoss() {
+  const canvas=document.getElementById('lc');
+  const dpr=window.devicePixelRatio||1;
+  const W=canvas.offsetWidth||640;
+  canvas.width=W*dpr; canvas.height=60*dpr; canvas.style.height='60px';
+  const ctx=canvas.getContext('2d');
+  ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,60);
+  const hist=S.hist;
+  if(hist.length<2) return;
+  const maxL=Math.max(...hist,0.001);
+  ctx.strokeStyle='#1D9E75'; ctx.lineWidth=1.5;
+  ctx.beginPath();
+  hist.forEach((l,i)=>{
+    const px=(i/(hist.length-1))*(W-20)+10;
+    const py=52-(l/maxL)*44;
+    i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+  });
+  ctx.stroke();
+  ctx.fillStyle='rgba(29,158,117,0.08)';
+  ctx.lineTo(W-10,52); ctx.lineTo(10,52); ctx.closePath(); ctx.fill();
+}
+
+forward(); S.step=1; render();
+window.addEventListener('resize',()=>{ drawNN(); drawLoss(); });
+</script>

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Detective Agency — how a CNN names a dog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;600&family=Source+Sans+3:wght@400;600&family=Special+Elite&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#EFE6CC; --paper-deep:#E4D7B4; --card:#F6EFDC;
+  --ink:#203044; --ink-soft:#5A6577;
+  --red:#B3372E; --blue:#2C4E9C;
+  --tag:#D8C692; --line:#C9BC97;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} *{transition:none!important;animation:none!important} }
+body{
+  background:var(--paper); color:var(--ink);
+  font-family:"Source Sans 3",system-ui,sans-serif; font-size:17px; line-height:1.55;
+  background-image:repeating-linear-gradient(0deg, transparent 0 34px, rgba(32,48,68,.035) 34px 35px);
+}
+.wrap{max-width:720px;margin:0 auto;padding:28px 18px 90px}
+a{color:var(--blue)}
+h1{font-family:Fraunces,serif;font-weight:700;font-size:clamp(30px,7vw,44px);line-height:1.08;letter-spacing:-.01em}
+h2{font-family:Fraunces,serif;font-weight:600;font-size:clamp(22px,5vw,28px);line-height:1.15;margin:6px 0 10px}
+p{margin:10px 0}
+.mono{font-family:"IBM Plex Mono",monospace}
+.small{font-size:14px;color:var(--ink-soft)}
+/* header */
+header{border-bottom:3px double var(--ink);padding-bottom:22px;margin-bottom:8px}
+.case-line{font-family:"IBM Plex Mono",monospace;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:14px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lede{font-size:19px;margin-top:14px}
+/* evidence-tag section header */
+section{margin-top:52px}
+.tag{
+  display:inline-flex;align-items:center;gap:10px;
+  background:var(--tag);border:1.5px solid var(--ink);
+  padding:6px 14px 6px 26px;position:relative;
+  font-family:"IBM Plex Mono",monospace;font-size:12.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  box-shadow:2px 2px 0 rgba(32,48,68,.25);
+  transform:rotate(-1deg);
+}
+.tag::before{content:"";position:absolute;left:9px;top:50%;transform:translateY(-50%);width:8px;height:8px;border-radius:50%;background:var(--paper);border:1.5px solid var(--ink)}
+.card{background:var(--card);border:1.5px solid var(--ink);box-shadow:3px 3px 0 rgba(32,48,68,.2);padding:16px;margin:16px 0}
+.note{border-left:4px solid var(--blue);background:rgba(44,78,156,.07);padding:10px 14px;margin:14px 0;font-size:15.5px}
+.note b{color:var(--blue)}
+/* grids */
+.pixgrid{display:grid;gap:1px;background:var(--line);border:1.5px solid var(--ink);width:max-content;max-width:100%;touch-action:manipulation}
+.pixgrid .cell{width:clamp(18px,6.4vw,26px);height:clamp(18px,6.4vw,26px);position:relative}
+.pixgrid .cell:focus-visible{outline:2px dashed var(--red);outline-offset:-2px;z-index:3}
+.loupe-cell{outline:3px solid var(--red)!important;outline-offset:-1px;z-index:2}
+.loupe-ring{outline:2px dashed var(--red)!important;outline-offset:-2px;z-index:1}
+.kgrid{display:grid;grid-template-columns:repeat(3,32px);gap:2px}
+.kgrid span{display:flex;align-items:center;justify-content:center;height:30px;font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;border:1px solid var(--line);background:#fff}
+.kw-pos{color:var(--blue)} .kw-neg{color:var(--red)} .kw-zero{color:#9aa2ad}
+/* controls */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+button.chip{
+  font-family:"IBM Plex Mono",monospace;font-size:13px;font-weight:600;letter-spacing:.04em;
+  background:#fff;border:1.5px solid var(--ink);padding:9px 13px;cursor:pointer;color:var(--ink);
+  box-shadow:2px 2px 0 rgba(32,48,68,.2);min-height:40px
+}
+button.chip[aria-pressed="true"]{background:var(--ink);color:var(--card)}
+button.chip:focus-visible{outline:2px dashed var(--red);outline-offset:2px}
+button.go{
+  font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;letter-spacing:.06em;text-transform:uppercase;
+  background:var(--red);color:#fff;border:1.5px solid var(--ink);padding:11px 18px;cursor:pointer;
+  box-shadow:2px 2px 0 rgba(32,48,68,.35);min-height:44px
+}
+button.go:focus-visible{outline:2px dashed var(--ink);outline-offset:2px}
+.readout{font-family:"IBM Plex Mono",monospace;font-size:14px;background:#fff;border:1.5px solid var(--ink);padding:10px 12px;margin-top:10px}
+.readout b{font-size:17px}
+.flexrow{display:flex;gap:18px;flex-wrap:wrap;align-items:flex-start}
+.legend{display:flex;gap:14px;align-items:center;font-size:13px;font-family:"IBM Plex Mono",monospace;margin-top:8px;flex-wrap:wrap}
+.swatch{display:inline-block;width:14px;height:14px;border:1px solid var(--ink);vertical-align:-2px}
+/* histogram */
+.hist{display:flex;align-items:flex-end;gap:2px;height:110px;border-bottom:1.5px solid var(--ink);padding:0 4px}
+.hist div{width:14px;background:var(--blue);min-height:1px}
+.axis{display:flex;justify-content:space-between;font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink-soft);margin-top:4px}
+input[type=range]{width:160px;accent-color:var(--red)}
+.sliders{display:flex;gap:20px;flex-wrap:wrap;margin-top:12px;font-family:"IBM Plex Mono",monospace;font-size:13px}
+.sliders label{display:flex;flex-direction:column;gap:4px}
+/* consolidation visual */
+.tiers{display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap}
+.tier{text-align:center}
+.tier .sq{background:var(--paper-deep);border:1.5px solid var(--ink);margin:0 auto}
+.badge{display:inline-block;font-family:"IBM Plex Mono",monospace;font-size:12px;font-weight:600;background:var(--ink);color:var(--card);padding:3px 8px;margin-top:6px}
+/* GAP bars */
+.gapmaps{display:grid;grid-template-columns:repeat(auto-fill,minmax(86px,1fr));gap:12px}
+.gm{text-align:center}
+.gm .mini{display:grid;grid-template-columns:repeat(3,22px);gap:1px;background:var(--line);border:1.5px solid var(--ink);width:max-content;margin:0 auto;transition:opacity .5s, transform .5s}
+.gm .mini span{width:22px;height:22px}
+.gm .avg{font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:15px;margin-top:5px;opacity:0;transition:opacity .5s}
+.gm .nm{font-size:11.5px;color:var(--ink-soft);line-height:1.25;margin-top:3px;font-family:"IBM Plex Mono",monospace}
+.gm.done .mini{opacity:.18;transform:scale(.72)}
+.gm.done .avg{opacity:1}
+/* chief */
+table.vote{border-collapse:collapse;width:100%;font-size:13.5px;font-family:"IBM Plex Mono",monospace;background:#fff}
+table.vote th,table.vote td{border:1px solid var(--line);padding:6px 7px;text-align:center}
+table.vote th{background:var(--paper-deep);font-weight:600}
+table.vote td:first-child,table.vote th:first-child{text-align:left}
+.verdicts{display:flex;gap:14px;margin-top:14px;flex-wrap:wrap}
+.vscore{font-family:"IBM Plex Mono",monospace;border:1.5px solid var(--ink);background:#fff;padding:8px 14px;font-size:15px}
+.vscore b{font-size:20px}
+.stamp{
+  font-family:"Special Elite",monospace;color:var(--red);border:4px double var(--red);
+  padding:10px 22px;font-size:clamp(22px,6vw,32px);letter-spacing:.1em;text-transform:uppercase;
+  transform:rotate(-6deg);display:inline-block;margin-top:20px;opacity:0;
+  -webkit-mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 .4'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+  mask-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence baseFrequency='.9' numOctaves='2'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .6 .4'/></filter><rect width='120' height='120' filter='url(%23n)'/></svg>");
+}
+.stamp.show{animation:slam .35s ease-out forwards}
+@keyframes slam{0%{opacity:0;transform:rotate(-6deg) scale(2.2)}100%{opacity:1;transform:rotate(-6deg) scale(1)}}
+@media (prefers-reduced-motion: reduce){ .stamp.show{opacity:1} }
+/* details */
+details{border:1.5px solid var(--ink);background:var(--card);margin:14px 0;box-shadow:3px 3px 0 rgba(32,48,68,.2)}
+summary{cursor:pointer;padding:12px 16px;font-family:"IBM Plex Mono",monospace;font-weight:600;font-size:14px;letter-spacing:.08em;text-transform:uppercase}
+summary:focus-visible{outline:2px dashed var(--red);outline-offset:-4px}
+details .inner{padding:0 16px 16px}
+table.map{border-collapse:collapse;width:100%;font-size:14px}
+table.map th,table.map td{border:1px solid var(--line);padding:7px 9px;text-align:left;vertical-align:top}
+table.map th{background:var(--paper-deep);font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+.faq dt{font-weight:600;margin-top:14px}
+.faq dd{margin:4px 0 0 0}
+footer{margin-top:70px;border-top:3px double var(--ink);padding-top:16px;font-size:14px;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="case-line"><span>Case Nº 2026-0715</span><span>Status: OPEN</span></div>
+  <h1>The Detective Agency</h1>
+  <p class="lede">A convolutional neural network, told as a building full of investigators who never see the crime scene — and still name the suspect. Everything below runs on real arithmetic: the numbers you'll see are an actual CNN forward pass on the actual image.</p>
+  <p class="small">One case runs top to bottom: a 12×12 photo comes in the front door, and a verdict gets stamped on the roof.</p>
+</header>
+
+<!-- ============ EXHIBIT A ============ -->
+<section id="scene">
+  <span class="tag">Exhibit A · The scene — input &amp; RGB channels</span>
+  <h2>One scene, three lamps</h2>
+  <p>The crime scene is documented three times: once under a <b>red lamp</b>, once under a <b>green lamp</b>, once under a <b>blue lamp</b>. Three brightness maps of the <em>same</em> grid, stacked. That's all "RGB channels" means — not three pictures, but <b>three aligned measurements of every square</b>.</p>
+  <div class="card">
+    <div class="chips" role="group" aria-label="Choose lamp view">
+      <button class="chip" data-lamp="all" aria-pressed="true">All lamps (photo)</button>
+      <button class="chip" data-lamp="0" aria-pressed="false">Red lamp</button>
+      <button class="chip" data-lamp="1" aria-pressed="false">Green lamp</button>
+      <button class="chip" data-lamp="2" aria-pressed="false">Blue lamp</button>
+    </div>
+    <div class="flexrow">
+      <div id="sceneGrid" class="pixgrid" role="grid" aria-label="Crime scene, 12 by 12 squares. Tap a square to read its three lamp values."></div>
+      <div style="flex:1;min-width:200px">
+        <div class="readout" id="sceneReadout">Tap any square →<br>every square holds <b>3 numbers</b>, one per lamp.</div>
+        <p class="small" style="margin-top:10px">The tensor: <span class="mono">12 × 12 × 3</span>. Height, width, <b>depth = number of lamps</b>. Hold that word "depth" — it's about to matter.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ EXHIBIT B ============ -->
+<section id="agent">
+  <span class="tag">Exhibit B · The field agent — convolution</span>
+  <h2>One checklist, 27 boxes, one gut score</h2>
+  <p>A field agent works one specialty. She carries a checklist that covers a <b>3×3 patch of squares</b> — but each square has three lamp readings, so the checklist has <b>3×3×3 = 27 weighted boxes</b>. At each spot: multiply every reading by its weight, add it all up, write down <b>one number</b>. That single number is her gut score for "my clue is here."</p>
+  <p>Then she takes one step and does it again. <b>Same checklist, every square of the scene.</b> She doesn't learn a new checklist for the left side of the room — that reuse is called <em>weight sharing</em>, and it's why her whole specialty costs 27 numbers no matter how big the scene is.</p>
+
+  <div class="card">
+    <p class="small" style="margin-bottom:6px"><b>Pick an agent</b> (each is a real 3×3×3 filter):</p>
+    <div class="chips" role="group" aria-label="Choose agent" id="agentChips"></div>
+    <div class="flexrow">
+      <div>
+        <p class="small mono" style="margin-bottom:4px">HER CHECKLIST — weights per lamp:</p>
+        <div class="flexrow" id="kernelView" style="gap:12px"></div>
+        <p class="small" style="max-width:260px" id="kernelNote"></p>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--line);margin:14px 0">
+    <div class="flexrow">
+      <div>
+        <p class="small mono" style="margin-bottom:4px">THE SCENE — tap to place her loupe:</p>
+        <div id="agentScene" class="pixgrid" role="grid" aria-label="Scene with movable 3 by 3 loupe"></div>
+      </div>
+      <div>
+        <p class="small mono" style="margin-bottom:4px">HER PIN MAP — one score per square:</p>
+        <div id="pinMap" class="pixgrid" role="grid" aria-label="Pin map of agent scores"></div>
+        <div class="legend">
+          <span><span class="swatch" style="background:var(--blue)"></span> blue ink = evidence for</span>
+          <span><span class="swatch" style="background:var(--red)"></span> red ink = evidence against</span>
+        </div>
+      </div>
+    </div>
+    <div class="readout" id="dotReadout">Tap a square on the scene to see the 27 boxes get tallied.</div>
+    <div class="chips" style="margin-top:12px">
+      <button class="go" id="scanBtn">Walk the whole scene</button>
+      <button class="chip" id="detailBtn" aria-pressed="false">Show all 27 products</button>
+    </div>
+    <p class="small">Squares past the scene tape count as zero — that's why her pin map is the same 12×12 size as the scene ("padding").</p>
+  </div>
+  <div class="note"><b>She isn't smart.</b> The agent has no idea what an "edge" is. The checklist is pure multiply-and-add. Everything that looks like judgment in this building is arithmetic wearing a trench coat.</div>
+</section>
+
+<!-- ============ EXHIBIT C ============ -->
+<section id="floor">
+  <span class="tag">Exhibit C · The whole floor — 32 channels out</span>
+  <h2>32 agents → the scene becomes 32 overlays</h2>
+  <p>The ground floor employs <b>32 specialties</b>. Each walks the same scene with a different 27-box checklist and produces her own pin map. Stack the pin maps and look at what you have:</p>
+  <div class="card">
+    <div class="gapmaps" id="floorGallery"></div>
+    <p class="small" style="margin-top:10px">…plus 28 more specialties not shown. Output tensor: <span class="mono">12 × 12 × 32</span>.</p>
+  </div>
+  <div class="note"><b>The recursion — this is the whole trick.</b> The scene arrived as a grid with 3 overlays. It leaves the ground floor as a grid with 32 overlays. <em>Same shape of thing.</em> So the second-floor analysts do exactly the job the first floor did — 3×3 loupe, one weighted checklist, one gut score — except their checklists have <b>3×3×32 = 288 boxes</b>, and they're reading <b>pin maps, not the scene</b>. They detect clues about clues. Nobody above the ground floor ever sees the photo. Every floor of this building is the same floor.</div>
+  <p>And that's why an analyst's <b>reach</b> grows without her loupe growing: her 3×3 window sits on nine summaries that each covered 3×3 of the scene, overlapping into 5×5. Loupe stays tiny; secondhand coverage compounds every floor. That reach has a name — the <em>receptive field</em>.</p>
+</section>
+
+<!-- ============ EXHIBIT D ============ -->
+<section id="relu">
+  <span class="tag">Exhibit D · Agency policy — ReLU</span>
+  <h2>"We don't file negative reports"</h2>
+  <p>Agency rule: if your evidence points <em>against</em> your clue, you don't file "−6 slanted-line-ness." You file <b>zero</b>. Positive findings pass through untouched; everything below zero is flattened.</p>
+  <div class="card">
+    <div class="chips">
+      <button class="chip" id="reluBtn" aria-pressed="false">Apply the policy to this pin map</button>
+    </div>
+    <div class="flexrow">
+      <div id="reluMap" class="pixgrid" aria-label="Pin map with ReLU toggle"></div>
+      <p class="small" style="flex:1;min-width:200px" id="reluCaption">Red-ink squares are negative scores — currently filed as-is.</p>
+    </div>
+  </div>
+  <div class="note"><b>Why throw information away?</b> Because without this rule, the building collapses. Weighted sums of weighted sums are algebraically just one big weighted sum — stack fifty floors of pure checklists and you've built one giant ground-floor checklist, no hierarchy at all. The refusal to pass negatives along is the nonlinearity that makes floor two <em>genuinely different</em> from floor one. Depth means something only because of this rule.</div>
+</section>
+
+<!-- ============ EXHIBIT E ============ -->
+<section id="bn">
+  <span class="tag">Exhibit E · The calibration desk — batch norm</span>
+  <h2>Grading the agents on a curve</h2>
+  <p>Problem: Agent 11 is dramatic — everything's a 9. Agent 04 understates — a 2 from her is huge news. Raw scores from different specialties aren't comparable, and worse, each agent's temperament <em>drifts</em> while the agency is still in training. Every desk upstairs would waste its time re-learning everyone's personality, over and over.</p>
+  <p>So between the agents and the "no negatives" policy sits the <b>calibration desk</b>. Each training day the agency processes a <b>batch</b> of cases. For each specialty, the desk collects <em>every score that specialty produced that day — every square, every case</em> — and grades on a curve: subtract the day's average, divide by the day's spread. Now "one unit" means the same amount of surprise from every agent.</p>
+  <div class="card">
+    <p class="small mono">AGENT 11 ("FUR TONE") — ALL 144 SCORES FROM THIS SCENE:</p>
+    <div class="flexrow" style="margin-top:8px">
+      <div>
+        <p class="small">Raw scores</p>
+        <div class="hist" id="histRaw"></div>
+        <div class="axis" id="axisRaw"></div>
+      </div>
+      <div>
+        <p class="small">After the curve (μ→0, σ→1), then the two dials:</p>
+        <div class="hist" id="histBN"></div>
+        <div class="axis" id="axisBN"></div>
+      </div>
+    </div>
+    <div class="sliders">
+      <label>γ — volume knob: <span id="gVal" class="mono">1.0</span>
+        <input type="range" id="gamma" min="0.2" max="3" step="0.1" value="1">
+      </label>
+      <label>β — new baseline: <span id="bVal" class="mono">0.0</span>
+        <input type="range" id="beta" min="-3" max="3" step="0.2" value="0">
+      </label>
+    </div>
+    <div class="readout" id="bnReadout"></div>
+  </div>
+  <p>The two dials are <b>learned</b>, one pair per specialty. Without them, the curve would force every agent to be equally loud forever — but some clues genuinely matter more. γ and β hand the volume decision back to training, while keeping the <em>standardized starting point</em> that makes learning fast and stable.</p>
+  <div class="note"><b>Two consequences worth their own line.</b> First: agents add no personal baseline to their reports (<span class="mono">bias=False</span> in the conv) — the desk subtracts the mean, so any constant they added would vanish anyway; β is where the baseline lives now. Second: on deployment day there's <em>one</em> case and no class to curve against — so the desk uses its <b>historical averages</b> from training. That's the real difference between a network's train mode and eval mode.</div>
+</section>
+
+<!-- ============ EXHIBIT F ============ -->
+<section id="stride">
+  <span class="tag">Exhibit F · Consolidation — stride &amp; channel growth</span>
+  <h2>Fewer desks, more specialties</h2>
+  <p>Going upstairs, the agency consolidates: the next floor sets up desks at <b>every other corner</b> only — half the rows, half the columns, a quarter of the desks. And at exactly that moment, it <b>doubles the specialties</b>.</p>
+  <div class="card">
+    <div class="tiers" id="tiersViz"></div>
+  </div>
+  <p><b>Why more specialties higher up?</b> There are only so many kinds of raw <em>marks</em> — a smudge is a smudge; 32 checklists cover the street level. But <em>combinations</em> of marks explode: smudge-next-to-fiber, fur-texture-with-dark-spot, curve-meeting-curve. Each floor's vocabulary has to grow because it's describing arrangements of the floor below.</p>
+  <p><b>Why it's affordable:</b> a quarter of the desks, but each desk's checklist covers twice the incoming specialties and there are twice as many desk-types — 4× the cost per corner. Quarter × four = <b>flat payroll per floor</b>. The agency isn't getting bigger going up; it's <b>trading positions for vocabulary</b>. Downstairs knows precisely <em>where</em> and barely <em>what</em>; upstairs knows richly <em>what</em> and only roughly <em>where</em>.</p>
+</section>
+
+<!-- ============ EXHIBIT G ============ -->
+<section id="gap">
+  <span class="tag">Exhibit G · The review board — global average pooling</span>
+  <h2>One number per specialist, location destroyed on purpose</h2>
+  <p>By the top floor the scene is a coarse 3×3 grid with 128 overlays of high-level findings. The review board doesn't ask <em>"where exactly was the fur texture?"</em> It asks <em>"in this case, overall — how much fur texture?"</em> So for each specialty it takes the <b>average of the whole map</b>: one number per specialist.</p>
+  <div class="card">
+    <button class="go" id="gapBtn">Convene the board</button>
+    <div class="gapmaps" id="gapMaps" style="margin-top:14px"></div>
+    <p class="small" style="margin-top:10px">…and 120 more. <span class="mono">3×3×128 → 128 numbers.</span></p>
+  </div>
+  <div class="note"><b>Two things GAP buys.</b> Whether the scene was a studio apartment or a warehouse, the board always receives exactly 128 numbers — the network stops caring about input size. And it saves a fortune: wiring every desk <em>position</em> to every verdict (flatten → dense layer) is where old architectures like VGG buried ~90% of their 138M parameters. Averaging first makes that wall of wiring unnecessary.</div>
+</section>
+
+<!-- ============ EXHIBIT H ============ -->
+<section id="chief">
+  <span class="tag">Exhibit H · The chief — the final linear layer</span>
+  <h2>The only place "dog" exists</h2>
+  <p>The chief receives the board's summary — 128 numbers — and holds one weighting per possible verdict. Multiply, add, loudest verdict wins. Note what's <em>not</em> in the building: no analyst has "dog" on her badge. Fur-tone fires for dogs, cats, and camel coats. Dark-spots fires for eyes, buttons, and bolt heads. <b>"Dog" is a chord</b> — a particular combination of specialists lighting up together — and the chief's weights are the only place that chord is written down.</p>
+  <div class="card">
+    <p class="small mono">8 OF THE 128 SUMMARIES (weights: <span class="kw-pos">for</span> / <span class="kw-neg">against</span> each verdict):</p>
+    <div style="overflow-x:auto;margin-top:8px"><table class="vote" id="voteTable"></table></div>
+    <div class="sliders">
+      <label>Try corrupting the evidence — "wheel-rim-ness": <span id="wheelVal" class="mono">0.0</span>
+        <input type="range" id="wheelSlider" min="0" max="9" step="0.5" value="0">
+      </label>
+    </div>
+    <div class="verdicts" id="verdicts"></div>
+    <div><span class="stamp" id="stamp">Verdict: Dog</span></div>
+  </div>
+  <p class="small">Drag the slider up: watch the same building, same specialists, same everything, flip its verdict to CAR. The verdict was never <em>in</em> any one report. It's in the chord.</p>
+</section>
+
+<!-- ============ CLOSING ============ -->
+<section id="training">
+  <span class="tag">Case closed · Who writes the checklists?</span>
+  <h2>Nobody</h2>
+  <p>On day one, every checklist in the building is random noise and the chief's verdicts are garbage. But each verdict gets graded against an answer key, and <b>blame flows back down the org chart</b> — every desk finds out how much its boxes contributed to the mistake, and nudges them. A few million graded cases later, the ground floor has <em>congealed into</em> edge detectors and the upper floors into texture and part detectors. Nobody designed that; it's the residue of grading.</p>
+  <p class="small">This is the actual historical divide: computer vision before 2012 was people <em>hand-writing</em> the checklists (SIFT, HOG). Deep learning's move was letting the checklists be the thing that learns.</p>
+</section>
+
+<!-- ============ INSTRUCTOR NOTES ============ -->
+<section id="notes">
+  <span class="tag">Instructor's file · not for the jury</span>
+
+  <details>
+    <summary>Decoder ring — analogy → real term</summary>
+    <div class="inner">
+      <table class="map">
+        <tr><th>In the agency</th><th>Real name</th><th>In this demo</th></tr>
+        <tr><td>Scene under three lamps</td><td>Input channels (RGB)</td><td class="mono">12×12×3</td></tr>
+        <tr><td>Field agent's checklist</td><td>Filter / kernel</td><td class="mono">3×3×3 = 27 weights</td></tr>
+        <tr><td>Gut score</td><td>Activation (one scalar per position)</td><td>one dot product</td></tr>
+        <tr><td>Pin map</td><td>Feature map</td><td class="mono">12×12</td></tr>
+        <tr><td>Same checklist every square</td><td>Weight sharing (convolution)</td><td>—</td></tr>
+        <tr><td>Squares past the tape = 0</td><td>Zero padding (pad=1)</td><td>keeps maps 12×12</td></tr>
+        <tr><td>32 specialties on a floor</td><td>Output channels</td><td class="mono">12×12×32</td></tr>
+        <tr><td>Analysts reading pin maps</td><td>Deeper conv layers</td><td class="mono">3×3×32 = 288 weights</td></tr>
+        <tr><td>How much scene one analyst reacts to</td><td>Receptive field</td><td>+2 per floor; doubles after each consolidation</td></tr>
+        <tr><td>"No negative reports"</td><td>ReLU</td><td class="mono">max(0, x)</td></tr>
+        <tr><td>Calibration desk, daily curve</td><td>BatchNorm2d — per channel, over batch <em>and</em> all positions (N,H,W)</td><td>curve of 144 scores</td></tr>
+        <tr><td>Volume knob &amp; new baseline</td><td>Learned γ, β (per channel)</td><td>the two sliders</td></tr>
+        <tr><td>Agents add no personal baseline</td><td><span class="mono">bias=False</span> on conv before BN</td><td>—</td></tr>
+        <tr><td>Desks at every other corner</td><td>Stride 2 (downsampling)</td><td class="mono">12→6→3</td></tr>
+        <tr><td>Review board: one number each, anywhere</td><td>Global average pooling</td><td class="mono">3×3×128 → 128</td></tr>
+        <tr><td>The chief's weightings</td><td>Final linear layer → logits</td><td>the vote table</td></tr>
+        <tr><td>Grading verdicts, blame flowing down</td><td>Loss + backprop + SGD</td><td>—</td></tr>
+      </table>
+    </div>
+  </details>
+
+  <details>
+    <summary>Questions your students will ask</summary>
+    <div class="inner">
+      <dl class="faq">
+        <dt>"Why don't the deep pin maps look like the dog?"</dt>
+        <dd>Three independent reasons, any one sufficient. (1) A top-floor map is a 3×3 grid — sixteen-ish numbers can't depict anything; the picture-ness was traded away floors ago, on purpose, for vocabulary. (2) It's a <em>scorecard</em>, not a photo — "amount of fur-texture around here: 8" is the answer to a question, and answers don't resemble their subjects. (3) There's no dog unit — dog is the chord across all 128 summaries; any single map is one note. Bonus: the famous "layer 5 sees faces" images are feature visualizations — synthetic inputs optimized to maximize one unit — i.e., that unit's <em>fantasy</em>, not anything it ever saw.</dd>
+        <dt>"Why 27 boxes and not 9?"</dt>
+        <dd>A filter's depth always equals its input's depth — it must weigh every incoming overlay, and its per-lamp findings are <em>summed into one score</em>, not kept separate. That's why cross-channel checklists exist at all: the fur-tone agent only works because she can reward red-lamp readings while penalizing blue-lamp readings. (It's also why people write "3×3" and never "3×3×3" — the last dimension is forced.)</dd>
+        <dt>"Why does the number of specialties stay the same between two floors in a row, then jump?"</dt>
+        <dd>Doubling is tied to consolidation, not to floor count. The invariant is flat payroll: cost per floor ≈ positions × incoming specialties × outgoing specialties × 9. Halving each spatial side cuts positions 4×; doubling channels on both ends multiplies the middle 4×. They cancel — so you double exactly when you stride, and never otherwise. Consecutive same-width floors are buying reach (receptive field) and extra nonlinearity, not vocabulary.</dd>
+        <dt>"What does the calibration desk do with a single case at test time?"</dt>
+        <dd>There's no batch to curve against, so it applies the running mean and variance accumulated during training. This is what <span class="mono">model.eval()</span> actually switches. Related honest caveat: during training the curve depends on <em>who else is in the batch</em> — the same image normalizes slightly differently in different company, and tiny batches make the curve noisy. That's a real BN weakness, not a flaw in the analogy.</dd>
+        <dt>"Who decided the ground floor should detect edges?"</dt>
+        <dd>Nobody — see Case Closed above. Worth telling them that pre-2012 vision really did hand-author the checklists (SIFT/HOG), which makes "the features are learned" land as a historical event rather than a slogan.</dd>
+      </dl>
+    </div>
+  </details>
+
+  <details>
+    <summary>Where the analogy leaks — say these out loud</summary>
+    <div class="inner">
+      <p><b>Agents seem intelligent.</b> They're 27 multiplications and an addition. Repeat this until it's boring; anthropomorphizing filters is the #1 residue this analogy leaves.</p>
+      <p><b>Checklists seem authored.</b> Every checklist in a trained net is learned residue, not design. The analogy's noun ("checklist") quietly implies an author — the training section is the antidote.</p>
+      <p><b>The demo is one case; BN needs a batch.</b> Here the "day's scores" are 144 positions of one image. Real BN curves over many images × all positions. Per-channel is the part that matters.</p>
+      <p><b>Scale.</b> Real inputs are 224×224 with 4–5 consolidations and blocks repeated per floor ([2,2,2,2] in ResNet-18); this demo is one block per floor at toy size. Also omitted: skip connections — one sentence when you get to ResNet: "a hallway that lets each floor's input bypass the desks and rejoin the output, so a floor only has to learn the <em>correction</em>."</p>
+    </div>
+  </details>
+</section>
+
+<footer>
+  Every number on this page is computed live from the 12×12 scene at the top — the pin maps, the histogram, the averages, the verdict. View source: the whole forward pass is ~80 lines of JavaScript.
+</footer>
+
+</div>
+
+<script>
+"use strict";
+/* ---------- Scene data: 12×12, 3 channels, values 0–9 ---------- */
+const P = {W:[3,4,4], F:[7,5,2], E:[4,2,1], Y:[1,1,1], S:[8,7,5], N:[2,1,1], T:[8,3,4]};
+const layout = [
+"WWEWWWWWWEWW",
+"WEEWWWWWWEEW",
+"WEFFFFFFFFEW",
+"WFFFFFFFFFFW",
+"WFFYFFFFYFFW",
+"WFFFFFFFFFFW",
+"WFFSSSSSSFFW",
+"WFSSSNNSSSFW",
+"WFSSSNNSSSFW",
+"WFFSSTTSSFFW",
+"WWFFFFFFFFWW",
+"WWWWWWWWWWWW"];
+const H=12, W=12;
+const img = []; // img[r][c] = [R,G,B]
+for(let r=0;r<H;r++){ img.push([]); for(let c=0;c<W;c++){ img[r].push(P[layout[r][c]].slice()); } }
+
+const px = v => Math.round(v/9*255);
+const rgbCss = t => `rgb(${px(t[0])},${px(t[1])},${px(t[2])})`;
+const lampCss = (v,i) => { const a=[0,0,0]; a[i]=px(v); return `rgb(${a[0]},${a[1]},${a[2]})`; };
+
+/* ---------- Agents (3×3×3 filters, weights per lamp R,G,B) ---------- */
+const sob = [[-1,0,1],[-2,0,2],[-1,0,1]];
+const sobT = [[-1,-2,-1],[0,0,0],[1,2,1]];
+const ones = v => [[v,v,v],[v,v,v],[v,v,v]];
+const spot = [[1,1,1],[1,-8,1],[1,1,1]];
+const AGENTS = [
+ {id:0, name:"Agent 04 — upright edges", k:[sob,sob,sob],
+  note:"Rewards bright-on-the-right, penalizes bright-on-the-left, under every lamp. Fires along vertical boundaries."},
+ {id:1, name:"Agent 07 — flat edges", k:[sobT,sobT,sobT],
+  note:"Same idea rotated: bright-below minus bright-above. Fires along horizontal boundaries."},
+ {id:2, name:"Agent 11 — fur tone", k:[ones(1),ones(0),ones(-1)],
+  note:"Rewards red-lamp readings, penalizes blue-lamp readings. This checklist only makes sense because there are three lamps — it compares across them."},
+ {id:3, name:"Agent 19 — dark spots", k:[spot,spot,spot],
+  note:"Penalizes the center, rewards the ring around it — fires where a square is darker than its neighbors (eyes, nose)."},
+];
+
+/* ---------- Convolution (pad=1, stride 1) ---------- */
+function convAt(kern, r, c){
+  let per=[0,0,0];
+  for(let ch=0;ch<3;ch++) for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+    const rr=r+dr, cc=c+dc;
+    const v=(rr<0||rr>=H||cc<0||cc>=W)?0:img[rr][cc][ch];
+    per[ch]+=kern[ch][dr+1][dc+1]*v;
+  }
+  return per;
+}
+function convMap(kern){
+  const m=[]; for(let r=0;r<H;r++){ m.push([]); for(let c=0;c<W;c++){ const p=convAt(kern,r,c); m[r].push(p[0]+p[1]+p[2]); } } return m;
+}
+const MAPS = AGENTS.map(a=>convMap(a.k));
+
+/* diverging color for scores */
+function scoreCss(v, maxAbs){
+  const t=Math.min(1,Math.abs(v)/maxAbs);
+  if(v>=0){ // white → blue ink
+    const r=Math.round(255-(255-44)*t), g=Math.round(255-(255-78)*t), b=Math.round(255-(255-156)*t);
+    return `rgb(${r},${g},${b})`;
+  } else {
+    const r=Math.round(255-(255-179)*t), g=Math.round(255-(255-55)*t), b=Math.round(255-(255-46)*t);
+    return `rgb(${r},${g},${b})`;
+  }
+}
+const maxAbsOf = m => Math.max(1,...m.flat().map(Math.abs));
+
+/* ---------- Exhibit A ---------- */
+const sceneGrid = document.getElementById('sceneGrid');
+sceneGrid.style.gridTemplateColumns = `repeat(${W}, auto)`;
+let lampMode='all';
+const sceneCells=[];
+for(let r=0;r<H;r++) for(let c=0;c<W;c++){
+  const d=document.createElement('button'); d.className='cell'; d.style.border='none'; d.style.cursor='pointer';
+  d.setAttribute('aria-label',`row ${r+1} column ${c+1}`);
+  d.addEventListener('click',()=>{
+    const [R,G,B]=img[r][c];
+    document.getElementById('sceneReadout').innerHTML =
+      `square (${r},${c}) holds <b>3 numbers</b>:<br>red lamp <b>${R}</b> · green lamp <b>${G}</b> · blue lamp <b>${B}</b>`;
+  });
+  sceneCells.push({el:d,r,c}); sceneGrid.appendChild(d);
+}
+function paintScene(){
+  sceneCells.forEach(({el,r,c})=>{
+    el.style.background = lampMode==='all' ? rgbCss(img[r][c]) : lampCss(img[r][c][+lampMode], +lampMode);
+  });
+}
+paintScene();
+document.querySelectorAll('[data-lamp]').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('[data-lamp]').forEach(x=>x.setAttribute('aria-pressed','false'));
+  b.setAttribute('aria-pressed','true'); lampMode=b.dataset.lamp; paintScene();
+}));
+
+/* ---------- Exhibit B ---------- */
+let curAgent=2, showDetail=false, loupe={r:4,c:8};
+const agentChips=document.getElementById('agentChips');
+AGENTS.forEach((a,i)=>{
+  const b=document.createElement('button'); b.className='chip'; b.textContent=a.name;
+  b.setAttribute('aria-pressed', i===curAgent?'true':'false');
+  b.addEventListener('click',()=>{ curAgent=i;
+    agentChips.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
+    b.setAttribute('aria-pressed','true'); renderKernel(); resetPin(); updateLoupe(); });
+  agentChips.appendChild(b);
+});
+function renderKernel(){
+  const kv=document.getElementById('kernelView'); kv.innerHTML='';
+  ['red lamp','green lamp','blue lamp'].forEach((nm,ch)=>{
+    const box=document.createElement('div');
+    const lab=document.createElement('p'); lab.className='small mono'; lab.textContent=nm; box.appendChild(lab);
+    const g=document.createElement('div'); g.className='kgrid';
+    AGENTS[curAgent].k[ch].flat().forEach(w=>{
+      const s=document.createElement('span');
+      s.textContent=w>0?'+'+w:w; s.className=w>0?'kw-pos':(w<0?'kw-neg':'kw-zero');
+      g.appendChild(s);
+    });
+    box.appendChild(g); kv.appendChild(box);
+  });
+  document.getElementById('kernelNote').textContent=AGENTS[curAgent].note;
+}
+const agentScene=document.getElementById('agentScene'); agentScene.style.gridTemplateColumns=`repeat(${W},auto)`;
+const pinMap=document.getElementById('pinMap'); pinMap.style.gridTemplateColumns=`repeat(${W},auto)`;
+const aCells=[], pCells=[];
+for(let r=0;r<H;r++) for(let c=0;c<W;c++){
+  const d=document.createElement('button'); d.className='cell'; d.style.border='none'; d.style.cursor='pointer';
+  d.style.background=rgbCss(img[r][c]);
+  d.setAttribute('aria-label',`place loupe at row ${r+1} column ${c+1}`);
+  d.addEventListener('click',()=>{ loupe={r,c}; updateLoupe(true); });
+  aCells.push(d); agentScene.appendChild(d);
+  const p=document.createElement('div'); p.className='cell'; p.style.background='#fff';
+  pCells.push(p); pinMap.appendChild(p);
+}
+const pinDone = ()=>AGENTS[curAgent]._done||(AGENTS[curAgent]._done=new Set());
+function resetPin(){ AGENTS.forEach(a=>a._done=new Set()); pCells.forEach(p=>{p.style.background='#fff'; p.textContent='';}); }
+function stampPin(r,c){
+  const m=MAPS[curAgent], mx=maxAbsOf(m);
+  pCells[r*W+c].style.background=scoreCss(m[r][c],mx);
+  pinDone().add(r*W+c);
+}
+function updateLoupe(stamp=false){
+  aCells.forEach(el=>el.classList.remove('loupe-cell','loupe-ring'));
+  const {r,c}=loupe;
+  for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+    const rr=r+dr, cc=c+dc; if(rr<0||rr>=H||cc<0||cc>=W) continue;
+    aCells[rr*W+cc].classList.add(dr===0&&dc===0?'loupe-cell':'loupe-ring');
+  }
+  const per=convAt(AGENTS[curAgent].k, r, c), tot=per[0]+per[1]+per[2];
+  let html=`at (${r},${c}) — 27 boxes tallied:<br>red-lamp boxes: <b>${per[0]}</b> · green: <b>${per[1]}</b> · blue: <b>${per[2]}</b><br>gut score = ${per[0]} + ${per[1]} + ${per[2]} = <b>${tot}</b> → one pin on her map`;
+  if(showDetail){
+    let rows='';
+    ['R','G','B'].forEach((nm,ch)=>{
+      const parts=[];
+      for(let dr=-1;dr<=1;dr++) for(let dc=-1;dc<=1;dc++){
+        const rr=r+dr, cc=c+dc; const v=(rr<0||rr>=H||cc<0||cc>=W)?0:img[rr][cc][ch];
+        parts.push(`${AGENTS[curAgent].k[ch][dr+1][dc+1]}·${v}`);
+      }
+      rows+=`<br><span class="small">${nm}: ${parts.join(' + ')} = ${per[ch]}</span>`;
+    });
+    html+=rows;
+  }
+  document.getElementById('dotReadout').innerHTML=html;
+  if(stamp) stampPin(r,c);
+}
+document.getElementById('detailBtn').addEventListener('click',e=>{
+  showDetail=!showDetail; e.currentTarget.setAttribute('aria-pressed',String(showDetail)); updateLoupe();
+});
+let scanTimer=null;
+document.getElementById('scanBtn').addEventListener('click',()=>{
+  if(scanTimer){clearInterval(scanTimer); scanTimer=null;}
+  const reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){ for(let r=0;r<H;r++)for(let c=0;c<W;c++){loupe={r,c};stampPin(r,c);} updateLoupe(); return; }
+  let i=0;
+  scanTimer=setInterval(()=>{
+    if(i>=H*W){clearInterval(scanTimer);scanTimer=null;return;}
+    loupe={r:Math.floor(i/W), c:i%W}; updateLoupe(true); i++;
+  },28);
+});
+renderKernel(); updateLoupe();
+
+/* ---------- Exhibit C: gallery ---------- */
+const gal=document.getElementById('floorGallery');
+AGENTS.forEach((a,i)=>{
+  const gm=document.createElement('div'); gm.className='gm';
+  const mini=document.createElement('div'); mini.className='mini';
+  mini.style.gridTemplateColumns=`repeat(${W},7px)`;
+  const m=MAPS[i], mx=maxAbsOf(m);
+  for(let r=0;r<H;r++)for(let c=0;c<W;c++){
+    const s=document.createElement('span'); s.style.width='7px'; s.style.height='7px';
+    s.style.background=scoreCss(m[r][c],mx); mini.appendChild(s);
+  }
+  gm.appendChild(mini);
+  const nm=document.createElement('div'); nm.className='nm'; nm.textContent=a.name.replace('Agent ','#');
+  gm.appendChild(nm); gal.appendChild(gm);
+});
+
+/* ---------- Exhibit D: ReLU ---------- */
+const reluMap=document.getElementById('reluMap'); reluMap.style.gridTemplateColumns=`repeat(${W},auto)`;
+const rCells=[]; let reluOn=false;
+const RM = MAPS[0]; // edge agent has plenty of negatives
+for(let r=0;r<H;r++)for(let c=0;c<W;c++){
+  const d=document.createElement('div'); d.className='cell'; rCells.push(d); reluMap.appendChild(d);
+}
+function paintRelu(){
+  const mx=maxAbsOf(RM);
+  rCells.forEach((el,i)=>{
+    const v=RM[Math.floor(i/W)][i%W];
+    el.style.background=scoreCss(reluOn?Math.max(0,v):v,mx);
+  });
+  document.getElementById('reluCaption').textContent = reluOn
+    ? "Policy applied: every negative score filed as zero. The map now only says where the clue IS — silence everywhere else."
+    : "Red-ink squares are negative scores — currently filed as-is.";
+  document.getElementById('reluBtn').setAttribute('aria-pressed',String(reluOn));
+  document.getElementById('reluBtn').textContent = reluOn?"Undo the policy":"Apply the policy to this pin map";
+}
+document.getElementById('reluBtn').addEventListener('click',()=>{reluOn=!reluOn;paintRelu();});
+paintRelu();
+
+/* ---------- Exhibit E: batch norm ---------- */
+const scores = MAPS[2].flat(); // fur-tone agent, 144 scores
+const mean = scores.reduce((a,b)=>a+b,0)/scores.length;
+const sd = Math.sqrt(scores.reduce((a,b)=>a+(b-mean)**2,0)/scores.length)||1;
+function drawHist(el, axisEl, data){
+  el.innerHTML=''; const lo=Math.min(...data), hi=Math.max(...data), bins=15;
+  const counts=new Array(bins).fill(0);
+  data.forEach(v=>{ let b=Math.floor((v-lo)/((hi-lo)||1)*bins); if(b>=bins)b=bins-1; counts[b]++; });
+  const cmax=Math.max(...counts);
+  counts.forEach(ct=>{ const d=document.createElement('div'); d.style.height=(ct/cmax*100)+'%'; el.appendChild(d); });
+  axisEl.innerHTML=`<span>${lo.toFixed(1)}</span><span>${((lo+hi)/2).toFixed(1)}</span><span>${hi.toFixed(1)}</span>`;
+}
+function updateBN(){
+  const g=+document.getElementById('gamma').value, b=+document.getElementById('beta').value;
+  document.getElementById('gVal').textContent=g.toFixed(1);
+  document.getElementById('bVal').textContent=b.toFixed(1);
+  const curved=scores.map(v=>g*((v-mean)/sd)+b);
+  drawHist(document.getElementById('histBN'),document.getElementById('axisBN'),curved);
+  document.getElementById('bnReadout').innerHTML =
+    `today's stats for this specialty: μ = <b>${mean.toFixed(1)}</b>, σ = <b>${sd.toFixed(1)}</b> &nbsp;→&nbsp; curved score = γ·(x−μ)/σ + β`;
+}
+drawHist(document.getElementById('histRaw'),document.getElementById('axisRaw'),scores);
+document.getElementById('gamma').addEventListener('input',updateBN);
+document.getElementById('beta').addEventListener('input',updateBN);
+updateBN();
+
+/* ---------- Exhibit F: tiers ---------- */
+const tiers=[{n:12,ch:'3 lamps'},{n:12,ch:'32 specialties'},{n:6,ch:'64 specialties'},{n:3,ch:'128 specialties'}];
+const tv=document.getElementById('tiersViz');
+tiers.forEach((t,i)=>{
+  const d=document.createElement('div'); d.className='tier';
+  const sq=document.createElement('div'); sq.className='sq';
+  const px=Math.max(24, t.n*7); sq.style.width=px+'px'; sq.style.height=px+'px';
+  sq.style.backgroundImage=`repeating-linear-gradient(0deg,transparent 0 ${px/t.n-1}px,var(--line) ${px/t.n-1}px ${px/t.n}px),repeating-linear-gradient(90deg,transparent 0 ${px/t.n-1}px,var(--line) ${px/t.n-1}px ${px/t.n}px)`;
+  d.appendChild(sq);
+  const lab=document.createElement('div'); lab.className='small mono'; lab.textContent=`${t.n}×${t.n}`; d.appendChild(lab);
+  const bd=document.createElement('div'); bd.className='badge'; bd.textContent=t.ch; d.appendChild(bd);
+  tv.appendChild(d);
+  if(i<tiers.length-1){ const ar=document.createElement('div'); ar.className='mono'; ar.style.alignSelf='center'; ar.textContent='→'; tv.appendChild(ar); }
+});
+
+/* ---------- Exhibit G: GAP ---------- */
+const GAPDATA=[
+ {nm:'fur tone', m:[[6,8,7],[7,9,8],[5,7,6]]},
+ {nm:'dark spots', m:[[7,2,7],[1,8,1],[0,3,0]]},
+ {nm:'upright-ear edges', m:[[8,0,8],[3,0,3],[0,0,0]]},
+ {nm:'snout block', m:[[0,1,0],[2,9,2],[1,8,1]]},
+ {nm:'whisker texture', m:[[0,1,0],[1,2,1],[0,1,0]]},
+ {nm:'wheel rim', m:[[0,0,0],[0,0,0],[0,0,0]]},
+ {nm:'headlight glare', m:[[0,0,0],[0,0,0],[0,0,0]]},
+ {nm:'tongue pink', m:[[0,0,0],[0,3,0],[2,4,2]]},
+];
+const gapWrap=document.getElementById('gapMaps');
+GAPDATA.forEach(g=>{
+  const gm=document.createElement('div'); gm.className='gm';
+  const mini=document.createElement('div'); mini.className='mini';
+  const mx=Math.max(1,...g.m.flat());
+  g.m.flat().forEach(v=>{ const s=document.createElement('span'); s.style.background=scoreCss(v,mx); mini.appendChild(s); });
+  gm.appendChild(mini);
+  const avg=document.createElement('div'); avg.className='avg';
+  g.avg = g.m.flat().reduce((a,b)=>a+b,0)/9;
+  avg.textContent=g.avg.toFixed(1); gm.appendChild(avg);
+  const nm=document.createElement('div'); nm.className='nm'; nm.textContent=g.nm; gm.appendChild(nm);
+  gapWrap.appendChild(gm); g.el=gm;
+});
+document.getElementById('gapBtn').addEventListener('click',()=>{
+  GAPDATA.forEach((g,i)=>setTimeout(()=>g.el.classList.add('done'), i*110));
+});
+
+/* ---------- Exhibit H: the chief ---------- */
+const CLASSES=['DOG','CAT','CAR'];
+const CHIEF=[ // [name, default summary, wDog, wCat, wCar]
+ ['fur tone',7,2,2,-1],['dark spots',6,2,2,0],['upright-ear edges',5,2,1,0],
+ ['snout block',6,3,-1,-1],['whisker texture',1,0,3,-1],['wheel rim',0,-3,-1,8],
+ ['headlight glare',0,0,0,3],['tongue pink',3,2,0,-1]
+];
+const vt=document.getElementById('voteTable');
+function fmtW(w){return `<span class="${w>0?'kw-pos':(w<0?'kw-neg':'kw-zero')}">${w>0?'+'+w:w}</span>`;}
+function renderVote(){
+  const wheel=+document.getElementById('wheelSlider').value;
+  document.getElementById('wheelVal').textContent=wheel.toFixed(1);
+  let rows=`<tr><th>specialist summary</th><th>value</th><th>×DOG</th><th>×CAT</th><th>×CAR</th></tr>`;
+  const totals=[0,0,0];
+  CHIEF.forEach(([nm,v0,wd,wc,wr])=>{
+    const v = nm==='wheel rim'?wheel:v0;
+    totals[0]+=v*wd; totals[1]+=v*wc; totals[2]+=v*wr;
+    rows+=`<tr><td>${nm}</td><td><b>${v}</b></td><td>${fmtW(wd)}</td><td>${fmtW(wc)}</td><td>${fmtW(wr)}</td></tr>`;
+  });
+  vt.innerHTML=rows;
+  const vd=document.getElementById('verdicts'); vd.innerHTML='';
+  const win=totals.indexOf(Math.max(...totals));
+  CLASSES.forEach((c,i)=>{
+    const s=document.createElement('div'); s.className='vscore';
+    s.innerHTML=`${c}: <b>${totals[i]}</b>`;
+    if(i===win){s.style.borderColor='var(--red)'; s.style.borderWidth='3px';}
+    vd.appendChild(s);
+  });
+  const st=document.getElementById('stamp');
+  st.textContent=`Verdict: ${CLASSES[win]}`;
+  st.classList.remove('show'); void st.offsetWidth; st.classList.add('show');
+}
+document.getElementById('wheelSlider').addEventListener('input',renderVote);
+renderVote();
+</script>
+</body>
+</html>

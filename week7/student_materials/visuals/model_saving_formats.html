@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Saving & Loading - Week 7</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: white;
+            margin: 0;
+            padding: 30px;
+            color: #2c3e50;
+        }
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #7f8c8d;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        .container {
+            display: flex;
+            gap: 40px;
+            max-width: 900px;
+            width: 100%;
+            justify-content: center;
+        }
+        .card {
+            flex: 1;
+            border-radius: 12px;
+            padding: 25px;
+            max-width: 380px;
+        }
+        .card-recommended {
+            border: 3px solid #27ae60;
+            background: #f0faf3;
+        }
+        .card-alternative {
+            border: 3px solid #e67e22;
+            background: #fef9f0;
+        }
+        .card h2 {
+            font-size: 1.3rem;
+            margin-top: 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid;
+        }
+        .card-recommended h2 {
+            color: #27ae60;
+            border-color: #27ae60;
+        }
+        .card-alternative h2 {
+            color: #e67e22;
+            border-color: #e67e22;
+        }
+        .badge {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 10px;
+            border-radius: 20px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        .badge-rec {
+            background: #27ae60;
+            color: white;
+        }
+        .format {
+            font-size: 0.95rem;
+            color: #7f8c8d;
+            margin-bottom: 15px;
+        }
+        .format code {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 0;
+        }
+        .checklist li {
+            padding: 6px 0;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .check { color: #27ae60; font-size: 1.3rem; }
+        .cross { color: #e74c3c; font-size: 1.3rem; }
+        pre {
+            background: #2c3e50;
+            color: #ecf0f1;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            overflow-x: auto;
+        }
+        pre .comment { color: #7f8c8d; }
+        pre .func { color: #3498db; }
+        pre .str { color: #2ecc71; }
+        .recommendation {
+            margin-top: 30px;
+            padding: 15px 25px;
+            background: #eaf7ed;
+            border: 2px solid #27ae60;
+            border-radius: 10px;
+            font-size: 1.05rem;
+            font-weight: bold;
+            text-align: center;
+            max-width: 600px;
+        }
+        .vs {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #bdc3c7;
+        }
+    </style>
+</head>
+<body>
+    <h1>Model Saving & Loading</h1>
+    <p class="subtitle">Two ways to persist your trained Keras model</p>
+
+    <div class="container">
+        <div class="card card-recommended">
+            <h2>model.save() <span class="badge badge-rec">RECOMMENDED</span></h2>
+            <p class="format">Format: <code>.keras</code></p>
+            <ul class="checklist">
+                <li><span class="check">&#x2713;</span> Architecture</li>
+                <li><span class="check">&#x2713;</span> Weights</li>
+                <li><span class="check">&#x2713;</span> Optimizer State</li>
+                <li><span class="check">&#x2713;</span> Training Config</li>
+            </ul>
+            <pre><span class="comment"># Save complete model</span>
+model.<span class="func">save</span>(<span class="str">"my_model.keras"</span>)
+
+<span class="comment"># Load — ready to use immediately</span>
+loaded = keras.models.<span class="func">load_model</span>(
+    <span class="str">"my_model.keras"</span>
+)</pre>
+        </div>
+
+        <div class="vs">vs</div>
+
+        <div class="card card-alternative">
+            <h2>model.save_weights()</h2>
+            <p class="format">Format: <code>.weights.h5</code></p>
+            <ul class="checklist">
+                <li><span class="cross">&#x2717;</span> Architecture</li>
+                <li><span class="check">&#x2713;</span> Weights</li>
+                <li><span class="cross">&#x2717;</span> Optimizer State</li>
+                <li><span class="cross">&#x2717;</span> Training Config</li>
+            </ul>
+            <pre><span class="comment"># Save weights only</span>
+model.<span class="func">save_weights</span>(
+    <span class="str">"my_weights.weights.h5"</span>
+)
+
+<span class="comment"># Load — must rebuild arch first!</span>
+new_model = <span class="func">build_model</span>()
+new_model.<span class="func">load_weights</span>(
+    <span class="str">"my_weights.weights.h5"</span>
+)</pre>
+        </div>
+    </div>
+
+    <div class="recommendation">
+        &#x2705; Use <code>model.save()</code> for complete portability — one file, everything included
+    </div>
+</body>
+</html>

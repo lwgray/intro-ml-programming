@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<!-- saved from url=(0253)https://532d1a28-d701-4c60-8ab5-43df30cc8589.frame.claudeusercontent.com/_f/1784221270-c735/?__frame_t=t4-_ReONeB_HFQbDFvPGM8iS.5bad497c-b5d3-4b43-8e14-513bb2194a0c.a703476d-bcd1-49e3-b760-7a7987f8f049.1784225009&__frame_v=manifest.4af8359bd414963e.json -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!--<base href="/_f/1784221270-c735/">--><base href="."><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.DUzXFHNF.js","mcp":"mcp.CLzOm9JX.js","permissions":"permissions.C9OCnDjh.js","self":"self.DqF_PxOe.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.Dp6RDy7J.js"}</script><script>(function(){"use strict";const ce="modulepreload",le=function(e){return"/"+e},ue={},x=function(t,n,u){let o=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return o.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})},K=["light","dark","system"];function G(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_init;return t!=null&&typeof t=="object"}function J(e){return e!=null&&typeof e=="object"&&e.__frame_size_poke===!0}function V(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_theme;if(t==null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&K.includes(n)}function Y(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}function z(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){n=a;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const u=n.getAttribute("href");if(!u)return;let o,s;try{o=new URL(u,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(o.protocol==="http:"||o.protocol==="https:")&&o.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:o.href},"*"))}const D={};function T(e){if(window===top)return;const t=Date.now();t-(D[e]||0)<500||(D[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const Q=2e3,U=["wheel","touchstart","touchmove","keydown","pointerdown"];let B=0;function X(e){e.isTrusted&&(B=Date.now())}function Z(){addEventListener("click",z,!0),addEventListener("auxclick",z,!0)}function ee(){for(let e=0;e<U.length;e++)addEventListener(U[e],X,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-B<Q&&T("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&T("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&T("click")},{capture:!0,passive:!0})}function te(e,t,n){const u=[...t.values()].filter(o=>o.targets.some(s=>s.startsWith(e+".")));return{wrap(o,s){const f=`${e}.${o}`,a=u.filter(i=>i.targets.includes(f));return a.length===0?(...i)=>{try{return s(...i)}catch(p){return Promise.reject(p)}}:(...i)=>{let p=i;for(const c of a){const l=c.module.parameters;if(l)try{p=l(p)}catch{return Promise.reject({code:"transform_error",id:c.id,scope:e,message:"parameters transform failed"})}}let h;try{h=s(...p)}catch(c){h=Promise.reject(c)}return h.then(c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.returns;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"returns"}),c}}return c},c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.throws;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"throws"}),Promise.reject(c)}}return Promise.reject(c)})}}}}function ne(e,t,n,u=()=>{}){const o=new Set(e.changes??[]),s=new Map;for(const f of o){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:o,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>te(f,s,u)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let u=0;for(let o=0;o<n.length;o++){const s=n[o];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&u++}if(u&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:u},"*")}catch{}})();const re=1e4,oe=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function se(e){for(const t of oe)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities??{}}),A=window.__FRAME_PREAMBLE?.transforms,k=window.__FRAME_PREAMBLE?.comments,C=/^[\w.-]+\.js$/,ie=/^[a-z][a-z0-9_-]{0,63}$/;let F=null,v=null;function N(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let I=!1;function H(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,I=!0):I&&(delete t.dataset.theme,t.style.colorScheme="",I=!1)}const E={mcp:{watchTool:{handlerArg:3}}},P=new Map;function ae(e,t){const n=P.get(e);if(!n)return;Object.assign(n.impl,t),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const u=n.queue;n.queue=[];for(const o of u){const s=t[o.method];if(s)if(E[e]?.[o.method])try{o.resolve(s(...o.args))}catch{O(o,E[e][o.method].handlerArg,{code:"transform_error",message:`${e}.${o.method} rejected its arguments`})}else s(...o.args).then(o.resolve,o.reject);else{const f={code:"capability_removed",message:`${e}.${o.method} is not in this runtime`},a=E[e]?.[o.method];if(a){O(o,a.handlerArg,f);continue}o.reject(f)}}}function $(e,t){const n=P.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const u=n.queue;n.queue=[];for(const o of u){const s=E[e]?.[o.method];if(s){O(o,s.handlerArg,t);continue}o.reject(t)}}function O(e,t,n){if(e.syncState?.dead)return;const u=e.args[t];typeof u=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{u({type:"error",error:n})}catch(o){Y(o)}})}const q=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(q&&q.writable===!1)){Z(),ee();const e=q?.value??{};N(window,"claude",e);const t=i=>{const p={impl:Object.create(null),queue:[]};P.set(i,p);const h=new Proxy(p.impl,{get:(c,l)=>{if(typeof l!="string"||l==="then"||l==="toJSON"||l==="valueOf")return;if(l==="toString")return Object.prototype.toString;const m=E[i]?.[l];return m?(...d)=>{if(typeof d[m.handlerArg]!="function")throw new TypeError(`${i}.${l} requires a handler function`);const g=c[l];if(g)return g(...d);if(c.__settled){const _={dead:!1},S={args:[...d],syncState:_};return c.__settled().catch(j=>O(S,m.handlerArg,j)),()=>{_.dead=!0}}let y=null;const w={dead:!1};return p.queue.push({method:l,args:d,resolve:_=>{y=typeof _=="function"?_:null,w.dead&&y?.()},reject:()=>{},syncState:w}),()=>{w.dead=!0,y?.()}}:(...d)=>{const g=c[l]??c.__settled;return g?g(...d):new Promise((y,w)=>{p.queue.push({method:l,args:d,resolve:y,reject:w})})}},set:()=>!1});N(e,i,h)};for(const i of Object.keys(R)){if(e[i]!==void 0){N(e,i,e[i]);continue}t(i)}let n=null,u=null,o=0;const s=i=>{i.source!==parent||!se(i.origin)||G(i.data)&&(n=i.data.__frame_init,v=i.origin,removeEventListener("message",s),clearTimeout(o),u?.())};addEventListener("message",s),parent.postMessage({__frame_connect:!0},"*");const f=new Promise(i=>{u=i,o=setTimeout(()=>{removeEventListener("message",s),i()},re)}),a=document.readyState==="loading"?new Promise(i=>document.addEventListener("DOMContentLoaded",()=>i(),{once:!0})):Promise.resolve();f.then(async()=>{if(!n||!v){for(const r of P.keys())$(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}H(n.theme);const i=v;let p=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==i)return;V(r.data)&&H(r.data.__frame_theme.theme);const b=r.data?.__fc_mode;b&&typeof b=="object"&&!p&&k&&C.test(k)&&(p=!0,h(k).then(L=>L.install?.(i,b.on===!0)).catch(()=>{}))});const h=r=>x(()=>import("/_runtime/"+r),void 0),c=Object.keys(n.capabilities??{});for(const r of c)Object.hasOwn(R,r)||ie.test(r)&&e[r]===void 0&&(t(r),$(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const l=c.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&C.test(r[1])),[m,...d]=await Promise.allSettled([A&&C.test(A)?h(A):Promise.resolve({}),...l.map(([,r])=>h(r))]),g=v;F=ne(n,m.status==="fulfilled"&&m.value?.TRANSFORMS||{},{shellOrigin:g,mount:ae},r=>parent.postMessage({__frame_cap_telemetry:r},g));const y=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},g),w=F;d.forEach((r,b)=>{const L=l[b][0];if(r.status!=="fulfilled"){y(L);return}try{r.value?.install?.(w)}catch{y(L)}});for(const[r,b]of P)b.queue.length===0&&Object.keys(b.impl).length>0||$(r,{code:c.includes(r)?"capability_disabled":"not_granted",message:"capability not available in this session"});await a,parent.postMessage({__frame_ready:!0},v);let _=-1,S=0;const j=()=>{S=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==_&&(_=r,parent.postMessage({__frame_size:!0,h:r},g))},M=()=>{S||(S=setTimeout(j,200))},W=new ResizeObserver(M);W.observe(document.documentElement),document.body&&W.observe(document.body),document.addEventListener("load",M,!0),document.fonts?.ready.then(M,()=>{}),addEventListener("beforeprint",()=>{_=-1,j()}),M(),addEventListener("message",r=>{r.source!==parent||r.origin!==g||J(r.data)&&(_=-1,M())})})}})();</script><!-- /frame-runtime --><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>AveragePooling vs MaxPooling</title>
+<style>
+  :root {
+    --bg: #f5f8f8;
+    --surface: #fdfefe;
+    --ink: #182528;
+    --muted: #5a6b70;
+    --line: #d3dee0;
+    --max: #0a8a9e;
+    --max-soft: rgba(10, 138, 158, 0.16);
+    --avg: #6d5fae;
+    --avg-soft: rgba(109, 95, 174, 0.18);
+    --alt: #d2622f;
+    --alt-soft: rgba(210, 98, 47, 0.16);
+    --chip-bg: #e8eff0;
+    --on-accent: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+      --line: #2c3c41; --max: #1ca5b8; --max-soft: rgba(28, 165, 184, 0.22);
+      --avg: #8e7dd6; --avg-soft: rgba(142, 125, 214, 0.26);
+      --alt: #d96c2c; --alt-soft: rgba(217, 108, 44, 0.22);
+      --chip-bg: #1e2d32; --on-accent: #0c1517;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+    --line: #2c3c41; --max: #1ca5b8; --max-soft: rgba(28, 165, 184, 0.22);
+    --avg: #8e7dd6; --avg-soft: rgba(142, 125, 214, 0.26);
+    --alt: #d96c2c; --alt-soft: rgba(217, 108, 44, 0.22);
+    --chip-bg: #1e2d32; --on-accent: #0c1517;
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f8f8; --surface: #fdfefe; --ink: #182528; --muted: #5a6b70;
+    --line: #d3dee0; --max: #0a8a9e; --max-soft: rgba(10, 138, 158, 0.16);
+    --avg: #6d5fae; --avg-soft: rgba(109, 95, 174, 0.18);
+    --alt: #d2622f; --alt-soft: rgba(210, 98, 47, 0.16);
+    --chip-bg: #e8eff0; --on-accent: #ffffff;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Avenir Next", "Seravek", system-ui, sans-serif;
+    line-height: 1.6; padding: 3rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.4rem; }
+
+  header .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--avg); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; text-wrap: balance; margin-bottom: 0.6rem; }
+  header p.lede { color: var(--muted); max-width: 46rem; font-size: 1.02rem; }
+
+  .label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; color: var(--muted);
+  }
+  section { display: flex; flex-direction: column; gap: 0.9rem; }
+  section h2 { font-size: 1.22rem; font-weight: 600; text-wrap: balance; }
+  section > p { max-width: 46rem; }
+  .t-max { color: var(--max); font-weight: 600; }
+  .t-avg { color: var(--avg); font-weight: 600; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.25rem; overflow-x: auto;
+  }
+
+  .controls { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 1.1rem; }
+  .controls button {
+    font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 0.35rem 1rem; cursor: pointer;
+  }
+  .controls button:disabled { opacity: 0.4; cursor: default; }
+  .controls button:focus-visible { outline: 2px solid var(--avg); outline-offset: 2px; }
+  .controls .stepcount {
+    font-size: 0.78rem; color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  .demo { display: flex; align-items: center; gap: 1.4rem; min-width: 700px; }
+  .gridwrap { display: flex; flex-direction: column; gap: 0.5rem; align-items: center; }
+  .gridcap {
+    font-size: 0.74rem; color: var(--muted); text-align: center; line-height: 1.45;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .gridcap .sw { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 0.3rem; }
+
+  .blockgrid { display: grid; grid-template-columns: repeat(3, auto); gap: 9px; }
+  .block { display: grid; grid-template-columns: repeat(2, auto); gap: 3px; border-radius: 6px; padding: 3px; cursor: pointer; }
+  .block.active { box-shadow: 0 0 0 2px var(--ink); }
+  .block.done { opacity: 0.55; }
+
+  .cell {
+    width: 40px; height: 40px; display: grid; place-items: center;
+    background: var(--chip-bg); border-radius: 4px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-variant-numeric: tabular-nums; font-size: 0.92rem; font-weight: 500;
+  }
+  .cell.vote { background: var(--avg-soft); }
+  .cell.max { background: var(--max); color: var(--on-accent); font-weight: 700; }
+
+  .opcol { display: flex; flex-direction: column; align-items: center; gap: 0.6rem; flex-shrink: 0; width: 13rem; text-align: center; }
+  .opchip {
+    font-size: 0.8rem; font-weight: 600; border-radius: 999px; padding: 0.3rem 0.9rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: nowrap;
+  }
+  .opchip.maxchip { background: var(--max-soft); box-shadow: inset 0 0 0 1.5px var(--max); }
+  .opchip.avgchip { background: var(--avg-soft); box-shadow: inset 0 0 0 1.5px var(--avg); }
+  .opchip .m { font-weight: 700; }
+  .opchip.maxchip .m { color: var(--max); }
+  .opchip.avgchip .m { color: var(--avg); }
+  .opcol .opsub { font-size: 0.72rem; color: var(--muted); }
+
+  .outcol { display: flex; flex-direction: column; gap: 1.1rem; }
+  .outgrid { display: grid; grid-template-columns: repeat(3, auto); gap: 6px; }
+  .outgrid .cell { width: 48px; height: 48px; cursor: pointer; font-size: 0.8rem; }
+  .outgrid .cell.pending { background: transparent; border: 1.5px dashed var(--line); color: transparent; }
+  .outgrid.maxout .cell.done { background: var(--max-soft); color: var(--ink); }
+  .outgrid.maxout .cell.current { background: var(--max); color: var(--on-accent); font-weight: 700; }
+  .outgrid.avgout .cell.done { background: var(--avg-soft); color: var(--ink); }
+  .outgrid.avgout .cell.current { background: var(--avg); color: var(--on-accent); font-weight: 700; }
+
+  #stepCaption { font-size: 0.95rem; margin-top: 1.1rem; max-width: 46rem; }
+  #stepCaption .t-max { color: var(--max); }
+  #stepCaption .t-avg { color: var(--avg); }
+
+  /* duel */
+  .duel { display: flex; gap: 2rem; align-items: stretch; flex-wrap: wrap; }
+  .duelcard { display: flex; flex-direction: column; gap: 0.6rem; align-items: center; }
+  .duelcard h3 { font-size: 0.9rem; font-weight: 600; }
+  .minigrid { display: grid; grid-template-columns: repeat(2, auto); gap: 3px; }
+  .minigrid .cell { width: 40px; height: 40px; }
+  .minigrid .cell.hot { background: var(--alt); color: var(--on-accent); font-weight: 700; }
+  .minigrid .cell.warm { background: var(--alt-soft); }
+  .duelres { display: flex; flex-direction: column; gap: 0.35rem; }
+  .duelres .opchip { font-size: 0.78rem; }
+  .duelverdict { flex: 1 1 240px; font-size: 0.92rem; align-self: center; max-width: 24rem; }
+  .duelverdict p { color: var(--muted); margin-bottom: 0.5rem; }
+  .duelverdict p strong { color: var(--ink); }
+
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 700px) { .cards { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1rem 1.1rem;
+  }
+  .card h3 { font-size: 0.92rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .card p { font-size: 0.86rem; color: var(--muted); }
+  .card p strong { color: var(--ink); }
+  .card code {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.8em;
+    background: var(--chip-bg); padding: 0.1em 0.35em; border-radius: 4px; color: var(--ink);
+  }
+  .card.star { border-color: var(--avg); }
+
+  .takeaway {
+    border-left: 3px solid var(--avg); padding: 0.35rem 0 0.35rem 1.1rem;
+    font-size: 1.02rem; font-weight: 500; max-width: 46rem; text-wrap: balance;
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ELI5 · Convolutional networks · Interactive</div>
+    <h1>AveragePooling: When Everyone Votes, Not Just the Loudest</h1>
+    <p class="lede">Same window, same stride, one different word: <strong>max</strong> keeps the
+    loudest score in each 2×2 neighborhood; <strong>average</strong> blends all four.
+    Below, both pools run on the <em>same</em> feature map (the exact numbers from the
+    MaxPooling page) — step through and watch them disagree.</p>
+  </header>
+
+  <section>
+    <div class="label">1 · Side by side</div>
+    <div class="panel">
+      <div class="controls">
+        <button id="prevBtn" aria-label="Previous step" disabled="">◀ Prev</button>
+        <button id="nextBtn" aria-label="Next step">Next ▶</button>
+        <button id="playBtn" aria-label="Play all steps">▶ Play</button>
+        <span class="stepcount" id="stepCount">window 1 / 9</span>
+      </div>
+      <div class="demo">
+        <div class="gridwrap">
+          <div class="blockgrid" id="inGrid"><div class="block active" role="button" aria-label="Jump to window 1"><div class="cell vote">0</div><div class="cell vote">1</div><div class="cell vote">2</div><div class="cell max">3</div></div><div class="block" role="button" aria-label="Jump to window 2"><div class="cell">7</div><div class="cell">2</div><div class="cell">8</div><div class="cell">1</div></div><div class="block" role="button" aria-label="Jump to window 3"><div class="cell">0</div><div class="cell">1</div><div class="cell">1</div><div class="cell">0</div></div><div class="block" role="button" aria-label="Jump to window 4"><div class="cell">1</div><div class="cell">0</div><div class="cell">0</div><div class="cell">2</div></div><div class="block" role="button" aria-label="Jump to window 5"><div class="cell">9</div><div class="cell">4</div><div class="cell">6</div><div class="cell">3</div></div><div class="block" role="button" aria-label="Jump to window 6"><div class="cell">2</div><div class="cell">1</div><div class="cell">0</div><div class="cell">0</div></div><div class="block" role="button" aria-label="Jump to window 7"><div class="cell">3</div><div class="cell">1</div><div class="cell">0</div><div class="cell">1</div></div><div class="block" role="button" aria-label="Jump to window 8"><div class="cell">5</div><div class="cell">2</div><div class="cell">4</div><div class="cell">0</div></div><div class="block" role="button" aria-label="Jump to window 9"><div class="cell">1</div><div class="cell">2</div><div class="cell">0</div><div class="cell">1</div></div></div>
+          <div class="gridcap">input feature map · 6×6<br><span class="sw" style="background: var(--max)"></span>= the loudest ·
+          <span class="sw" style="background: var(--avg-soft)"></span>= everyone votes</div>
+        </div>
+        <div class="opcol">
+          <div class="opchip maxchip" id="maxChip">max(0,1,2,3) = <span class="m">3</span></div>
+          <div class="opchip avgchip" id="avgChip">avg(0,1,2,3) = <span class="m">1.5</span></div>
+          <div class="opsub">2×2 window · stride 2<br>same walk, different verdict</div>
+        </div>
+        <div class="outcol">
+          <div class="gridwrap">
+            <div class="outgrid maxout" id="maxOut"><div class="cell current" role="button" aria-label="Jump to output cell 1">3</div><div class="cell pending" role="button" aria-label="Jump to output cell 2">8</div><div class="cell pending" role="button" aria-label="Jump to output cell 3">1</div><div class="cell pending" role="button" aria-label="Jump to output cell 4">2</div><div class="cell pending" role="button" aria-label="Jump to output cell 5">9</div><div class="cell pending" role="button" aria-label="Jump to output cell 6">2</div><div class="cell pending" role="button" aria-label="Jump to output cell 7">3</div><div class="cell pending" role="button" aria-label="Jump to output cell 8">5</div><div class="cell pending" role="button" aria-label="Jump to output cell 9">2</div></div>
+            <div class="gridcap"><span class="sw" style="background: var(--max)"></span>MaxPool → 3×3</div>
+          </div>
+          <div class="gridwrap">
+            <div class="outgrid avgout" id="avgOut"><div class="cell current" role="button" aria-label="Jump to output cell 1">1.5</div><div class="cell pending" role="button" aria-label="Jump to output cell 2">4.5</div><div class="cell pending" role="button" aria-label="Jump to output cell 3">0.5</div><div class="cell pending" role="button" aria-label="Jump to output cell 4">0.75</div><div class="cell pending" role="button" aria-label="Jump to output cell 5">5.5</div><div class="cell pending" role="button" aria-label="Jump to output cell 6">0.75</div><div class="cell pending" role="button" aria-label="Jump to output cell 7">1.25</div><div class="cell pending" role="button" aria-label="Jump to output cell 8">2.75</div><div class="cell pending" role="button" aria-label="Jump to output cell 9">1</div></div>
+            <div class="gridcap"><span class="sw" style="background: var(--avg)"></span>AveragePool → 3×3</div>
+          </div>
+        </div>
+      </div>
+      <p id="stepCaption">Window at rows 1–2, cols 1–2: scores 0, 1, 2, 3. <span class="t-max">Max keeps the loudest → 3</span>; <span class="t-avg">average lets everyone vote → (0+1+2+3)/4 = 1.5</span>.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">2 · Where they disagree</div>
+    <h2>A lone spike vs a consistent patch</h2>
+    <div class="panel">
+      <div class="duel">
+        <div class="duelcard">
+          <h3>Window A — one blazing pixel</h3>
+          <div class="minigrid">
+            <div class="cell hot">9</div><div class="cell">0</div>
+            <div class="cell">0</div><div class="cell">0</div>
+          </div>
+          <div class="duelres">
+            <div class="opchip maxchip">max → <span class="m">9</span></div>
+            <div class="opchip avgchip">avg → <span class="m">2.25</span></div>
+          </div>
+        </div>
+        <div class="duelcard">
+          <h3>Window B — a steady glow</h3>
+          <div class="minigrid">
+            <div class="cell warm">5</div><div class="cell warm">5</div>
+            <div class="cell warm">5</div><div class="cell warm">5</div>
+          </div>
+          <div class="duelres">
+            <div class="opchip maxchip">max → <span class="m">5</span></div>
+            <div class="opchip avgchip">avg → <span class="m">5</span></div>
+          </div>
+        </div>
+        <div class="duelverdict">
+          <p><strong>Max says A wins (9 &gt; 5):</strong> it can't tell one blazing pixel from a
+          whole glowing patch — a shout is a shout, even if it's noise.</p>
+          <p><strong>Average says B wins (5 &gt; 2.25):</strong> consistent evidence beats a lone
+          spike — but real, small detections get watered down too.</p>
+          <p>Neither is "right." They answer different questions: <span class="t-max">"did anyone
+          find it?"</span> vs <span class="t-avg">"how much of it is here overall?"</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">3 · Who uses which</div>
+    <div class="cards">
+      <div class="card">
+        <h3>Mid-network: max won</h3>
+        <p>Between conv layers you're <strong>hunting features</strong> — a whisker tip, an edge —
+        and the strongest local response is the signal. Max keeps detections crisp;
+        averaging blurs them. Standard choice since AlexNet.</p>
+      </div>
+      <div class="card">
+        <h3>The 1998 footnote</h3>
+        <p>LeNet — the first famous CNN — actually used <strong>average pooling</strong>
+        (it called it "subsampling"). Max took over when deep nets arrived and sharp
+        feature detection started to matter more. <code>AveragePooling2D((2,2))</code>
+        still exists in Keras.</p>
+      </div>
+      <div class="card star">
+        <h3>Plot twist: you already use it</h3>
+        <p><strong>GAP is average pooling</strong> stretched over the entire map —
+        <code>GlobalAveragePooling2D()</code>. At the summary stage the question flips to
+        "how much sleeve <em>overall</em>?", where graded, whole-map evidence beats one
+        loud pixel that might be noise. Max hunts; average summarizes.</p>
+      </div>
+    </div>
+  </section>
+
+  <p class="takeaway">Max asks "did anyone shout?" — average asks "what did the room say overall?"
+  Mid-network you want the shout (crisp detection); at the end you want the room's consensus —
+  which is exactly why your networks MaxPool in the middle and GlobalAveragePool at the end.</p>
+</div>
+
+<script>
+  (function () {
+    var INPUT = [
+      [0, 1, 7, 2, 0, 1],
+      [2, 3, 8, 1, 1, 0],
+      [1, 0, 9, 4, 2, 1],
+      [0, 2, 6, 3, 0, 0],
+      [3, 1, 5, 2, 1, 2],
+      [0, 1, 4, 0, 0, 1]
+    ];
+    var N = 9;
+    var step = 0, timer = null;
+
+    var inGrid = document.getElementById("inGrid");
+    var maxOut = document.getElementById("maxOut");
+    var avgOut = document.getElementById("avgOut");
+    var maxChip = document.getElementById("maxChip");
+    var avgChip = document.getElementById("avgChip");
+    var capEl = document.getElementById("stepCaption");
+    var countEl = document.getElementById("stepCount");
+    var prevBtn = document.getElementById("prevBtn");
+    var nextBtn = document.getElementById("nextBtn");
+    var playBtn = document.getElementById("playBtn");
+
+    function windowVals(i) {
+      var pr = Math.floor(i / 3), pc = i % 3;
+      return [INPUT[pr * 2][pc * 2], INPUT[pr * 2][pc * 2 + 1],
+              INPUT[pr * 2 + 1][pc * 2], INPUT[pr * 2 + 1][pc * 2 + 1]];
+    }
+    function maxOf(i) { return Math.max.apply(null, windowVals(i)); }
+    function avgOf(i) {
+      var v = windowVals(i);
+      return Math.round(((v[0] + v[1] + v[2] + v[3]) / 4) * 100) / 100;
+    }
+
+    var blocks = [], maxCells = [], avgCells = [];
+    for (var i = 0; i < N; i++) {
+      (function (idx) {
+        var b = document.createElement("div");
+        b.className = "block";
+        b.setAttribute("role", "button");
+        b.setAttribute("aria-label", "Jump to window " + (idx + 1));
+        windowVals(idx).forEach(function (v) {
+          var c = document.createElement("div");
+          c.className = "cell";
+          c.textContent = v;
+          b.appendChild(c);
+        });
+        b.addEventListener("click", function () { stopPlay(); setStep(idx); });
+        inGrid.appendChild(b);
+        blocks.push(b);
+
+        [[maxOut, maxCells, maxOf], [avgOut, avgCells, avgOf]].forEach(function (spec) {
+          var o = document.createElement("div");
+          o.className = "cell pending";
+          o.textContent = spec[2](idx);
+          o.setAttribute("role", "button");
+          o.setAttribute("aria-label", "Jump to output cell " + (idx + 1));
+          o.addEventListener("click", function () { stopPlay(); setStep(idx); });
+          spec[0].appendChild(o);
+          spec[1].push(o);
+        });
+      })(i);
+    }
+
+    function setStep(s) {
+      step = Math.max(0, Math.min(N - 1, s));
+      var vals = windowVals(step), m = maxOf(step), a = avgOf(step);
+      var pr = Math.floor(step / 3), pc = step % 3;
+
+      blocks.forEach(function (b, i) {
+        b.className = "block" + (i === step ? " active" : i < step ? " done" : "");
+        var cells = b.children, wv = windowVals(i), wm = maxOf(i);
+        var seen = false;
+        for (var j = 0; j < 4; j++) {
+          var cls = "cell";
+          if (i === step) cls += " vote";
+          if (i <= step && !seen && wv[j] === wm) { cls = "cell max"; seen = true; }
+          cells[j].className = cls;
+        }
+      });
+      maxCells.forEach(function (o, i) {
+        o.className = "cell " + (i < step ? "done" : i === step ? "current" : "pending");
+      });
+      avgCells.forEach(function (o, i) {
+        o.className = "cell " + (i < step ? "done" : i === step ? "current" : "pending");
+      });
+
+      maxChip.innerHTML = "max(" + vals.join(",") + ") = <span class='m'>" + m + "</span>";
+      avgChip.innerHTML = "avg(" + vals.join(",") + ") = <span class='m'>" + a + "</span>";
+      countEl.textContent = "window " + (step + 1) + " / " + N;
+      capEl.innerHTML = "Window at rows " + (pr * 2 + 1) + "–" + (pr * 2 + 2) +
+        ", cols " + (pc * 2 + 1) + "–" + (pc * 2 + 2) + ": scores " + vals.join(", ") +
+        ". <span class='t-max'>Max keeps the loudest → " + m + "</span>; " +
+        "<span class='t-avg'>average lets everyone vote → (" + vals.join("+") + ")/4 = " + a + "</span>.";
+      prevBtn.disabled = step === 0;
+      nextBtn.disabled = step === N - 1;
+    }
+
+    function stopPlay() {
+      if (timer) { clearInterval(timer); timer = null; playBtn.textContent = "▶ Play"; }
+    }
+    prevBtn.addEventListener("click", function () { stopPlay(); setStep(step - 1); });
+    nextBtn.addEventListener("click", function () { stopPlay(); setStep(step + 1); });
+    playBtn.addEventListener("click", function () {
+      if (timer) { stopPlay(); return; }
+      if (step === N - 1) setStep(0);
+      playBtn.textContent = "⏸ Pause";
+      timer = setInterval(function () {
+        if (step >= N - 1) stopPlay();
+        else setStep(step + 1);
+      }, 1100);
+    });
+
+    setStep(0);
+  })();
+</script>
+
+</body></html>

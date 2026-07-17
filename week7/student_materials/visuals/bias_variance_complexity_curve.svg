@@ -1,0 +1,55 @@
+<svg viewBox="0 0 760 560" xmlns="http://www.w3.org/2000/svg" font-family="system-ui, -apple-system, Segoe UI, Roboto, sans-serif">
+  <rect x="0" y="0" width="760" height="560" fill="#ffffff"/>
+
+  <!-- Title -->
+  <text x="380" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f172a">Error vs. Model Complexity</text>
+  <text x="380" y="56" text-anchor="middle" font-size="14" fill="#64748b">The same tradeoff, swept across every complexity level</text>
+
+  <!-- Plot frame -->
+  <line x1="90" y1="430" x2="700" y2="430" stroke="#334155" stroke-width="2"/>
+  <line x1="90" y1="90" x2="90" y2="430" stroke="#334155" stroke-width="2"/>
+
+  <!-- y axis label -->
+  <text x="34" y="260" text-anchor="middle" font-size="15" font-weight="600" fill="#334155" transform="rotate(-90 34 260)">Error</text>
+  <!-- x axis label -->
+  <text x="395" y="470" text-anchor="middle" font-size="15" font-weight="600" fill="#334155">Model Complexity  &#8594;</text>
+  <text x="150" y="452" text-anchor="middle" font-size="12.5" fill="#64748b">simple</text>
+  <text x="640" y="452" text-anchor="middle" font-size="12.5" fill="#64748b">complex</text>
+
+  <!-- Bias squared curve: high on left, decays toward right -->
+  <path d="M 100 130 C 200 200, 300 320, 400 380 S 600 415, 690 420"
+        fill="none" stroke="#dc2626" stroke-width="3"/>
+
+  <!-- Variance curve: low on left, rises toward right -->
+  <path d="M 100 418 C 250 412, 350 380, 430 330 S 600 170, 690 120"
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- Irreducible error: flat dashed line -->
+  <line x1="90" y1="405" x2="700" y2="405" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="6 5"/>
+  <text x="695" y="398" font-size="11.5" fill="#64748b" text-anchor="end">irreducible noise</text>
+
+  <!-- Total error curve: U-shape = bias^2 + variance + noise -->
+  <path d="M 100 108 C 210 150, 300 205, 385 212 C 470 219, 560 175, 690 100"
+        fill="none" stroke="#0f172a" stroke-width="3.5"/>
+
+  <!-- ===== Curve labels, placed in clear space beside each curve ===== -->
+  <!-- Total error: in the open pocket above the valley, away from both arms -->
+  <text x="385" y="120" text-anchor="middle" font-size="15" font-weight="700" fill="#0f172a">Total error</text>
+
+  <!-- Bias^2: below the red curve on the left, in the empty triangle (blue is far below) -->
+  <text x="210" y="284" text-anchor="middle" font-size="14" font-weight="700" fill="#dc2626">Bias&#178;</text>
+  <text x="210" y="300" text-anchor="middle" font-size="11.5" fill="#dc2626">(underfitting)</text>
+
+  <!-- Variance: below the blue curve on the right, in the empty triangle (red is far below) -->
+  <text x="575" y="290" text-anchor="middle" font-size="14" font-weight="700" fill="#2563eb">Variance</text>
+  <text x="575" y="306" text-anchor="middle" font-size="11.5" fill="#2563eb">(overfitting)</text>
+
+  <!-- Sweet spot marker at the bottom of the U -->
+  <line x1="385" y1="212" x2="385" y2="430" stroke="#059669" stroke-width="1.6" stroke-dasharray="4 4"/>
+  <circle cx="385" cy="212" r="7" fill="#059669" stroke="#ffffff" stroke-width="2"/>
+  <text x="385" y="500" text-anchor="middle" font-size="13.5" font-weight="700" fill="#059669">Sweet spot</text>
+  <text x="385" y="518" text-anchor="middle" font-size="12" fill="#059669">(minimum total error)</text>
+
+  <!-- footnote -->
+  <text x="380" y="545" text-anchor="middle" font-size="11.5" fill="#94a3b8">Total error &#8776; Bias&#178; + Variance + Irreducible noise</text>
+</svg>

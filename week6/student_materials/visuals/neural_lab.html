@@ -1,0 +1,2212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neural Networks — Visual Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;1,9..144,300&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0d0f14;
+  --surface:  #141720;
+  --surface2: #1c2030;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.14);
+  --text:     #e8e4d9;
+  --muted:    #7a7870;
+  --accent:   #4fffb0;
+  --accent2:  #ff6b6b;
+  --accent3:  #7b8cff;
+  --gold:     #f0c060;
+  --r:        12px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,15,20,0.85);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 24px;
+  display: flex; align-items: center; gap: 0;
+  height: 56px;
+}
+
+.nav-brand {
+  font-family: 'Fraunces', serif;
+  font-size: 17px; font-weight: 300;
+  color: var(--text);
+  margin-right: 32px;
+  white-space: nowrap;
+  letter-spacing: -0.01em;
+}
+.nav-brand em { font-style: italic; color: var(--accent); }
+
+.nav-tabs { display: flex; gap: 2px; flex: 1; overflow-x: auto; }
+.nav-tab {
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: none; background: transparent;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 12px; font-weight: 400;
+  cursor: pointer; white-space: nowrap;
+  transition: all 0.18s;
+  display: flex; align-items: center; gap: 7px;
+}
+.nav-tab:hover { background: var(--surface2); color: var(--text); }
+.nav-tab.active { background: var(--surface2); color: var(--accent); }
+.nav-tab .num {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; color: var(--muted);
+  flex-shrink: 0;
+}
+.nav-tab.active .num { border-color: var(--accent); color: var(--accent); }
+
+/* ── HERO ── */
+.hero {
+  padding: 64px 24px 48px;
+  max-width: 860px; margin: 0 auto;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 16px;
+}
+.hero h1 {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(36px, 6vw, 60px);
+  font-weight: 300; line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text);
+  margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: var(--accent); }
+.hero p {
+  font-size: 16px; line-height: 1.7;
+  color: var(--muted); max-width: 580px;
+}
+
+/* ── PAGES ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ── LESSON LAYOUT ── */
+.lesson {
+  max-width: 960px; margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.lesson-header {
+  display: flex; align-items: flex-start; gap: 20px;
+  margin-bottom: 36px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--border);
+}
+.lesson-num {
+  font-family: 'Fraunces', serif;
+  font-size: 56px; font-weight: 300;
+  color: var(--border2); line-height: 1;
+  flex-shrink: 0; margin-top: -4px;
+}
+.lesson-meta { flex: 1; }
+.lesson-tag {
+  display: inline-block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--accent2);
+  border: 1px solid rgba(255,107,107,0.3);
+  border-radius: 4px; padding: 3px 8px;
+  margin-bottom: 10px;
+}
+.lesson-title {
+  font-family: 'Fraunces', serif;
+  font-size: 28px; font-weight: 300;
+  letter-spacing: -0.02em; line-height: 1.2;
+}
+.lesson-desc {
+  font-size: 14px; color: var(--muted);
+  line-height: 1.6; margin-top: 8px;
+  max-width: 600px;
+}
+
+/* ── CONCEPT CARD ── */
+.concept {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 24px 28px;
+  margin-bottom: 24px;
+}
+.concept-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 12px;
+}
+.concept p { font-size: 15px; line-height: 1.75; color: var(--text); }
+.concept p + p { margin-top: 10px; }
+.concept strong { color: var(--accent); font-weight: 500; }
+.concept code {
+  font-family: 'DM Mono', monospace;
+  font-size: 13px; background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-radius: 4px; padding: 1px 6px;
+  color: var(--gold);
+}
+
+/* ── KEY POINTS ── */
+.key-points {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px; margin-bottom: 24px;
+}
+.kp {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 16px 18px;
+  position: relative; overflow: hidden;
+}
+.kp::before {
+  content: ''; position: absolute;
+  left: 0; top: 0; bottom: 0; width: 3px;
+}
+.kp.green::before { background: var(--accent); }
+.kp.red::before   { background: var(--accent2); }
+.kp.blue::before  { background: var(--accent3); }
+.kp.gold::before  { background: var(--gold); }
+.kp-label { font-family: 'DM Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 6px; }
+.kp-val { font-size: 22px; font-weight: 500; font-family: 'Fraunces', serif; }
+.kp.green .kp-val { color: var(--accent); }
+.kp.red   .kp-val { color: var(--accent2); }
+.kp.blue  .kp-val { color: var(--accent3); }
+.kp.gold  .kp-val { color: var(--gold); }
+.kp-sub { font-size: 12px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
+
+/* ── VISUAL FRAME ── */
+.visual-frame {
+  background: #ffffff;
+  border-radius: var(--r);
+  overflow: hidden;
+  margin-bottom: 24px;
+  border: 1px solid var(--border);
+}
+.visual-frame-label {
+  background: var(--surface2);
+  border-bottom: 1px solid var(--border);
+  padding: 10px 16px;
+  display: flex; align-items: center; gap: 8px;
+  font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted);
+}
+.visual-frame-label .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.visual-inner {
+  padding: 20px;
+  background: #fff;
+}
+
+/* ── HOME GRID ── */
+.home-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+  max-width: 960px; margin: 0 auto;
+  padding: 0 24px 80px;
+}
+.home-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  padding: 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative; overflow: hidden;
+}
+.home-card::after {
+  content: ''; position: absolute;
+  inset: 0; border-radius: var(--r);
+  opacity: 0; transition: opacity 0.2s;
+  background: radial-gradient(circle at 60% 40%, rgba(79,255,176,0.06) 0%, transparent 70%);
+}
+.home-card:hover { border-color: var(--border2); transform: translateY(-2px); }
+.home-card:hover::after { opacity: 1; }
+.home-card-num {
+  font-family: 'Fraunces', serif;
+  font-size: 42px; font-weight: 300;
+  color: var(--border2); line-height: 1;
+  margin-bottom: 16px;
+}
+.home-card-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--muted); margin-bottom: 8px;
+}
+.home-card h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px; font-weight: 300;
+  letter-spacing: -0.02em; margin-bottom: 8px;
+}
+.home-card p { font-size: 13px; color: var(--muted); line-height: 1.6; }
+.home-card-arrow {
+  position: absolute; right: 24px; bottom: 24px;
+  font-size: 20px; color: var(--border2);
+  transition: all 0.2s;
+}
+.home-card:hover .home-card-arrow { color: var(--accent); transform: translateX(4px); }
+
+/* ── SVG embed ── */
+.svg-wrap { width: 100%; }
+.svg-wrap svg { width: 100%; height: auto; }
+
+/* ── IFRAME ── */
+.vis-iframe {
+  width: 100%; border: none;
+  border-radius: 0;
+  background: #fff;
+  min-height: 520px;
+}
+
+/* ── STEP BADGE ── */
+.step-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-family: 'DM Mono', monospace; font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+.step-badge span {
+  width: 24px; height: 24px; border-radius: 50%;
+  border: 1px solid var(--border2);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; color: var(--muted);
+}
+.step-badge span.done { background: var(--accent); border-color: var(--accent); color: #000; }
+.step-badge span.curr { border-color: var(--accent); color: var(--accent); }
+
+/* ── FORMULA CALLOUT ── */
+.formula {
+  background: var(--surface2);
+  border: 1px solid var(--border2);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r) var(--r) 0;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-family: 'DM Mono', monospace;
+  font-size: 14px; color: var(--gold);
+  line-height: 1.8;
+}
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
+
+/* ── FOOTER ── */
+footer {
+  border-top: 1px solid var(--border);
+  padding: 24px;
+  text-align: center;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px; color: var(--muted);
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.page.active .lesson { animation: fadeUp 0.3s ease both; }
+.page.active .home-grid { animation: fadeUp 0.3s ease both; }
+
+/* ── IFRAME RESIZER ── */
+.iframe-wrap {
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Neural <em>Lab</em></div>
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="showPage('home')" id="tab-home">
+      <span class="num">↗</span> Overview
+    </button>
+    <button class="nav-tab" onclick="showPage('p1')" id="tab-p1">
+      <span class="num">1</span> ReLU forward pass
+    </button>
+    <button class="nav-tab" onclick="showPage('p2')" id="tab-p2">
+      <span class="num">2</span> ReLU approximation
+    </button>
+    <button class="nav-tab" onclick="showPage('p3')" id="tab-p3">
+      <span class="num">3</span> Predict, measure, update
+    </button>
+    <button class="nav-tab" onclick="showPage('p4')" id="tab-p4">
+      <span class="num">4</span> How gradients flow backwards
+    </button>
+    <button class="nav-tab" onclick="showPage('p5')" id="tab-p5">
+      <span class="num">5</span> Seasoning &amp; blame
+    </button>
+    <button class="nav-tab" onclick="showPage('p6')" id="tab-p6">
+      <span class="num">6</span> Seasoning by cuisine
+    </button>
+    <button class="nav-tab" onclick="showPage('p7')" id="tab-p7">
+      <span class="num">7</span> MNIST hierarchy
+    </button>
+  </div>
+</nav>
+
+<!-- HOME PAGE -->
+<div id="page-home" class="page active">
+  <div class="hero">
+    <div class="hero-eyebrow">Week 6 · Instructor Materials</div>
+    <h1>Understanding<br><em>neural networks</em><br>visually</h1>
+    <p>Seven interactive lessons that take you from a single neuron's math to a full digit-recognition system — no equations required.</p>
+  </div>
+  <div class="home-grid">
+    <div class="home-card" onclick="showPage('p1')">
+      <div class="home-card-num">01</div>
+      <div class="home-card-tag">Diagram</div>
+      <h3>ReLU forward pass</h3>
+      <p>How a single neuron processes an input pixel through weights, bias, and the ReLU activation function.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p2')">
+      <div class="home-card-num">02</div>
+      <div class="home-card-tag">Interactive</div>
+      <h3>ReLU approximation</h3>
+      <p>Watch how stacking more ReLU neurons lets a network approximate any smooth curve like a sine wave.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p3')">
+      <div class="home-card-num">03</div>
+      <div class="home-card-tag">Interactive</div>
+      <h3>Predict, measure, update</h3>
+      <p>Run a training step and watch the prediction, loss and weights change in real time.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p4')">
+      <div class="home-card-num">04</div>
+      <div class="home-card-tag">Interactive</div>
+      <h3>How gradients flow backwards</h3>
+      <p>Two rows: forward pass on top, backward pass below. Click any neuron to see the exact gradient calculation at that weight.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p5')">
+      <div class="home-card-num">05</div>
+      <div class="home-card-tag">Interactive · Analogy</div>
+      <h3>Seasoning &amp; blame</h3>
+      <p>Eight cuisines, each with its own perfect seasoning target. The network starts with random weights and learns the right amounts through gradient descent.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p6')">
+      <div class="home-card-num">06</div>
+      <div class="home-card-tag">Interactive · Analogy</div>
+      <h3>Seasoning by cuisine</h3>
+      <p>Eight cuisines, each with its own perfect seasoning target. Watch gradient descent learn the right weights from a random start.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+    <div class="home-card" onclick="showPage('p7')">
+      <div class="home-card-num">07</div>
+      <div class="home-card-tag">Diagram</div>
+      <h3>MNIST hierarchy</h3>
+      <p>How a deep network recognises the digit "9" — from raw pixels to edges to loops to a final label.</p>
+      <div class="home-card-arrow">→</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 1 · ReLU forward pass -->
+<div id="page-p1" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">01</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Diagram · ReLU</div>
+        <div class="lesson-title">The ReLU forward pass</div>
+        <div class="lesson-desc">A single neuron takes one pixel value, multiplies by a weight, adds a bias, then passes through ReLU. This diagram walks through every step with two real examples.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp green">
+        <div class="kp-label">Step 1</div>
+        <div class="kp-val">Input</div>
+        <div class="kp-sub">Raw pixel brightness, 0 – 1</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">Step 2</div>
+        <div class="kp-val">w·x + b</div>
+        <div class="kp-sub">Weighted sum before activation</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Step 3</div>
+        <div class="kp-val">ReLU</div>
+        <div class="kp-sub">Clips anything below zero to 0</div>
+      </div>
+      <div class="kp red">
+        <div class="kp-label">Step 4</div>
+        <div class="kp-val">× w_next</div>
+        <div class="kp-sub">Sends signal to next layer</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        relu_neuron_forward_pass.svg
+      </div>
+      <div class="visual-inner svg-wrap" id="relu-svg-container"></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Key insight</div>
+      <p><strong>ReLU always outputs zero or positive</strong> — it can never pass a negative value forward. The "slope flipping" you see in Case B happens because the <em>weight after</em> ReLU is negative, not because ReLU itself flips the sign.</p>
+      <p>This is what makes ReLU so useful: it creates a <strong>gating effect</strong>. A neuron either fires (positive output) or stays silent (zero). The network learns which neurons should fire for which inputs.</p>
+    </div>
+
+    <div class="formula">
+      ReLU(x) = max(0, x)<br>
+      output to next layer = ReLU(w·pixel + b) × w_next
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2 · ReLU approximation -->
+<div id="page-p2" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">02</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Interactive · Approximation</div>
+        <div class="lesson-title">How ReLU neurons approximate curves</div>
+        <div class="lesson-desc">One ReLU unit is a bent line. Stack enough of them and you can approximate any smooth function. Drag the slider to add more neurons and watch the error shrink.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp green">
+        <div class="kp-label">1 neuron</div>
+        <div class="kp-val">Bent line</div>
+        <div class="kp-sub">One hinge point, can't curve</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">5 neurons</div>
+        <div class="kp-val">Rough shape</div>
+        <div class="kp-sub">Starting to follow the curve</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">20 neurons</div>
+        <div class="kp-val">Close fit</div>
+        <div class="kp-sub">Error approaches zero</div>
+      </div>
+      <div class="kp red">
+        <div class="kp-label">More layers</div>
+        <div class="kp-val">Depth wins</div>
+        <div class="kp-sub">Exponentially more expressive</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        relu_sine_approximation — interactive
+      </div>
+      <div class="visual-inner" id="relu-approx-container">
+<style scoped>
+  .ctrl{display:flex;align-items:center;gap:10px;margin-bottom:10px;font-size:13px;color:#5f5e5a}
+  .ctrl input[type=range]{flex:1}
+  .ctrl span{min-width:28px;font-weight:500;font-size:13px;color:#1a1a18}
+  .legend2{display:flex;gap:20px;margin:10px 0 4px;font-size:12px;color:#5f5e5a}
+  .leg-item2{display:flex;align-items:center;gap:6px}
+  .leg-dot2{width:24px;height:3px;border-radius:2px}
+</style>
+<div class="ctrl">
+  <label>Neurons</label>
+  <input type="range" id="nSlider2" min="1" max="20" value="3" step="1">
+  <span id="nVal2">3</span>
+</div>
+<div class="legend2">
+  <div class="leg-item2"><div class="leg-dot2" style="background:#7F77DD"></div> target: sin(x)</div>
+  <div class="leg-item2"><div class="leg-dot2" style="background:#1D9E75"></div> ReLU approximation</div>
+  <div class="leg-item2"><div class="leg-dot2" style="background:rgba(239,159,39,0.4)"></div> individual neurons</div>
+</div>
+<canvas id="mainCanvas2" height="260" style="width:100%;display:block;"></canvas>
+<div style="margin-top:14px;border-top:1px solid rgba(0,0,0,0.08);padding-top:12px;">
+  <canvas id="reluCanvas2" height="110" style="width:100%;display:block;"></canvas>
+  <div style="font-size:11px;color:#5f5e5a;margin-top:4px;text-align:center;">A single ReLU unit — flat then linear. Each neuron fires at a different threshold.</div>
+</div></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Why this matters</div>
+      <p>This is the <strong>universal approximation theorem</strong> in action. A network with enough neurons can fit any continuous function — including the complex decision boundaries needed to tell a "3" from an "8".</p>
+      <p>Each neuron places its hinge at a different threshold and learns a different slope. Together they piece-wise approximate the target, like many straight lines tracing a curve.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3 · Backprop -->
+<div id="page-p3" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">03</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Interactive · Training</div>
+        <div class="lesson-title">Predict, measure, update</div>
+        <div class="lesson-desc">One input, one hidden neuron, one output. Step through a full training cycle — forward pass, loss calculation, weight update — or fast-forward and watch MSE drop to zero.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp green">
+        <div class="kp-label">Forward pass</div>
+        <div class="kp-val">Predict</div>
+        <div class="kp-sub">Push x through the network</div>
+      </div>
+      <div class="kp red">
+        <div class="kp-label">Loss</div>
+        <div class="kp-val">MSE</div>
+        <div class="kp-sub">(prediction − target)²</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">Backprop</div>
+        <div class="kp-val">Blame</div>
+        <div class="kp-sub">Chain rule traces each weight</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Update</div>
+        <div class="kp-val">Nudge</div>
+        <div class="kp-sub">lr × gradient shrinks loss</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        backprop_mse — interactive · use Next → to step through training
+      </div>
+      <div id="backprop-container" class="visual-inner">
+<style>
+  .btn2{padding:7px 14px;border-radius:8px;border:1px solid #b4b2a9;background:transparent;color:#1a1a18;cursor:pointer;font-size:13px;font-family:sans-serif}
+  .btn2:hover{background:#f1efe8}
+  .btn2-primary{background:#e6f1fb;color:#0c447c;border-color:#185fa5}
+  .sg4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:12px 0}
+  .st2{background:#f5f4ed;border-radius:8px;padding:10px 12px}
+  .sl2{font-size:11px;color:#5f5e5a;margin-bottom:3px}
+  .sv2{font-size:17px;font-weight:500;color:#1a1a18}
+  .eb2{font-size:13px;color:#5f5e5a;line-height:1.6;padding:10px 14px;border-left:2px solid #b4b2a9;margin:8px 0 10px;border-radius:0 8px 8px 0}
+  .pt2{font-size:15px;font-weight:500;color:#1a1a18;margin-bottom:4px;font-family:sans-serif}
+</style>
+<div style="font-family:sans-serif;">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:6px;">
+    <div style="flex:1;">
+      <div class="pt2" id="ptitle2">Step 1 — Forward pass</div>
+      <div class="eb2" id="pexplain2">x=2 travels right. At the hidden neuron: z = w·x + b, then h = sigmoid(z). At the output: z = v·h + b, then o = sigmoid(z).</div>
+    </div>
+    <div style="display:flex;gap:6px;flex-shrink:0;padding-top:2px;">
+      <button class="btn2" id="bp-prev">← Back</button>
+      <button class="btn2 btn2-primary" id="bp-next">Next →</button>
+    </div>
+  </div>
+  <canvas id="nn2" style="width:100%;display:block;height:300px;"></canvas>
+  <div class="sg4">
+    <div class="st2"><div class="sl2">hidden h</div><div class="sv2" id="bsv-h">—</div></div>
+    <div class="st2"><div class="sl2">prediction</div><div class="sv2" id="bsv-o">—</div></div>
+    <div class="st2"><div class="sl2">target</div><div class="sv2">1.00</div></div>
+    <div class="st2"><div class="sl2">mean squared error</div><div class="sv2" id="bsv-loss">—</div></div>
+  </div>
+  <div style="margin-bottom:10px;">
+    <div style="font-size:12px;color:#5f5e5a;margin-bottom:4px;">Mean squared error over training steps</div>
+    <canvas id="lc2" height="60" style="width:100%;display:block;"></canvas>
+  </div>
+  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+    <button class="btn2" id="bp-r1">1 step</button>
+    <button class="btn2" id="bp-r10">10 steps</button>
+    <button class="btn2" id="bp-r100">100 steps</button>
+    <button class="btn2" id="bp-rst">Reset</button>
+    <span style="font-size:13px;color:#5f5e5a;margin-left:6px;">lr:</span>
+    <input type="range" min="1" max="40" step="1" value="10" id="lrsl2" style="width:80px;">
+    <span style="font-size:13px;font-weight:500;color:#1a1a18;" id="lrv2">0.10</span>
+    <span style="font-size:13px;color:#5f5e5a;margin-left:8px;">epoch:</span>
+    <span style="font-size:13px;font-weight:500;color:#1a1a18;" id="bsv-ep">0</span>
+  </div>
+</div></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">The chain rule in plain English</div>
+      <p>Backprop asks: <strong>"how much did each weight contribute to the mistake?"</strong> It works backwards — output first, input last — multiplying the sensitivity at each step. That product is the gradient.</p>
+      <p>The gradient tells you which direction to nudge each weight. Multiply by the <strong>learning rate</strong> (a small number like 0.1) and subtract. Repeat thousands of times — that is training.</p>
+    </div>
+
+    <div class="formula">
+      grad_v  = error × sigmoid'(z_out) × h<br>
+      grad_w  = error × sigmoid'(z_out) × v × sigmoid'(z_hidden) × x
+    </div>
+
+    <div class="concept" style="margin-top:16px;">
+      <div class="concept-label">Reading the gradients</div>
+      <p>When the orange <code>grad=</code> labels appear on the connections, a <strong>positive gradient</strong> means "this weight pushed the output too high — reduce it." A negative gradient means "push it higher." The learning rate controls how big a step to take.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4 · Forward & Backward Pass -->
+<div id="page-p4" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">04</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Interactive · Chain Rule</div>
+        <div class="lesson-title">How gradients flow backwards</div>
+        <div class="lesson-desc">The chain rule made visible. Two rows show forward and backward passes simultaneously. Click any neuron to see exactly how its gradient is calculated and how much it contributed to the mistake.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp blue">
+        <div class="kp-label">Forward</div>
+        <div class="kp-val">Predict</div>
+        <div class="kp-sub">x → h → o, left to right</div>
+      </div>
+      <div class="kp red">
+        <div class="kp-label">Backward</div>
+        <div class="kp-val">Blame</div>
+        <div class="kp-sub">loss → o → h → x, right to left</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Chain rule</div>
+        <div class="kp-val">Multiply</div>
+        <div class="kp-sub">error × sigmoid' × input</div>
+      </div>
+      <div class="kp green">
+        <div class="kp-label">Update</div>
+        <div class="kp-val">Nudge</div>
+        <div class="kp-sub">w = w − lr × gradient</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        forward &amp; backward pass — click any neuron
+      </div>
+      <div id="fwdbwd-container" class="visual-inner">
+<style>
+  .fbp { font-family:sans-serif; padding:4px 0; }
+  .fbpanel { background:var(--color-background-secondary,#f5f4ed); border-radius:12px; padding:14px 16px; margin-bottom:10px; font-size:13px; line-height:1.6; color:var(--color-text-secondary,#5f5e5a); border-left:3px solid var(--color-border-secondary,rgba(0,0,0,0.2)); }
+  .fbpanel strong { color:var(--color-text-primary,#1a1a18); font-weight:500; }
+  .fbpanel .math { font-family:monospace; background:var(--color-background-primary,#fff); border:0.5px solid rgba(0,0,0,0.15); border-radius:6px; padding:8px 12px; margin:8px 0; font-size:12px; line-height:1.9; color:var(--color-text-primary,#1a1a18); white-space:pre; }
+  .fbpanel .blame { color:#A32D2D; font-weight:500; }
+  .fbpanel .good  { color:#1D9E75; font-weight:500; }
+  .fbstat { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:8px; margin:12px 0; }
+  .fbst { background:var(--color-background-secondary,#f5f4ed); border-radius:8px; padding:8px 10px; }
+  .fbsl { font-size:11px; color:var(--color-text-secondary,#5f5e5a); margin-bottom:2px; }
+  .fbsv { font-size:16px; font-weight:500; color:var(--color-text-primary,#1a1a18); }
+  .fbbtn { padding:6px 14px; border-radius:8px; border:0.5px solid rgba(0,0,0,0.2); background:transparent; color:var(--color-text-primary,#1a1a18); cursor:pointer; font-size:12px; }
+  .fbbtn:hover { background:var(--color-background-secondary,#f5f4ed); }
+  .fbbtn-run { background:#e6f9f1; color:#085041; border-color:#0F6E56; }
+</style>
+<div class="fbp">
+  <canvas id="fbCanvas" style="width:100%;display:block;" height="320"></canvas>
+  <div id="fbPanel" class="fbpanel"><strong>Click any neuron</strong> to see the math for that step.</div>
+  <div class="fbstat">
+    <div class="fbst"><div class="fbsl">prediction</div><div class="fbsv" id="fb-o">—</div></div>
+    <div class="fbst"><div class="fbsl">target</div><div class="fbsv">1.00</div></div>
+    <div class="fbst"><div class="fbsl">MSE loss</div><div class="fbsv" id="fb-loss">—</div></div>
+    <div class="fbst"><div class="fbsl">epoch</div><div class="fbsv" id="fb-ep">0</div></div>
+  </div>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center;">
+    <button class="fbbtn fbbtn-run" id="fb-t1">Train 1 step</button>
+    <button class="fbbtn fbbtn-run" id="fb-t10">Train 10 steps</button>
+    <button class="fbbtn fbbtn-run" id="fb-t100">Train 100 steps</button>
+    <button class="fbbtn" id="fb-rst">Reset</button>
+    <span style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-left:4px;">lr:</span>
+    <input type="range" min="1" max="40" step="1" value="10" id="fbLr" style="width:70px;">
+    <span style="font-size:12px;font-weight:500;color:var(--color-text-primary,#1a1a18);" id="fbLrV">0.10</span>
+  </div>
+  <div style="font-size:11px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:4px;">Loss history</div>
+  <canvas id="fbLoss" height="56" style="width:100%;display:block;"></canvas>
+</div></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Reading the diagram</div>
+      <p>The top row is the <strong>forward pass</strong> — input x flows through weight w into the hidden neuron, then through weight v into the output. Each neuron computes <code>sigmoid(w·x + b)</code>.</p>
+      <p>The bottom row is the <strong>backward pass</strong> — blame starts at the output, travels left through each weight. The gradient on each arrow tells you exactly how much that weight contributed to the mistake.</p>
+    </div>
+
+    <div class="formula">
+      grad_v = (o − y) × sigmoid'(z_out) × h<br>
+      grad_w = (o − y) × sigmoid'(z_out) × v × sigmoid'(z_hidden) × x
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5 · Seasoning & Blame -->
+<div id="page-p5" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">05</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Interactive · Analogy</div>
+        <div class="lesson-title">Seasoning &amp; blame — gradient descent in plain English</div>
+        <div class="lesson-desc">Eight cuisines, each with its own perfect salt and pepper target. The network starts with random weights and uses gradient descent to learn the right seasoning profile for each cuisine.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp red">
+        <div class="kp-label">w_salt</div>
+        <div class="kp-val">Weight</div>
+        <div class="kp-sub">Pulls score toward 0</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">w_pepper</div>
+        <div class="kp-val">Weight</div>
+        <div class="kp-sub">Pushes score toward 10</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Target</div>
+        <div class="kp-val">5.0</div>
+        <div class="kp-sub">Perfectly balanced</div>
+      </div>
+      <div class="kp green">
+        <div class="kp-label">Training</div>
+        <div class="kp-val">Converges</div>
+        <div class="kp-sub">Weights find the right values</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        seasoning &amp; blame — interactive
+      </div>
+      <div id="seasoning-container" class="visual-inner">
+<style>
+  .sw5 * { box-sizing:border-box; }
+  .sw5 { font-family:sans-serif; padding:8px 0; }
+  .sw5 .sliders { background:var(--color-background-secondary,#f5f4ed); border-radius:14px; padding:16px 18px; margin-bottom:12px; }
+  .sw5 .srow { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
+  .sw5 .srow:last-child { margin-bottom:0; }
+  .sw5 .sicon { width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0; }
+  .sw5 .slabel { font-size:13px;font-weight:500;min-width:80px; }
+  .sw5 .srow input[type=range] { flex:1; }
+  .sw5 .shand { font-size:12px;min-width:80px;text-align:right;font-weight:500; }
+  .sw5 .sscale { display:flex;justify-content:space-between;font-size:10px;color:var(--color-text-secondary,#5f5e5a);padding:0 2px;margin:2px 0 10px 128px; }
+  .sw5 .score-track-wrap { position:relative;height:48px; }
+  .sw5 .score-track { height:14px;border-radius:7px;background:linear-gradient(to right,#D85A30 0%,#FAEEDA 35%,#EAF3DE 50%,#E6F1FB 65%,#185FA5 100%);position:absolute;top:10px;left:0;right:0; }
+  .sw5 .score-pin { position:absolute;top:2px;transform:translateX(-50%);transition:left 0.35s; }
+  .sw5 .score-pin-inner { width:30px;height:30px;border-radius:50%;border:3px solid #fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;transition:background 0.3s; }
+  .sw5 .score-ends { display:flex;justify-content:space-between;font-size:11px;color:var(--color-text-secondary,#5f5e5a);padding:0 2px; }
+  .sw5 .verdict-big { text-align:center;font-size:20px;font-weight:500;margin:10px 0 4px;min-height:28px; }
+  .sw5 .step-pills { display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap; }
+  .sw5 .spill { padding:6px 16px;border-radius:99px;font-size:12px;font-weight:500;cursor:pointer;border:1.5px solid rgba(0,0,0,0.2);background:transparent;color:var(--color-text-secondary,#5f5e5a);transition:all 0.15s; }
+  .sw5 .spill.active { color:#fff;border-color:transparent; }
+  .sw5 .step-card { border-radius:14px;padding:20px;margin-bottom:12px; }
+  .sw5 .step-title { font-size:15px;font-weight:500;margin-bottom:16px;color:var(--color-text-primary,#1a1a18); }
+  .sw5 .mline { display:flex;align-items:baseline;gap:0;margin:0; }
+  .sw5 .mmath { font-family:monospace;font-size:14px;min-width:260px;padding:5px 12px;line-height:1.6; }
+  .sw5 .msep { width:2px;border-radius:1px;align-self:stretch;margin:2px 0;flex-shrink:0;background:rgba(0,0,0,0.1); }
+  .sw5 .mwords { font-size:13px;padding:5px 14px;color:var(--color-text-secondary,#5f5e5a);line-height:1.6; }
+  .sw5 .mblock { border-radius:10px;overflow:hidden;margin:12px 0; }
+  .sw5 .mhdr { font-size:10px;text-transform:uppercase;letter-spacing:0.1em;padding:6px 12px;opacity:0.7; }
+  .sw5 .blame-row { display:flex;align-items:center;gap:12px;margin:10px 0; }
+  .sw5 .blame-who { display:flex;align-items:center;gap:8px;min-width:100px; }
+  .sw5 .blame-track { flex:1;height:14px;background:var(--color-background-primary,#fff);border-radius:7px;overflow:hidden; }
+  .sw5 .blame-fill { height:14px;border-radius:7px;transition:width 0.5s; }
+  .sw5 .blame-num { font-size:18px;font-weight:700;min-width:54px;text-align:right; }
+  .sw5 .train-btns { display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;align-items:center; }
+  .sw5 .tbtn { padding:8px 18px;border-radius:99px;font-size:13px;font-weight:500;cursor:pointer;border:1.5px solid rgba(0,0,0,0.2);background:transparent;color:var(--color-text-primary,#1a1a18);transition:all 0.15s; }
+  .sw5 .tbtn:hover { background:var(--color-background-secondary,#f5f4ed); }
+  .sw5 .tbtn.go { background:#EAF3DE;color:#27500A;border-color:#3B6D11; }
+  .sw5 .weights-row { display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px; }
+  .sw5 .weight-card { border-radius:12px;padding:14px 16px; }
+  .sw5 .wc-label { font-size:11px;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;opacity:0.7; }
+  .sw5 .wc-val { font-size:28px;font-weight:700;margin-bottom:2px; }
+  .sw5 .wc-bar-wrap { height:8px;border-radius:4px;overflow:hidden;margin-top:6px; }
+  .sw5 .wc-bar { height:8px;border-radius:4px;transition:width 0.4s; }
+  .sw5 .update-cards { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px; }
+  .sw5 .update-card { border-radius:12px;padding:14px;text-align:center; }
+  .sw5 .next-score-box { text-align:center;margin-top:14px;padding:14px;border-radius:12px;background:var(--color-background-secondary,#f5f4ed); }
+</style>
+<div class="sw5">
+  <div class="sliders">
+    <div style="font-size:11px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.08em;">Starting weights — drag to change starting point</div>
+    <div class="srow">
+      <div class="sicon" style="background:#FAEEDA;">&#x1F9C2;</div>
+      <span class="slabel" style="color:#D85A30;">w_salt</span>
+      <input type="range" min="0" max="10" step="0.1" value="7" id="sw5-saltIn" >
+      <span class="shand" id="sw5-saltHand" style="color:#D85A30;"></span>
+    </div>
+    <div class="sscale"><span>0 — light pinch</span><span>10 — heavy pour</span></div>
+    <div class="srow">
+      <div class="sicon" style="background:#E6F1FB;">&#x1F336;</div>
+      <span class="slabel" style="color:#185FA5;">w_pepper</span>
+      <input type="range" min="0" max="10" step="0.1" value="2" id="sw5-pepIn" >
+      <span class="shand" id="sw5-pepHand" style="color:#185FA5;"></span>
+    </div>
+    <div class="sscale"><span>0 — light pinch</span><span>10 — heavy pour</span></div>
+  </div>
+  <div style="margin-bottom:14px;">
+    <div class="score-track-wrap">
+      <div class="score-track"></div>
+      <div class="score-pin" id="sw5-scorePin"><div class="score-pin-inner" id="sw5-scorePinC"></div></div>
+    </div>
+    <div class="score-ends" style="margin-top:4px;"><span>0 — too salty</span><span>5 — perfect</span><span>10 — too peppery</span></div>
+    <div class="verdict-big" id="sw5-verdictBig"></div>
+  </div>
+  <div class="weights-row">
+    <div class="weight-card" style="background:#FAEEDA;">
+      <div class="wc-label" style="color:#854F0B;">&#x1F9C2; w_salt (current)</div>
+      <div class="wc-val" id="sw5-wSaltDisplay" style="color:#633806;"></div>
+      <div class="wc-bar-wrap" style="background:rgba(0,0,0,0.08);"><div class="wc-bar" id="sw5-wSaltBar" style="background:#D85A30;"></div></div>
+      <div style="font-size:11px;color:#854F0B;margin-top:4px;" id="sw5-wSaltSub"></div>
+    </div>
+    <div class="weight-card" style="background:#E6F1FB;">
+      <div class="wc-label" style="color:#185FA5;">&#x1F336; w_pepper (current)</div>
+      <div class="wc-val" id="sw5-wPepDisplay" style="color:#0C447C;"></div>
+      <div class="wc-bar-wrap" style="background:rgba(0,0,0,0.08);"><div class="wc-bar" id="sw5-wPepBar" style="background:#185FA5;"></div></div>
+      <div style="font-size:11px;color:#185FA5;margin-top:4px;" id="sw5-wPepSub"></div>
+    </div>
+  </div>
+  <div style="margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em;">Loss history</div>
+    <canvas id="sw5-lossChart" height="64" style="width:100%;display:block;border-radius:10px;"></canvas>
+  </div>
+  <div class="train-btns">
+    <button class="tbtn go" id="sw5-t1">Train 1 round</button>
+    <button class="tbtn go" id="sw5-t10">Train 10 rounds</button>
+    <button class="tbtn go" id="sw5-t100">Train 100 rounds</button>
+    <button class="tbtn" id="sw5-rst">Reset</button>
+    <span style="font-size:13px;color:var(--color-text-secondary,#5f5e5a);margin-left:4px;">Round: <b id="sw5-epochNum">0</b></span>
+    <span style="font-size:13px;color:var(--color-text-secondary,#5f5e5a);margin-left:6px;">lr:</span>
+    <input type="range" min="1" max="40" step="1" value="10" id="sw5-lrIn" style="width:70px;" >
+    <span style="font-size:13px;font-weight:500;color:var(--color-text-primary,#1a1a18);" id="sw5-lrOut">0.10</span>
+  </div>
+  <div class="step-pills">
+    <button class="spill active" id="sw5-p0">1 — the mistake</button>
+    <button class="spill" id="sw5-p1">2 — who caused it?</button>
+    <button class="spill" id="sw5-p2">3 — fix the recipe</button>
+  </div>
+  <div id="sw5-stepCard"></div>
+</div></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Connecting to the real network</div>
+      <p>The 0.5 influence values for salt and pepper <strong>are the weights</strong> — exactly the same as w and v in the backprop diagram. In a real network nobody chooses these values. They start random and gradient descent discovers the right numbers — which are different for every cuisine — through thousands of training rounds.</p>
+      <p>The <strong>2</strong> in the blame formula comes from differentiating the loss — when you square the mistake to get MSE, the power drops down as a 2 during the derivative. That is the chain rule at work.</p>
+    </div>
+
+    <div class="formula">
+      blame on weight  =  2 × mistake × (weight's influence on score)<br>
+      new weight       =  old weight − (learning rate × blame)
+    </div>
+
+    <div style="margin-top:28px;padding:24px 28px;background:var(--surface2);border-radius:var(--r);border:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'Fraunces',serif;font-size:18px;font-weight:300;margin-bottom:6px;">Ready to go deeper?</div>
+        <div style="font-size:14px;color:var(--muted);line-height:1.6;">See how different cuisines change the target weights — and watch the network learn a completely different seasoning profile for each one.</div>
+      </div>
+      <button onclick="showPage('p6')" style="padding:12px 24px;border-radius:99px;border:1.5px solid var(--accent);background:transparent;color:var(--accent);font-family:'DM Mono',monospace;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;transition:all 0.18s;" onmouseover="this.style.background='rgba(79,255,176,0.1)'" onmouseout="this.style.background='transparent'">Seasoning by cuisine →</button>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 6 · Seasoning by Cuisine -->
+<div id="page-p6" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">06</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Interactive · Cultural</div>
+        <div class="lesson-title">Seasoning by cuisine</div>
+        <div class="lesson-desc">Every cuisine has different correct weights. Chinese-American food needs w_salt = 9. Pepper-forward needs w_pepper = 8.5. The network starts with random weights and gradient descent finds the right values — a completely different answer for each cuisine.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp red">
+        <div class="kp-label">Chinese-American</div>
+        <div class="kp-val">w_salt 9</div>
+        <div class="kp-sub">Soy sauce dominates</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">Pepper-forward</div>
+        <div class="kp-val">w_pepper 8.5</div>
+        <div class="kp-sub">Steak au poivre</div>
+      </div>
+      <div class="kp green">
+        <div class="kp-label">American home</div>
+        <div class="kp-val">w_salt 4.5</div>
+        <div class="kp-sub">Light, balanced</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Key insight</div>
+        <div class="kp-val">Different</div>
+        <div class="kp-sub">Same algorithm, different targets</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        seasoning by cuisine — interactive · pick a cuisine, then train
+      </div>
+      <div id="cuisine-container" class="visual-inner">
+<style>
+  .sc * { box-sizing:border-box; }
+  .sc { font-family:sans-serif; padding:8px 0; }
+  .sc .cg { display:grid; grid-template-columns:repeat(auto-fill,minmax(138px,1fr)); gap:8px; margin-bottom:14px; }
+  .sc .cc { border-radius:12px; padding:12px; cursor:pointer; border:2px solid transparent; transition:all 0.18s; background:var(--color-background-secondary,#f5f4ed); }
+  .sc .cc:hover { transform:translateY(-1px); border-color:rgba(0,0,0,0.15); }
+  .sc .cc.active { border-color:#1D9E75; background:#EAF3DE; }
+  .sc .cc-icon { font-size:24px; margin-bottom:6px; }
+  .sc .cc-name { font-size:12px; font-weight:500; color:var(--color-text-primary,#1a1a18); margin-bottom:8px; line-height:1.3; }
+  .sc .cr { display:flex; align-items:center; gap:4px; margin-bottom:3px; }
+  .sc .ct { flex:1; height:6px; background:rgba(0,0,0,0.08); border-radius:3px; overflow:hidden; }
+  .sc .cf { height:6px; border-radius:3px; }
+  .sc .cn { font-size:10px; min-width:20px; text-align:right; color:var(--color-text-secondary,#5f5e5a); }
+  .sc .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:12px 0; }
+  .sc .gc { border-radius:14px; padding:14px 16px; }
+  .sc .gc-lbl { font-size:11px; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px; opacity:0.7; }
+  .sc .gc-row { display:flex; align-items:center; gap:8px; margin:6px 0; }
+  .sc .gc-tag { font-size:11px; min-width:52px; color:var(--color-text-secondary,#5f5e5a); }
+  .sc .gc-track { flex:1; height:10px; background:rgba(0,0,0,0.08); border-radius:5px; overflow:hidden; }
+  .sc .gc-fill { height:10px; border-radius:5px; transition:width 0.4s; }
+  .sc .gc-num { font-size:15px; font-weight:700; min-width:32px; text-align:right; }
+  .sc .str { position:relative; height:48px; margin-bottom:4px; }
+  .sc .stk { height:14px; border-radius:7px; background:linear-gradient(to right,#D85A30 0%,#FAEEDA 35%,#EAF3DE 50%,#E6F1FB 65%,#185FA5 100%); position:absolute; top:10px; left:0; right:0; }
+  .sc .spi { position:absolute; top:2px; transform:translateX(-50%); transition:left 0.4s; }
+  .sc .spic { width:30px; height:30px; border-radius:50%; border:3px solid #fff; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; }
+  .sc .tpi { position:absolute; top:0; transform:translateX(-50%); }
+  .sc .tpic { width:34px; height:34px; border-radius:50%; border:3px dashed #1D9E75; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#1D9E75; background:transparent; }
+  .sc .se { display:flex; justify-content:space-between; font-size:11px; color:var(--color-text-secondary,#5f5e5a); }
+  .sc .vd { text-align:center; font-size:18px; font-weight:500; margin:8px 0 4px; min-height:26px; }
+  .sc .tb { display:flex; gap:8px; flex-wrap:wrap; margin:10px 0; align-items:center; }
+  .sc .btn { padding:8px 18px; border-radius:99px; font-size:13px; font-weight:500; cursor:pointer; border:1.5px solid rgba(0,0,0,0.2); background:transparent; color:var(--color-text-primary,#1a1a18); transition:all 0.15s; }
+  .sc .btn:hover { background:var(--color-background-secondary,#f5f4ed); }
+  .sc .btn.go { background:#EAF3DE; color:#27500A; border-color:#3B6D11; }
+  .sc .pills { display:flex; gap:6px; margin:10px 0; flex-wrap:wrap; }
+  .sc .pill { padding:6px 14px; border-radius:99px; font-size:12px; font-weight:500; cursor:pointer; border:1.5px solid rgba(0,0,0,0.2); background:transparent; color:var(--color-text-secondary,#5f5e5a); transition:all 0.15s; }
+  .sc .pill.active { color:#fff; border-color:transparent; }
+  .sc .card { border-radius:14px; padding:18px 20px; margin-top:10px; }
+  .sc .ctitle { font-size:15px; font-weight:500; margin-bottom:12px; color:var(--color-text-primary,#1a1a18); }
+  .sc .ml { display:flex; align-items:baseline; margin:0; }
+  .sc .mm { font-family:monospace; font-size:13px; min-width:250px; padding:5px 12px; line-height:1.7; }
+  .sc .ms { width:2px; background:rgba(0,0,0,0.1); align-self:stretch; margin:2px 0; flex-shrink:0; }
+  .sc .mw { font-size:13px; padding:5px 14px; color:var(--color-text-secondary,#5f5e5a); line-height:1.7; }
+  .sc .mb { border-radius:10px; overflow:hidden; margin:10px 0; }
+  .sc .mh { font-size:10px; text-transform:uppercase; letter-spacing:0.1em; padding:6px 12px; opacity:0.7; }
+  .sc .br { display:flex; align-items:center; gap:12px; margin:8px 0; }
+  .sc .bw { display:flex; align-items:center; gap:8px; min-width:100px; }
+  .sc .bt { flex:1; height:14px; background:var(--color-background-primary,#fff); border-radius:7px; overflow:hidden; }
+  .sc .bf { height:14px; border-radius:7px; transition:width 0.4s; }
+  .sc .bn { font-size:17px; font-weight:700; min-width:52px; text-align:right; }
+  .sc .uc { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px; }
+  .sc .ucard { border-radius:12px; padding:14px; text-align:center; }
+  .sc .ns { text-align:center; margin-top:12px; padding:12px; border-radius:12px; background:var(--color-background-secondary,#f5f4ed); }
+</style>
+<div class="sc">
+  <div style="font-size:13px;font-weight:500;color:var(--color-text-primary,#1a1a18);margin-bottom:6px;">Pick a cuisine — each has its own perfect weights</div>
+  <div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:10px;">Network starts with random weights and learns the right amounts through training</div>
+  <div class="cg" id="sc-grid"></div>
+  <div style="background:var(--color-background-secondary,#f5f4ed);border-radius:12px;padding:12px 16px;margin-bottom:12px;font-size:13px;color:var(--color-text-secondary,#5f5e5a);line-height:1.6;" id="sc-note"></div>
+  <div style="margin-bottom:12px;">
+    <div style="font-size:11px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.08em;">Current score vs target (dashed ring = target 5.0)</div>
+    <div class="str">
+      <div class="stk"></div>
+      <div class="tpi" id="sc-tp"><div class="tpic">5</div></div>
+      <div class="spi" id="sc-sp"><div class="spic" id="sc-spc"></div></div>
+    </div>
+    <div class="se"><span>0 — no seasoning</span><span>5 — perfect</span><span>10 — maximum</span></div>
+    <div class="vd" id="sc-vd"></div>
+  </div>
+  <div class="two-col">
+    <div class="gc" style="background:#FAEEDA;">
+      <div class="gc-lbl" style="color:#854F0B;">&#x1F9C2; w_salt</div>
+      <div class="gc-row"><span class="gc-tag" style="color:#854F0B;">current</span><div class="gc-track"><div class="gc-fill" id="sc-wsb" style="background:#D85A30;"></div></div><span class="gc-num" id="sc-ws" style="color:#633806;"></span></div>
+      <div class="gc-row"><span class="gc-tag" style="color:#1D9E75;">target</span><div class="gc-track"><div class="gc-fill" id="sc-tsb" style="background:#1D9E75;opacity:0.5;"></div></div><span class="gc-num" id="sc-ts" style="color:#1D9E75;"></span></div>
+    </div>
+    <div class="gc" style="background:#E6F1FB;">
+      <div class="gc-lbl" style="color:#185FA5;">&#x1F336; w_pepper</div>
+      <div class="gc-row"><span class="gc-tag" style="color:#185FA5;">current</span><div class="gc-track"><div class="gc-fill" id="sc-wpb" style="background:#185FA5;"></div></div><span class="gc-num" id="sc-wp" style="color:#0C447C;"></span></div>
+      <div class="gc-row"><span class="gc-tag" style="color:#1D9E75;">target</span><div class="gc-track"><div class="gc-fill" id="sc-tpb" style="background:#1D9E75;opacity:0.5;"></div></div><span class="gc-num" id="sc-tp2" style="color:#1D9E75;"></span></div>
+    </div>
+  </div>
+  <div style="margin-bottom:10px;">
+    <div style="font-size:11px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:4px;text-transform:uppercase;letter-spacing:0.08em;">Loss history</div>
+    <canvas id="sc-lc" height="56" style="width:100%;display:block;border-radius:10px;"></canvas>
+  </div>
+  <div class="tb">
+    <button class="btn go" id="sc-t1">Train 1 round</button>
+    <button class="btn go" id="sc-t10">Train 10 rounds</button>
+    <button class="btn go" id="sc-t100">Train 100 rounds</button>
+    <button class="btn" id="sc-rst">New random start</button>
+    <span style="font-size:13px;color:var(--color-text-secondary,#5f5e5a);margin-left:4px;">Round: <b id="sc-ep">0</b></span>
+  </div>
+  <div class="pills">
+    <button class="pill active" id="sc-p0">1 — the mistake</button>
+    <button class="pill" id="sc-p1">2 — who caused it?</button>
+    <button class="pill" id="sc-p2">3 — fix the recipe</button>
+  </div>
+  <div id="sc-card"></div>
+</div></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Why this matters for real networks</div>
+      <p>A network trained on Chinese-American recipes learns <strong>completely different weights</strong> than one trained on American home cooking. Same architecture, same algorithm, same learning rate — but the data determines what the weights converge to.</p>
+      <p>This is why you cannot take a model trained on one task and expect it to work on a different task. The weights encode the patterns in the training data. Change the data, and you need to retrain from scratch — or fine-tune from the old weights.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 7 · MNIST -->
+<div id="page-p7" class="page">
+  <div class="lesson">
+    <div class="lesson-header">
+      <div class="lesson-num">07</div>
+      <div class="lesson-meta">
+        <div class="lesson-tag">Diagram · Deep Learning</div>
+        <div class="lesson-title">How MNIST recognises the digit "9"</div>
+        <div class="lesson-desc">Deep networks learn a hierarchy of features. The first layer sees edges. The second sees shapes. The final layer combines shapes into a digit label.</div>
+      </div>
+    </div>
+
+    <div class="key-points">
+      <div class="kp green">
+        <div class="kp-label">Input</div>
+        <div class="kp-val">784 px</div>
+        <div class="kp-sub">28×28 grayscale pixels</div>
+      </div>
+      <div class="kp blue">
+        <div class="kp-label">Layer 1</div>
+        <div class="kp-val">Edges</div>
+        <div class="kp-sub">Horizontal, vertical, diagonal</div>
+      </div>
+      <div class="kp gold">
+        <div class="kp-label">Layer 2</div>
+        <div class="kp-val">Shapes</div>
+        <div class="kp-sub">Loops, lines, arcs</div>
+      </div>
+      <div class="kp red">
+        <div class="kp-label">Output</div>
+        <div class="kp-val">Digit</div>
+        <div class="kp-sub">10 classes, 0 – 9</div>
+      </div>
+    </div>
+
+    <div class="visual-frame">
+      <div class="visual-frame-label">
+        <span class="dot"></span>
+        mnist_hierarchy_diagram
+      </div>
+      <div id="mnist-container" class="visual-inner" style="padding:0;"></div>
+    </div>
+
+    <div class="concept">
+      <div class="concept-label">Why depth matters</div>
+      <p>Each layer's <strong>receptive field</strong> grows. Layer 1 looks at a 5×5 patch of pixels — just enough for an edge. Layer 2 combines several edges into a loop or arc — a much larger region. By the output, the network "sees" the entire digit at once.</p>
+      <p>This is why <strong>deep</strong> networks outperform shallow ones: they build up reusable abstractions. An edge detector learned for "9" is also useful for "8", "6", and "0".</p>
+    </div>
+
+    <hr class="divider">
+
+    <div class="concept">
+      <div class="concept-label">Connecting to backprop</div>
+      <p>Every arrow in the diagram is a weight. During training, the MSE loss from Lessons 3, 4, 5, and 6 flows backwards through <em>all</em> of these arrows simultaneously — adjusting thousands of edge detectors, shape detectors, and output connections in one pass.</p>
+      <p>That is exactly the chain rule from Lessons 3–6, applied at scale.</p>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>Neural Networks Visual Learning Lab · Week 6 Instructor Materials</footer>
+
+<script>
+/* ── NAVIGATION ── */
+function showPage(id) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".nav-tab").forEach(t => t.classList.remove("active"));
+  document.getElementById("page-"+id).classList.add("active");
+  document.getElementById("tab-"+id).classList.add("active");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  requestAnimationFrame(()=>{
+    if(id==="p2" && typeof redraw2==="function"){ drawRelu2(); redraw2(); }
+    if(id==="p3" && typeof bpDrawNN==="function"){ bpDrawNN(); bpDrawLoss(); }
+    if(id==="p4" && typeof drawFwdBwd==="function"){ drawFwdBwd(); }
+    if(id==="p5" && typeof seasoningRender==="function"){ seasoningRender(); }
+    if(id==="p6" && typeof cuisineRender==="function"){ cuisineRender(); }
+  });
+}
+
+/* ── EMBED: ReLU SVG ── */
+const reluSVG = `<svg width="100%" viewBox="0 0 680 510" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- Column headers -->
+<text x="90"  y="22" text-anchor="middle" style="fill:#3d3d3a;font-family:sans-serif;font-size:12px">① input</text>
+<text x="270" y="22" text-anchor="middle" style="fill:#3d3d3a;font-family:sans-serif;font-size:12px">② pre-activation</text>
+<text x="430" y="22" text-anchor="middle" style="fill:#3d3d3a;font-family:sans-serif;font-size:12px">③ activation</text>
+<text x="590" y="22" text-anchor="middle" style="fill:#3d3d3a;font-family:sans-serif;font-size:12px">④ contribution</text>
+
+<!-- ── CASE A: negative pre-activation → neuron silent ── -->
+<text x="40" y="46" style="fill:#5f5e5a;font-family:sans-serif;font-size:11px;font-weight:500">Case A — negative pre-activation (neuron silent)</text>
+<g>
+  <rect x="40" y="55" width="100" height="52" rx="8" stroke-width="0.5" style="fill:#f1efe8;stroke:#5f5e5a"/>
+  <text x="90" y="78" text-anchor="middle" dominant-baseline="central" style="fill:#444441;font-family:sans-serif;font-size:14px;font-weight:500">pixel</text>
+  <text x="90" y="96" text-anchor="middle" dominant-baseline="central" style="fill:#5f5e5a;font-family:sans-serif;font-size:12px">e.g. 0.8</text>
+</g>
+<line x1="140" y1="81" x2="166" y2="81" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="168" y="55" width="164" height="52" rx="8" stroke-width="0.5" style="fill:#EEEDFE;stroke:#534AB7"/>
+  <text x="250" y="75" text-anchor="middle" dominant-baseline="central" style="fill:#3C3489;font-family:sans-serif;font-size:14px;font-weight:500">w × pixel + b</text>
+  <text x="250" y="94" text-anchor="middle" dominant-baseline="central" style="fill:#534AB7;font-family:sans-serif;font-size:12px">e.g. −1.2</text>
+</g>
+<line x1="332" y1="81" x2="356" y2="81" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="358" y="55" width="130" height="52" rx="8" stroke-width="0.5" style="fill:#FAEEDA;stroke:#854F0B"/>
+  <text x="423" y="75" text-anchor="middle" dominant-baseline="central" style="fill:#633806;font-family:sans-serif;font-size:14px;font-weight:500">ReLU</text>
+  <text x="423" y="94" text-anchor="middle" dominant-baseline="central" style="fill:#854F0B;font-family:sans-serif;font-size:12px">max(0, −1.2) = 0</text>
+</g>
+<line x1="488" y1="81" x2="512" y2="81" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="514" y="55" width="144" height="52" rx="8" stroke-width="0.5" style="fill:#FCEBEB;stroke:#A32D2D"/>
+  <text x="586" y="75" text-anchor="middle" dominant-baseline="central" style="fill:#501313;font-family:sans-serif;font-size:14px;font-weight:500">0 to next layer</text>
+  <text x="586" y="94" text-anchor="middle" dominant-baseline="central" style="fill:#A32D2D;font-family:sans-serif;font-size:12px">neuron is silent ✗</text>
+</g>
+
+<!-- divider -->
+<line x1="40" y1="126" x2="640" y2="126" style="stroke:rgba(0,0,0,0.08);stroke-width:0.5"/>
+
+<!-- ── CASE A′: positive pre-activation, positive w_next ── -->
+<text x="40" y="148" style="fill:#5f5e5a;font-family:sans-serif;font-size:11px;font-weight:500">Case A′ — positive pre-activation, positive w_next (upward ramp)</text>
+<g>
+  <rect x="40" y="157" width="100" height="52" rx="8" stroke-width="0.5" style="fill:#f1efe8;stroke:#5f5e5a"/>
+  <text x="90" y="177" text-anchor="middle" dominant-baseline="central" style="fill:#444441;font-family:sans-serif;font-size:14px;font-weight:500">pixel</text>
+  <text x="90" y="196" text-anchor="middle" dominant-baseline="central" style="fill:#5f5e5a;font-family:sans-serif;font-size:12px">e.g. 0.8</text>
+</g>
+<line x1="140" y1="183" x2="166" y2="183" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="168" y="157" width="164" height="52" rx="8" stroke-width="0.5" style="fill:#E6F1FB;stroke:#185FA5"/>
+  <text x="250" y="177" text-anchor="middle" dominant-baseline="central" style="fill:#0C447C;font-family:sans-serif;font-size:14px;font-weight:500">w × pixel + b</text>
+  <text x="250" y="196" text-anchor="middle" dominant-baseline="central" style="fill:#185FA5;font-family:sans-serif;font-size:12px">e.g. +0.6</text>
+</g>
+<line x1="332" y1="183" x2="356" y2="183" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="358" y="157" width="130" height="52" rx="8" stroke-width="0.5" style="fill:#FAEEDA;stroke:#854F0B"/>
+  <text x="423" y="177" text-anchor="middle" dominant-baseline="central" style="fill:#633806;font-family:sans-serif;font-size:14px;font-weight:500">ReLU</text>
+  <text x="423" y="196" text-anchor="middle" dominant-baseline="central" style="fill:#854F0B;font-family:sans-serif;font-size:12px">max(0, 0.6) = 0.6</text>
+</g>
+<line x1="488" y1="183" x2="512" y2="183" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="514" y="157" width="144" height="52" rx="8" stroke-width="0.5" style="fill:#EAF3DE;stroke:#3B6D11"/>
+  <text x="586" y="177" text-anchor="middle" dominant-baseline="central" style="fill:#27500A;font-family:sans-serif;font-size:14px;font-weight:500">+1.5 to next layer</text>
+  <text x="586" y="196" text-anchor="middle" dominant-baseline="central" style="fill:#3B6D11;font-family:sans-serif;font-size:12px">upward ramp ↑</text>
+</g>
+
+<!-- divider -->
+<line x1="40" y1="228" x2="640" y2="228" style="stroke:rgba(0,0,0,0.08);stroke-width:0.5"/>
+
+<!-- ── CASE B: positive pre-activation, negative w_next ── -->
+<text x="40" y="250" style="fill:#5f5e5a;font-family:sans-serif;font-size:11px;font-weight:500">Case B — positive pre-activation, negative w_next (downward ramp)</text>
+<g>
+  <rect x="40" y="259" width="100" height="52" rx="8" stroke-width="0.5" style="fill:#E1F5EE;stroke:#0F6E56"/>
+  <text x="90" y="279" text-anchor="middle" dominant-baseline="central" style="fill:#085041;font-family:sans-serif;font-size:14px;font-weight:500">ReLU out</text>
+  <text x="90" y="298" text-anchor="middle" dominant-baseline="central" style="fill:#0F6E56;font-family:sans-serif;font-size:12px">e.g. 2.5</text>
+</g>
+<line x1="140" y1="285" x2="166" y2="285" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="168" y="259" width="164" height="52" rx="8" stroke-width="0.5" style="fill:#FAEEDA;stroke:#854F0B"/>
+  <text x="250" y="279" text-anchor="middle" dominant-baseline="central" style="fill:#633806;font-family:sans-serif;font-size:14px;font-weight:500">× w_next</text>
+  <text x="250" y="298" text-anchor="middle" dominant-baseline="central" style="fill:#854F0B;font-family:sans-serif;font-size:12px">e.g. −0.6</text>
+</g>
+<line x1="332" y1="285" x2="356" y2="285" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="358" y="259" width="130" height="52" rx="8" stroke-width="0.5" style="fill:#FAECE7;stroke:#993C1D"/>
+  <text x="423" y="279" text-anchor="middle" dominant-baseline="central" style="fill:#712B13;font-family:sans-serif;font-size:14px;font-weight:500">2.5 × −0.6</text>
+  <text x="423" y="298" text-anchor="middle" dominant-baseline="central" style="fill:#993C1D;font-family:sans-serif;font-size:12px">= −1.5</text>
+</g>
+<line x1="488" y1="285" x2="512" y2="285" marker-end="url(#arrow)" style="fill:none;stroke:#73726c;stroke-width:1.5"/>
+<g>
+  <rect x="514" y="259" width="144" height="52" rx="8" stroke-width="0.5" style="fill:#FAECE7;stroke:#993C1D"/>
+  <text x="586" y="279" text-anchor="middle" dominant-baseline="central" style="fill:#712B13;font-family:sans-serif;font-size:14px;font-weight:500">−1.5 to next layer</text>
+  <text x="586" y="298" text-anchor="middle" dominant-baseline="central" style="fill:#993C1D;font-family:sans-serif;font-size:12px">downward ramp ↓</text>
+</g>
+
+<!-- divider -->
+<line x1="40" y1="330" x2="640" y2="330" style="stroke:rgba(0,0,0,0.08);stroke-width:0.5"/>
+
+<!-- Key insight box -->
+<rect x="40" y="342" width="600" height="54" rx="8" stroke-width="0.5" style="fill:#f5f4ed;stroke:rgba(31,30,29,0.3)"/>
+<text x="340" y="362" text-anchor="middle" dominant-baseline="central" style="fill:#141413;font-family:sans-serif;font-size:14px;font-weight:500">ReLU always clips at 0 — the weight sign after ReLU is what flips the slope</text>
+<text x="340" y="382" text-anchor="middle" dominant-baseline="central" style="fill:#3d3d3a;font-family:sans-serif;font-size:12px">the "slope flipping" happens downstream, not inside the activation function</text>
+</svg>`;
+
+document.getElementById('relu-svg-container').innerHTML = reluSVG;
+
+/* ── EMBED: ReLU approximation ── */
+(function() {
+  const container = document.getElementById('relu-approx-container');
+  // CSS vars for the widget
+
+
+  
+
+  const nSlider=document.querySelector('#nSlider2');
+  const nVal=document.querySelector('#nVal2');
+  const mainCanvas=document.querySelector('#mainCanvas2');
+  const reluCanvas=document.querySelector('#reluCanvas2');
+  const mCtx=mainCanvas.getContext('2d');
+  const rCtx=reluCanvas.getContext('2d');
+  const X_MIN=-Math.PI*1.5,X_MAX=Math.PI*1.5,N_POINTS=400;
+  function linspace(a,b,n){const arr=[];for(let i=0;i<n;i++)arr.push(a+(b-a)*i/(n-1));return arr;}
+  function relu(x){return Math.max(0,x);}
+  function fitNeurons(n){
+    const xs=linspace(X_MIN,X_MAX,200);
+    const ys=xs.map(x=>Math.sin(x));
+    const thresholds=linspace(X_MIN*0.9,X_MAX*0.9,n);
+    const A=xs.map(x=>thresholds.map(t=>relu(x-t)));
+    const b2=ys;
+    let weights=new Array(n).fill(0);
+    const lr=0.01;
+    for(let iter=0;iter<800;iter++){
+      const preds=A.map(row=>row.reduce((s,v,j)=>s+v*weights[j],0));
+      const grads=new Array(n).fill(0);
+      for(let i=0;i<xs.length;i++){const err=preds[i]-b2[i];for(let j=0;j<n;j++)grads[j]+=err*A[i][j];}
+      for(let j=0;j<n;j++)weights[j]-=lr*grads[j]/xs.length;
+    }
+    return{thresholds,weights};
+  }
+  function approx(x,thresholds,weights){return thresholds.reduce((s,t,j)=>s+weights[j]*relu(x-t),0);}
+  function drawMain(n){
+    const dpr=window.devicePixelRatio||1;
+    const W=mainCanvas.offsetWidth;const H=260;
+    mainCanvas.width=W*dpr;mainCanvas.height=H*dpr;
+    mCtx.setTransform(dpr,0,0,dpr,0,0);
+    const{thresholds,weights}=fitNeurons(n);
+    const xs=linspace(X_MIN,X_MAX,N_POINTS);
+    const PAD={top:20,bottom:32,left:36,right:16};
+    const cW=W-PAD.left-PAD.right,cH=H-PAD.top-PAD.bottom;
+    const xToP=x=>PAD.left+(x-X_MIN)/(X_MAX-X_MIN)*cW;
+    const yToP=y=>PAD.top+(1-(y+1.4)/2.8)*cH;
+    mCtx.clearRect(0,0,W,H);
+    mCtx.strokeStyle='rgba(0,0,0,0.1)';mCtx.lineWidth=0.5;
+    mCtx.beginPath();mCtx.moveTo(PAD.left,yToP(0));mCtx.lineTo(PAD.left+cW,yToP(0));
+    mCtx.moveTo(xToP(0),PAD.top);mCtx.lineTo(xToP(0),PAD.top+cH);mCtx.stroke();
+    const tickVals=[-Math.PI,-Math.PI/2,0,Math.PI/2,Math.PI];
+    const tickLabels=['-π','-π/2','0','π/2','π'];
+    mCtx.fillStyle='#5f5e5a';mCtx.font='11px sans-serif';mCtx.textAlign='center';
+    tickVals.forEach((v,i)=>{
+      const px=xToP(v);
+      mCtx.beginPath();mCtx.strokeStyle='rgba(0,0,0,0.1)';mCtx.lineWidth=0.5;
+      mCtx.moveTo(px,yToP(0)-3);mCtx.lineTo(px,yToP(0)+3);mCtx.stroke();
+      mCtx.fillText(tickLabels[i],px,yToP(0)+14);
+    });
+    [-1,1].forEach(v=>{mCtx.fillStyle='#5f5e5a';mCtx.textAlign='right';mCtx.fillText(v,PAD.left-4,yToP(v)+4);});
+    if(n<=12){
+      thresholds.forEach(t=>{
+        const nxs=linspace(X_MIN,X_MAX,200);
+        mCtx.strokeStyle='rgba(239,159,39,0.25)';mCtx.lineWidth=1;
+        mCtx.beginPath();
+        nxs.forEach((x,i)=>{const py=yToP(approx(x,[t],[weights[thresholds.indexOf(t)]]));const cy2=Math.max(PAD.top,Math.min(PAD.top+cH,py));i===0?mCtx.moveTo(xToP(x),cy2):mCtx.lineTo(xToP(x),cy2);});
+        mCtx.stroke();
+      });
+    }
+    mCtx.strokeStyle='#7F77DD';mCtx.lineWidth=2;mCtx.setLineDash([5,4]);
+    mCtx.beginPath();xs.forEach((x,i)=>{const py=yToP(Math.sin(x));i===0?mCtx.moveTo(xToP(x),py):mCtx.lineTo(xToP(x),py);});mCtx.stroke();mCtx.setLineDash([]);
+    mCtx.strokeStyle='#1D9E75';mCtx.lineWidth=2.5;
+    mCtx.beginPath();xs.forEach((x,i)=>{const py=yToP(approx(x,thresholds,weights));const cy2=Math.max(PAD.top,Math.min(PAD.top+cH,py));i===0?mCtx.moveTo(xToP(x),cy2):mCtx.lineTo(xToP(x),cy2);});mCtx.stroke();
+    const sinYs=xs.map(x=>Math.sin(x));
+    const approxYs=xs.map(x=>approx(x,thresholds,weights));
+    const mse=sinYs.reduce((s,y,i)=>s+(y-approxYs[i])**2,0)/sinYs.length;
+    mCtx.fillStyle='#5f5e5a';mCtx.font='11px sans-serif';mCtx.textAlign='left';
+    mCtx.fillText('error: '+mse.toFixed(4),PAD.left+4,PAD.top+14);
+  }
+  window.drawRelu2 = function drawRelu2(){
+    const dpr=window.devicePixelRatio||1;const W=reluCanvas.offsetWidth;const H=110;
+    reluCanvas.width=W*dpr;reluCanvas.height=H*dpr;
+    rCtx.setTransform(dpr,0,0,dpr,0,0);
+    const PAD={top:14,bottom:24,left:36,right:16};
+    const cW=W-PAD.left-PAD.right,cH=H-PAD.top-PAD.bottom;
+    const xMin=-2,xMax=2,yMin=-0.3,yMax=1.5;
+    const xToP=x=>PAD.left+(x-xMin)/(xMax-xMin)*cW;
+    const yToP=y=>PAD.top+(1-(y-yMin)/(yMax-yMin))*cH;
+    rCtx.clearRect(0,0,W,H);
+    rCtx.strokeStyle='rgba(0,0,0,0.1)';rCtx.lineWidth=0.5;
+    rCtx.beginPath();rCtx.moveTo(PAD.left,yToP(0));rCtx.lineTo(PAD.left+cW,yToP(0));
+    rCtx.moveTo(xToP(0),PAD.top);rCtx.lineTo(xToP(0),PAD.top+cH);rCtx.stroke();
+    rCtx.strokeStyle='#7F77DD';rCtx.lineWidth=2;
+    rCtx.beginPath();rCtx.moveTo(xToP(xMin),yToP(0));rCtx.lineTo(xToP(0),yToP(0));rCtx.lineTo(xToP(xMax),yToP(xMax));rCtx.stroke();
+    rCtx.fillStyle='#7F77DD';rCtx.beginPath();rCtx.arc(xToP(0),yToP(0),4,0,Math.PI*2);rCtx.fill();
+    rCtx.fillStyle='#5f5e5a';rCtx.font='11px sans-serif';rCtx.textAlign='center';
+    rCtx.fillText('threshold',xToP(0),yToP(0)+16);
+    rCtx.textAlign='left';rCtx.fillText('flat (no activation)',xToP(xMin+0.05),yToP(0)-5);
+    rCtx.fillText('linear ramp',xToP(0.5),yToP(0.6));
+    rCtx.textAlign='center';rCtx.fillText('relu(x) = max(0, x)',W/2,H-4);
+  }
+  window.redraw2 = function redraw2(){const n=parseInt(nSlider.value);nVal.textContent=n;drawMain(n);}
+  nSlider.addEventListener('input',redraw2);
+  function initRelu(){
+    if(mainCanvas.offsetWidth>0){drawRelu2();redraw2();}
+    else{requestAnimationFrame(initRelu);}
+  }
+  requestAnimationFrame(initRelu);
+  window.addEventListener('resize',()=>{drawRelu2();redraw2();});
+})();
+
+/* ── EMBED: Backprop MSE ── */
+(function(){
+  const container = document.getElementById('backprop-container');
+  
+
+  const sig=z=>1/(1+Math.exp(-z));
+  const sigD=z=>{const s=sig(z);return s*(1-s);};
+  let S={w:0.5,bh:0.1,v:0.5,bo:0.1,x:2,y:1,zh:0,h:0,zo:0,o:0,loss:0,epoch:0,step:0,hist:[],dw:0,dbh:0,dv:0,dbo:0};
+  const PHASES=[
+    {title:'Step 1 — Forward pass',explain:'x=2 travels right. At the hidden neuron: z = w·x + b, then h = sigmoid(z). At the output: z = v·h + b, then o = sigmoid(z).'},
+    {title:'Step 2 — Measure the mistake (mean squared error)',explain:'MSE = (prediction − target)² = (o − 1.0)². The red ring shows how wrong we are — shrink it to zero.'},
+    {title:'Step 3 — Backprop: output side',explain:'Working backwards: how much did v and b_output cause the error? Orange labels show their gradients.'},
+    {title:'Step 4 — Backprop: hidden side',explain:'The blame travels back through v to reach w and b_hidden. Every weight now has a gradient.'},
+    {title:'Step 5 — Weights updated!',explain:'All weights nudged by learning rate × gradient. Next forward pass = slightly better prediction. Repeat = training.'}
+  ];
+  function bpFwd(){S.zh=S.w*S.x+S.bh;S.h=sig(S.zh);S.zo=S.v*S.h+S.bo;S.o=sig(S.zo);S.loss=Math.pow(S.o-S.y,2);}
+  function bpGrads(){const dLdo=2*(S.o-S.y);const dLdzo=dLdo*sigD(S.zo);S.dv=dLdzo*S.h;S.dbo=dLdzo;const dLdh=dLdzo*S.v;const dLdzh=dLdh*sigD(S.zh);S.dw=dLdzh*S.x;S.dbh=dLdzh;}
+  function bpApply(){const lr=+document.getElementById('lrsl2').value/100;S.w-=lr*S.dw;S.bh-=lr*S.dbh;S.v-=lr*S.dv;S.bo-=lr*S.dbo;}
+  window.bpNext=function(){
+    if(S.step===0){bpFwd();S.step=1;}
+    else if(S.step===1){S.step=2;}
+    else if(S.step===2){bpGrads();S.step=3;}
+    else if(S.step===3){S.step=4;}
+    else{bpApply();S.epoch++;S.hist.push(S.loss);bpFwd();S.step=1;}
+    bpRender();
+  };
+  window.bpPrev=function(){if(S.step>0){S.step--;bpRender();}};
+  window.bpRun1=function(){bpFwd();bpGrads();bpApply();S.epoch++;S.hist.push(S.loss);bpFwd();S.step=1;bpRender();};
+  window.bpRunN=function(n){for(let i=0;i<n;i++){bpFwd();bpGrads();bpApply();S.epoch++;S.hist.push(S.loss);}bpFwd();S.step=1;bpRender();};
+  window.bpReset=function(){S={w:0.5,bh:0.1,v:0.5,bo:0.1,x:2,y:1,zh:0,h:0,zo:0,o:0,loss:0,epoch:0,step:0,hist:[],dw:0,dbh:0,dv:0,dbo:0};bpRender();};
+  function bpRender(){
+    const ph=PHASES[Math.min(S.step,PHASES.length-1)];
+    document.getElementById('ptitle2').textContent=ph.title;
+    document.getElementById('pexplain2').textContent=ph.explain;
+    document.getElementById('bsv-ep').textContent=S.epoch;
+    document.getElementById('bsv-h').textContent=S.step>=1?S.h.toFixed(4):'—';
+    document.getElementById('bsv-o').textContent=S.step>=1?S.o.toFixed(4):'—';
+    document.getElementById('bsv-loss').textContent=S.step>=1?S.loss.toFixed(4):'—';
+    bpDrawNN();bpDrawLoss();
+  }
+  window.bpDrawNN = function bpDrawNN(){
+    const canvas=document.querySelector('#nn2');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.offsetWidth||640;const H=300;
+    canvas.width=W*dpr;canvas.height=H*dpr;canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,H);
+    const colMuted='#73726c',colBg='#f1efe8',colBord='rgba(0,0,0,0.18)';
+    const R=34,xX=W*0.15,xH=W*0.50,xO=W*0.85,yN=H*0.44;
+    function a2c(val){const v=Math.max(0,Math.min(1,val));return{fill:`rgb(${Math.round(29+(216-29)*v)},${Math.round(158+(90-158)*v)},${Math.round(117+(48-117)*v)})`};}
+    function drawConn(x1,y1,x2,y2,weight,grad,showGrad){
+      const absW=Math.min(Math.abs(weight),3);
+      const alpha=0.25+Math.min(0.6,absW*0.25);
+      const lc=weight>=0?`rgba(29,158,117,${alpha})`:`rgba(216,90,48,${alpha})`;
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.strokeStyle=lc;ctx.lineWidth=0.8+absW*1.2;ctx.stroke();
+      const mx=(x1+x2)/2,my=(y1+y2)/2;
+      ctx.font='500 11px sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';
+      const wl='w='+weight.toFixed(3);const tw=ctx.measureText(wl).width+8;const wy=my-16;
+      ctx.fillStyle='rgba(255,255,255,0.92)';ctx.fillRect(mx-tw/2,wy-8,tw,16);ctx.fillStyle=lc;ctx.fillText(wl,mx,wy);
+      if(showGrad&&grad!==undefined){const gl='grad='+grad.toFixed(4);const gw=ctx.measureText(gl).width+8;const gy=my+16;ctx.fillStyle='rgba(255,255,255,0.92)';ctx.fillRect(mx-gw/2,gy-8,gw,16);ctx.fillStyle='#D85A30';ctx.fillText(gl,mx,gy);}
+    }
+    function drawNrn(cx,cy,val,tl,vl,active,showLoss){
+      if(active){const{fill}=a2c(val);ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=fill;ctx.fill();ctx.strokeStyle=fill;ctx.lineWidth=1.5;ctx.stroke();
+        if(showLoss&&S.step>=1){const li=Math.min(1,S.loss*8);ctx.beginPath();ctx.arc(cx,cy,R+6,0,Math.PI*2);ctx.strokeStyle=`rgba(216,90,48,${li*0.75})`;ctx.lineWidth=3;ctx.stroke();}
+        ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='#fff';ctx.font='500 13px sans-serif';ctx.fillText(tl,cx,cy-9);ctx.font='400 11px sans-serif';ctx.fillText(vl,cx,cy+9);
+      }else{ctx.beginPath();ctx.arc(cx,cy,R,0,Math.PI*2);ctx.fillStyle=colBg;ctx.fill();ctx.strokeStyle=colBord;ctx.lineWidth=0.5;ctx.stroke();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=colMuted;ctx.font='500 14px sans-serif';ctx.fillText(tl,cx,cy);}
+    }
+    const fwd=S.step>=1;
+    drawConn(xX+R,yN,xH-R,yN,S.w,S.dw,S.step>=4);
+    drawConn(xH+R,yN,xO-R,yN,S.v,S.dv,S.step>=3);
+    drawNrn(xX,yN,S.x/3,'x','val='+S.x.toFixed(1),true,false);
+    drawNrn(xH,yN,fwd?S.h:0,'h',fwd?S.h.toFixed(3):'?',fwd,false);
+    drawNrn(xO,yN,fwd?S.o:0,'o',fwd?S.o.toFixed(3):'?',fwd,true);
+    ctx.font='400 12px sans-serif';ctx.textAlign='center';ctx.fillStyle=colMuted;
+    ctx.fillText('input',xX,yN+R+18);ctx.fillText('hidden  b='+S.bh.toFixed(3),xH,yN+R+18);ctx.fillText('output  b='+S.bo.toFixed(3),xO,yN+R+18);
+    if(fwd){ctx.font='400 11px sans-serif';ctx.textAlign='center';ctx.fillStyle=colMuted;ctx.fillText('z='+S.zh.toFixed(3),xH,yN-R-18);ctx.fillText('z='+S.zo.toFixed(3),xO,yN-R-18);
+      ctx.font='500 11px sans-serif';ctx.textAlign='center';
+      const ml='MSE = ('+S.o.toFixed(3)+' − 1.0)² = '+S.loss.toFixed(4);const mw=ctx.measureText(ml).width+12;const mx2=W/2,my2=H-18;
+      ctx.fillStyle='rgba(255,255,255,0.9)';ctx.fillRect(mx2-mw/2,my2-9,mw,18);ctx.fillStyle='#D85A30';ctx.fillText(ml,mx2,my2);
+    }
+  }
+  window.bpDrawLoss = function bpDrawLoss(){
+    const canvas=document.querySelector('#lc2');const dpr=window.devicePixelRatio||1;const W=canvas.offsetWidth||640;
+    canvas.width=W*dpr;canvas.height=60*dpr;canvas.style.height='60px';
+    const ctx=canvas.getContext('2d');ctx.scale(dpr,dpr);ctx.clearRect(0,0,W,60);
+    const hist=S.hist;if(hist.length<2)return;
+    const maxL=Math.max(...hist,0.001);ctx.strokeStyle='#1D9E75';ctx.lineWidth=1.5;ctx.beginPath();
+    hist.forEach((l,i)=>{const px=(i/(hist.length-1))*(W-20)+10;const py=52-(l/maxL)*44;i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);});ctx.stroke();
+    ctx.fillStyle='rgba(29,158,117,0.08)';ctx.lineTo(W-10,52);ctx.lineTo(10,52);ctx.closePath();ctx.fill();
+  }
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('[id]');
+    if(!el) return;
+    const id=el.id;
+    if(id==='bp-prev') bpPrev();
+    if(id==='bp-next') bpNext();
+    if(id==='bp-r1')   bpRun1();
+    if(id==='bp-r10')  bpRunN(10);
+    if(id==='bp-r100') bpRunN(100);
+    if(id==='bp-rst')  bpReset();
+  });
+  document.addEventListener('input', function(e){
+    if(e.target.id==='lrsl2') document.getElementById('lrv2').textContent=(+e.target.value/100).toFixed(2);
+  });
+  function initBp(){
+    if(document.querySelector('#nn2').offsetWidth>0){bpFwd();S.step=1;bpRender();}
+    else{requestAnimationFrame(initBp);}
+  }
+  requestAnimationFrame(initBp);
+  window.addEventListener('resize',()=>{bpDrawNN();bpDrawLoss();});
+})();
+
+
+/* ── EMBED: Forward/Backward Pass ── */
+(function(){
+  const container = document.getElementById('fwdbwd-container');
+  
+
+  const fbSig  = z => 1/(1+Math.exp(-z));
+  const fbSigD = z => { const s=fbSig(z); return s*(1-s); };
+  const f4 = v => v.toFixed(4);
+  const f3 = v => v.toFixed(3);
+  const fbLr = () => +(document.querySelector('#fbLr').value)/100;
+
+  let FB = { w:0.5, bh:0.1, v:0.5, bo:0.1, x:2, y:1,
+             zh:0, h:0, zo:0, o:0, loss:0,
+             dw:0, dbh:0, dv:0, dbo:0, epoch:0, hist:[] };
+
+  function fbFwd() {
+    FB.zh=FB.w*FB.x+FB.bh; FB.h=fbSig(FB.zh);
+    FB.zo=FB.v*FB.h+FB.bo; FB.o=fbSig(FB.zo);
+    FB.loss=Math.pow(FB.o-FB.y,2);
+  }
+  function fbGrads() {
+    const dLdo=2*(FB.o-FB.y), dLdzo=dLdo*fbSigD(FB.zo);
+    FB.dv=dLdzo*FB.h; FB.dbo=dLdzo;
+    const dLdh=dLdzo*FB.v, dLdzh=dLdh*fbSigD(FB.zh);
+    FB.dw=dLdzh*FB.x; FB.dbh=dLdzh;
+  }
+  function fbApply() {
+    const l=fbLr();
+    FB.w-=l*FB.dw; FB.bh-=l*FB.dbh; FB.v-=l*FB.dv; FB.bo-=l*FB.dbo;
+  }
+
+  window.fbTrain = function(n) {
+    for(let i=0;i<n;i++){fbFwd();fbGrads();fbApply();FB.epoch++;FB.hist.push(FB.loss);}
+    fbFwd(); fbGrads(); fbUpdateStats(); fbDraw(); fbDrawLoss();
+  };
+  window.fbReset = function() {
+    FB={w:0.5,bh:0.1,v:0.5,bo:0.1,x:2,y:1,zh:0,h:0,zo:0,o:0,loss:0,dw:0,dbh:0,dv:0,dbo:0,epoch:0,hist:[]};
+    fbFwd(); fbGrads(); fbUpdateStats(); fbDraw(); fbDrawLoss();
+    document.querySelector('#fbPanel').innerHTML='<strong>Click any neuron</strong> to see the math for that step.';
+  };
+
+  function fbUpdateStats() {
+    document.querySelector('#fb-ep').textContent   = FB.epoch;
+    document.querySelector('#fb-o').textContent    = f4(FB.o);
+    document.querySelector('#fb-loss').textContent = f4(FB.loss);
+  }
+
+  const FB_INFOS = {
+    xFwd: () => `<strong>Input neuron — x = ${FB.x}</strong><br>Raw input value. No math here — it flows forward multiplied by weight w.<div class="math">value passed forward = ${FB.x}</div>`,
+    hFwd: () => `<strong>Hidden neuron — forward pass</strong><div class="math">z  = w \u00d7 x + b_hidden\nz  = ${f3(FB.w)} \u00d7 ${FB.x} + ${f3(FB.bh)} = ${f4(FB.zh)}\nh  = sigmoid(z) = 1 / (1 + e^\u22122)\nh  = <span class="good">${f4(FB.h)}</span></div>h is what gets passed to the output neuron.`,
+    oFwd: () => `<strong>Output neuron — forward pass</strong><div class="math">z  = v \u00d7 h + b_output\nz  = ${f3(FB.v)} \u00d7 ${f3(FB.h)} + ${f3(FB.bo)} = ${f4(FB.zo)}\no  = sigmoid(z) = <span class="good">${f4(FB.o)}</span></div>MSE loss = (${f3(FB.o)} \u2212 1.0)\u00b2 = <span class="blame">${f4(FB.loss)}</span>`,
+    target: () => `<strong>Target = 1</strong><div class="math">prediction = ${f4(FB.o)}\ntarget     = 1.0000\nerror      = ${f4(FB.o-FB.y)}\nMSE loss   = error\u00b2 = ${f4(FB.loss)}</div><span class="${FB.loss<0.01?'good':'blame'}">${FB.loss<0.01?'Loss is small \u2014 network is learning!':'Loss is high \u2014 keep training!'}</span>`,
+    oBwd: () => `<strong>Output neuron — backward pass</strong><br>Blame starts here.<div class="math">error       = o \u2212 target = ${f4(FB.o)} \u2212 1.0 = <span class="blame">${f4(FB.o-FB.y)}</span>\nsigmoid'(z) = o \u00d7 (1\u2212o) = ${f3(FB.o)} \u00d7 ${f3(1-FB.o)} = ${f4(fbSigD(FB.zo))}\ngrad_v      = error \u00d7 sigmoid'(z) \u00d7 h = <span class="blame">${f4(FB.dv)}</span>\ngrad_bo     = error \u00d7 sigmoid'(z) = <span class="blame">${f4(FB.dbo)}</span></div>v nudged by \u2212${fbLr().toFixed(2)} \u00d7 ${f4(FB.dv)} = <span class="good">${f4(-fbLr()*FB.dv)}</span>`,
+    hBwd: () => `<strong>Hidden neuron — backward pass</strong><br>Blame travels back through v.<div class="math">sigmoid'(z_h) = h \u00d7 (1\u2212h) = ${f3(FB.h)} \u00d7 ${f3(1-FB.h)} = ${f4(fbSigD(FB.zh))}\ngrad_w  = error \u00d7 sigmoid'(z_out) \u00d7 v \u00d7 sigmoid'(z_h) \u00d7 x\n        = <span class="blame">${f4(FB.dw)}</span>\ngrad_bh = same chain, no x factor\n        = <span class="blame">${f4(FB.dbh)}</span></div>w nudged by \u2212${fbLr().toFixed(2)} \u00d7 ${f4(FB.dw)} = <span class="good">${f4(-fbLr()*FB.dw)}</span>`,
+    xBwd: () => `<strong>Input — gradient arrives</strong><br>The full chain is complete.<div class="math">grad_w   = <span class="blame">${f4(FB.dw)}</span>\nnew w    = ${f3(FB.w)} \u2212 ${fbLr().toFixed(2)} \u00d7 ${f4(FB.dw)} = <span class="good">${f4(FB.w-fbLr()*FB.dw)}</span>\n\ngrad_bh  = <span class="blame">${f4(FB.dbh)}</span>\nnew b_h  = ${f3(FB.bh)} \u2212 ${fbLr().toFixed(2)} \u00d7 ${f4(FB.dbh)} = <span class="good">${f4(FB.bh-fbLr()*FB.dbh)}</span></div>`,
+  };
+
+  const FB_NODES = {
+    xFwd: {row:'fwd',col:0,label:'x', sub:()=>`val=${FB.x}`,       color:'amber'},
+    hFwd: {row:'fwd',col:1,label:'h', sub:()=>f4(FB.h),            color:'blue'},
+    oFwd: {row:'fwd',col:2,label:'o', sub:()=>f4(FB.o),            color:'green'},
+    target:{row:'fwd',col:3,label:'1',sub:()=>'target',             color:'gray',square:true},
+    xBwd: {row:'bwd',col:0,label:'x', sub:()=>`val=${FB.x}`,       color:'amber'},
+    hBwd: {row:'bwd',col:1,label:'h', sub:()=>`g=${f4(FB.dbh)}`,   color:'blue'},
+    oBwd: {row:'bwd',col:2,label:'o', sub:()=>`g=${f4(FB.dbo)}`,   color:'green'},
+  };
+  const FB_COLS = {
+    amber:{fill:'#FAEEDA',stroke:'#854F0B',text:'#633806',sub:'#854F0B'},
+    blue: {fill:'#E6F1FB',stroke:'#185FA5',text:'#0C447C',sub:'#185FA5'},
+    green:{fill:'#EAF3DE',stroke:'#3B6D11',text:'#27500A',sub:'#3B6D11'},
+    gray: {fill:'#F1EFE8',stroke:'#5F5E5A',text:'#444441',sub:'#5F5E5A'},
+  };
+
+  let fbHovered = null;
+
+  function fbLayout(canvas) {
+    const W=canvas.offsetWidth||640;
+    return {W, rowY:{fwd:88,bwd:238}, cols:[W*0.12,W*0.38,W*0.64,W*0.88], R:34};
+  }
+  function fbNodePos(key,L) {
+    const n=FB_NODES[key];
+    return {x:L.cols[n.col], y:L.rowY[n.row]};
+  }
+
+  window.drawFwdBwd = function() {
+    const canvas=document.querySelector('#fbCanvas');
+    if(!canvas||canvas.offsetWidth===0){requestAnimationFrame(drawFwdBwd);return;}
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.offsetWidth;
+    const H=320;
+    canvas.width=W*dpr; canvas.height=H*dpr; canvas.style.height=H+'px';
+    const ctx=canvas.getContext('2d');
+    ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,H);
+
+    const isDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+    const L=fbLayout(canvas);
+    const {rowY,cols,R}=L;
+    const fwdC=isDark?'#378ADD':'#185FA5';
+    const bwdC=isDark?'#E24B4A':'#A32D2D';
+    const mutC=isDark?'#9c9a92':'#73726c';
+    const bgP=isDark?'rgba(20,20,18,0.92)':'rgba(255,255,255,0.92)';
+
+    function aHead(x1,y1,x2,y2,col){
+      const a=Math.atan2(y2-y1,x2-x1),len=10;
+      ctx.save(); ctx.strokeStyle=col; ctx.lineWidth=1.5;
+      ctx.beginPath();
+      ctx.moveTo(x2-len*Math.cos(a-0.4),y2-len*Math.sin(a-0.4)); ctx.lineTo(x2,y2);
+      ctx.moveTo(x2-len*Math.cos(a+0.4),y2-len*Math.sin(a+0.4)); ctx.lineTo(x2,y2);
+      ctx.stroke(); ctx.restore();
+    }
+    function dArrow(x1,y1,x2,y2,col,label,above){
+      ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2,y2);
+      ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.stroke();
+      aHead(x1,y1,x2,y2,col);
+      if(label){
+        const mx=(x1+x2)/2, my=(y1+y2)/2+(above?-13:13);
+        ctx.font='500 11px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+        const tw=ctx.measureText(label).width+8;
+        ctx.fillStyle=bgP; ctx.fillRect(mx-tw/2,my-8,tw,16);
+        ctx.fillStyle=col; ctx.fillText(label,mx,my);
+      }
+    }
+    function dNode(key){
+      const n=FB_NODES[key];
+      const pos=fbNodePos(key,L);
+      const isH=fbHovered===key;
+      const col=FB_COLS[n.color];
+      const fill=isH?col.stroke:col.fill;
+      if(n.square){ ctx.beginPath(); ctx.roundRect(pos.x-R,pos.y-R*0.9,R*2,R*1.8,8); }
+      else { ctx.beginPath(); ctx.arc(pos.x,pos.y,R,0,Math.PI*2); }
+      ctx.fillStyle=fill; ctx.fill();
+      ctx.strokeStyle=col.stroke; ctx.lineWidth=isH?2.5:1; ctx.stroke();
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=isH?'#fff':col.text; ctx.font='500 14px sans-serif';
+      ctx.fillText(n.label,pos.x,pos.y-8);
+      ctx.fillStyle=isH?'rgba(255,255,255,0.85)':col.sub; ctx.font='400 10px sans-serif';
+      ctx.fillText(n.sub(),pos.x,pos.y+8);
+      ctx.font='400 10px sans-serif'; ctx.fillStyle=mutC; ctx.textAlign='center';
+      if(key==='hFwd'||key==='hBwd') ctx.fillText(`b=${f3(FB.bh)}`,pos.x,pos.y+R+15);
+      if(key==='oFwd'||key==='oBwd') ctx.fillText(`b=${f3(FB.bo)}`,pos.x,pos.y+R+15);
+    }
+
+    ctx.font='500 11px sans-serif'; ctx.textAlign='left';
+    ctx.fillStyle=fwdC; ctx.fillText('Forward pass', cols[0]-28, 18);
+    ctx.font='400 11px sans-serif'; ctx.fillStyle=mutC;
+    ctx.fillText('data flows left \u2192 right', cols[0]+82, 18);
+    ctx.font='500 11px sans-serif'; ctx.fillStyle=bwdC;
+    ctx.fillText('Backward pass', cols[0]-28, 168);
+    ctx.font='400 11px sans-serif'; ctx.fillStyle=mutC;
+    ctx.fillText('blame flows right \u2192 left', cols[0]+90, 168);
+
+    dArrow(cols[0]+R,rowY.fwd,cols[1]-R,rowY.fwd,fwdC,`w=${f3(FB.w)}`,true);
+    dArrow(cols[1]+R,rowY.fwd,cols[2]-R,rowY.fwd,fwdC,`v=${f3(FB.v)}`,true);
+    dArrow(cols[2]+R,rowY.fwd,cols[3]-R,rowY.fwd,fwdC,null,true);
+    ctx.save(); ctx.setLineDash([4,4]);
+    ctx.strokeStyle=isDark?'rgba(255,255,255,0.15)':'rgba(0,0,0,0.12)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(cols[2],rowY.fwd+R+2); ctx.lineTo(cols[2],rowY.bwd-R-2); ctx.stroke();
+    ctx.restore();
+    dArrow(cols[2]-R,rowY.bwd,cols[1]+R,rowY.bwd,bwdC,`grad=${f4(FB.dv)}`,false);
+    dArrow(cols[1]-R,rowY.bwd,cols[0]+R,rowY.bwd,bwdC,`grad=${f4(FB.dw)}`,false);
+
+    Object.keys(FB_NODES).forEach(dNode);
+    ctx.font='400 11px sans-serif'; ctx.textAlign='center'; ctx.fillStyle=mutC;
+    ctx.fillText('click any neuron to see the math', W/2, H-10);
+  };
+
+  function fbDrawLoss(){
+    const canvas=document.querySelector('#fbLoss');
+    const dpr=window.devicePixelRatio||1;
+    const W=canvas.offsetWidth||640;
+    canvas.width=W*dpr; canvas.height=56*dpr; canvas.style.height='56px';
+    const ctx=canvas.getContext('2d');
+    ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,56);
+    const hist=FB.hist;
+    if(hist.length<2)return;
+    const maxL=Math.max(...hist,0.001);
+    ctx.strokeStyle='#1D9E75'; ctx.lineWidth=1.5; ctx.beginPath();
+    hist.forEach((l,i)=>{
+      const px=(i/(hist.length-1))*(W-20)+10;
+      const py=50-(l/maxL)*42;
+      i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    });
+    ctx.stroke();
+    ctx.fillStyle='rgba(29,158,117,0.08)';
+    ctx.lineTo(W-10,50); ctx.lineTo(10,50); ctx.closePath(); ctx.fill();
+  }
+
+  function fbHitTest(canvas,mx,my){
+    const L=fbLayout(canvas);
+    for(const key of Object.keys(FB_NODES)){
+      const pos=fbNodePos(key,L);
+      const dx=mx-pos.x, dy=my-pos.y;
+      if(Math.sqrt(dx*dx+dy*dy)<L.R+6) return key;
+    }
+    return null;
+  }
+
+  const fbCanvas = document.querySelector('#fbCanvas');
+  fbCanvas.addEventListener('mousemove',e=>{
+    const rect=fbCanvas.getBoundingClientRect();
+    const sx=fbCanvas.offsetWidth/rect.width, sy=fbCanvas.offsetHeight/rect.height;
+    const hit=fbHitTest(fbCanvas,(e.clientX-rect.left)*sx,(e.clientY-rect.top)*sy);
+    if(hit!==fbHovered){fbHovered=hit;fbCanvas.style.cursor=hit?'pointer':'default';drawFwdBwd();}
+  });
+  fbCanvas.addEventListener('mouseleave',()=>{fbHovered=null;fbCanvas.style.cursor='default';drawFwdBwd();});
+  fbCanvas.addEventListener('click',e=>{
+    const rect=fbCanvas.getBoundingClientRect();
+    const sx=fbCanvas.offsetWidth/rect.width, sy=fbCanvas.offsetHeight/rect.height;
+    const hit=fbHitTest(fbCanvas,(e.clientX-rect.left)*sx,(e.clientY-rect.top)*sy);
+    if(hit) document.querySelector('#fbPanel').innerHTML=FB_INFOS[hit]();
+  });
+
+  document.addEventListener('click', function(e){
+    const el=e.target.closest('[id]');
+    if(!el) return;
+    const id=el.id;
+    if(id==='fb-t1')   fbTrain(1);
+    if(id==='fb-t10')  fbTrain(10);
+    if(id==='fb-t100') fbTrain(100);
+    if(id==='fb-rst')  fbReset();
+  });
+  document.addEventListener('input', function(e){
+    if(e.target.id==='fbLr') document.querySelector('#fbLrV').textContent=(+e.target.value/100).toFixed(2);
+  });
+  function fbInit(){
+    if(fbCanvas.offsetWidth>0){fbFwd();fbGrads();fbUpdateStats();drawFwdBwd();fbDrawLoss();}
+    else requestAnimationFrame(fbInit);
+  }
+  requestAnimationFrame(fbInit);
+  window.addEventListener('resize',()=>{drawFwdBwd();fbDrawLoss();});
+})();
+
+/* ── Seasoning & Blame ── */
+(function(){
+  var sw5WS=7, sw5WP=2, sw5Ep=0, sw5Hist=[], sw5KStep=0;
+  var LR_SLIDER = function(){ var el=document.getElementById('sw5-lrIn'); return el ? +el.value/100 : 0.1; };
+  var HAND=['light pinch','light pinch','light sprinkle','light sprinkle','moderate','moderate','medium','heavy','heavy','very heavy','very heavy'];
+  function hw(v){ return HAND[Math.min(10,Math.round(v))]; }
+  function f2(v){ return (+v).toFixed(2); }
+  function f4(v){ return (+v).toFixed(4); }
+
+  function sw5Compute(ws,wp){
+    var score=Math.max(0,Math.min(10,5-(ws-5)*0.5+(wp-5)*0.5));
+    var err=score-5, lr=LR_SLIDER();
+    var gP=2*err*0.5, gS=2*err*-0.5;
+    var nS=Math.max(0,Math.min(10,ws-lr*gS));
+    var nP=Math.max(0,Math.min(10,wp-lr*gP));
+    return {ws:ws,wp:wp,score:score,err:err,loss:err*err,gS:gS,gP:gP,nS:nS,nP:nP,
+      nextScore:Math.max(0,Math.min(10,5-(nS-5)*0.5+(nP-5)*0.5))};
+  }
+
+  var VD=[[0,1,'Way too salty','#D85A30'],[1,3,'Too salty','#C06040'],[3,4.3,'Slightly salty','#888'],[4.3,5.7,'Perfect balance!','#1D9E75'],[5.7,7,'Slightly peppery','#888'],[7,9,'Too peppery','#4080C0'],[9,10.1,'Way too peppery','#185FA5']];
+  function sw5V(s){ for(var i=0;i<VD.length;i++){if(s>=VD[i][0]&&s<VD[i][1])return{l:VD[i][2],c:VD[i][3]};} return{l:'',c:'#888'}; }
+  var PC=['#1D9E75','#854F0B','#534AB7'];
+
+  function sw5ML(math,words,col){
+    return '<div class="mline"><div class="mmath" style="color:'+(col||'var(--color-text-primary,#1a1a18)')+';">'+math+'</div><div class="msep"></div><div class="mwords">'+words+'</div></div>';
+  }
+
+  function sw5Card(S){
+    var eC=S.err<-0.2?'#D85A30':S.err>0.2?'#185FA5':'#1D9E75';
+    var eBg=S.err<-0.2?'#FAEEDA':S.err>0.2?'#E6F1FB':'#EAF3DE';
+    var eTx=S.err<-0.2?'#633806':S.err>0.2?'#0C447C':'#085041';
+    var sPct=Math.min(100,Math.abs(S.gS)/5*100);
+    var pPct=Math.min(100,Math.abs(S.gP)/5*100);
+    var sDir=S.gS<-0.05?'lighten salt hand':S.gS>0.05?'heavier salt hand':'salt is just right';
+    var pDir=S.gP>0.05?'lighten pepper hand':S.gP<-0.05?'heavier pepper hand':'pepper is just right';
+    var sArr=S.nS<S.ws?'&darr;':S.nS>S.ws?'&uarr;':'&mdash;';
+    var pArr=S.nP<S.wp?'&darr;':S.nP>S.wp?'&uarr;':'&mdash;';
+    var sAC=S.nS<S.ws?'#D85A30':'#1D9E75';
+    var pAC=S.nP<S.wp?'#185FA5':'#1D9E75';
+    var lr=LR_SLIDER();
+
+    if(sw5KStep===0) return '<div class="step-card" style="background:'+eBg+';"><div class="step-title" style="color:'+eTx+';">Round '+sw5Ep+' &mdash; how far off is the score from 5?</div><div class="mblock" style="border:1.5px solid '+eC+'30;"><div class="mhdr" style="background:'+eC+'18;color:'+eTx+';">the mistake</div>'+sw5ML('mistake &nbsp;= score &minus; target','our score minus the target of 5',eTx)+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = '+f2(S.score)+' &minus; 5.0','critic gave us '+f2(S.score),eC)+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = <b>'+f2(S.err)+'</b>',S.err<-0.2?'<b>negative</b> &mdash; fell '+f2(Math.abs(S.err))+' below target':S.err>0.2?'<b>positive</b> &mdash; went '+f2(S.err)+' above target':'<b>near zero</b> &mdash; almost perfect!',eC)+sw5ML('loss &nbsp;&nbsp;&nbsp;&nbsp; = mistake&sup2; = <b>'+f2(S.loss)+'</b>','squared error &mdash; this is MSE',eTx)+'</div><div style="background:#fff;border:2px solid '+eC+';border-radius:10px;padding:12px 16px;font-size:13px;color:'+eTx+';line-height:1.6;">'+(S.err<-0.2?'&#x1F9C2; w_salt='+f2(S.ws)+' is dragging the score below 5.':S.err>0.2?'&#x1F336; w_pepper='+f2(S.wp)+' is pushing the score above 5.':'&#x1F44C; After '+sw5Ep+' round'+(sw5Ep!==1?'s':'')+' the weights have converged!')+'</div></div>';
+
+    if(sw5KStep===1) return '<div class="step-card" style="background:var(--color-background-secondary,#f5f4ed);"><div class="step-title">Which weight caused the mistake?</div><div class="mblock" style="border:1.5px solid #D85A3030;margin-bottom:16px;"><div class="mhdr" style="background:#FAEEDA;color:#633806;">&#x1F9C2; w_salt = '+f2(S.ws)+'</div>'+sw5ML('influence = &minus;0.5 per unit','each unit pulls score <b>down</b> by 0.5','#D85A30')+sw5ML('blame &nbsp;= 2 &times; mistake &times; (&minus;0.5)','2 comes from differentiating mistake&sup2;','#888')+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 2 &times; '+f2(S.err)+' &times; (&minus;0.5) = <b>'+f2(S.gS)+'</b>',S.gS<-0.05?'over-pulled &rarr; '+sDir:S.gS>0.05?'needs higher &rarr; '+sDir:'at target','#D85A30')+'</div><div class="blame-row"><div class="blame-who"><span style="font-size:20px;">&#x1F9C2;</span><span style="font-size:13px;font-weight:500;color:#D85A30;">w_salt</span></div><div class="blame-track"><div class="blame-fill" style="background:#D85A30;width:'+sPct.toFixed(1)+'%"></div></div><span class="blame-num" style="color:#D85A30;">'+f2(S.gS)+'</span></div><div class="mblock" style="border:1.5px solid #185FA530;margin:16px 0 6px;"><div class="mhdr" style="background:#E6F1FB;color:#0C447C;">&#x1F336; w_pepper = '+f2(S.wp)+'</div>'+sw5ML('influence = +0.5 per unit','each unit pushes score <b>up</b> by 0.5','#185FA5')+sw5ML('blame &nbsp;= 2 &times; mistake &times; 0.5','same formula, same 2','#888')+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= 2 &times; '+f2(S.err)+' &times; 0.5 = <b>'+f2(S.gP)+'</b>',S.gP>0.05?'over-pushed &rarr; '+pDir:S.gP<-0.05?'needs higher &rarr; '+pDir:'at target','#185FA5')+'</div><div class="blame-row"><div class="blame-who"><span style="font-size:20px;">&#x1F336;</span><span style="font-size:13px;font-weight:500;color:#185FA5;">w_pepper</span></div><div class="blame-track"><div class="blame-fill" style="background:#185FA5;width:'+pPct.toFixed(1)+'%"></div></div><span class="blame-num" style="color:#185FA5;">'+f2(S.gP)+'</span></div></div>';
+
+    return '<div class="step-card" style="background:var(--color-background-secondary,#f5f4ed);"><div class="step-title">Nudge both weights (lr = '+f2(lr)+')</div><div class="mblock" style="border:1.5px solid #D85A3030;margin-bottom:12px;"><div class="mhdr" style="background:#FAEEDA;color:#633806;">&#x1F9C2; updating w_salt</div>'+sw5ML('new w_salt &nbsp;= old &minus; (lr &times; blame)','subtract a small fraction of blame','#888')+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '+f2(S.ws)+' &minus; ('+f2(lr)+' &times; '+f4(S.gS)+') = <b>'+f2(S.nS)+'</b>',sDir,'#D85A30')+'</div><div class="mblock" style="border:1.5px solid #185FA530;margin-bottom:12px;"><div class="mhdr" style="background:#E6F1FB;color:#0C447C;">&#x1F336; updating w_pepper</div>'+sw5ML('new w_pepper = old &minus; (lr &times; blame)','both weights update simultaneously','#888')+sw5ML('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= '+f2(S.wp)+' &minus; ('+f2(lr)+' &times; '+f4(S.gP)+') = <b>'+f2(S.nP)+'</b>',pDir,'#185FA5')+'</div><div class="update-cards"><div class="update-card" style="background:#FAEEDA;"><div style="font-size:11px;font-weight:500;color:#633806;text-transform:uppercase;margin-bottom:6px;">&#x1F9C2; w_salt</div><div style="font-size:12px;color:#854F0B;">was '+f2(S.ws)+'</div><div style="font-size:22px;color:'+sAC+';margin:4px 0;">'+sArr+'</div><div style="font-size:26px;font-weight:700;color:#633806;">'+f2(S.nS)+'</div><div style="font-size:11px;color:#854F0B;margin-top:4px;">'+sDir+'</div></div><div class="update-card" style="background:#E6F1FB;"><div style="font-size:11px;font-weight:500;color:#0C447C;text-transform:uppercase;margin-bottom:6px;">&#x1F336; w_pepper</div><div style="font-size:12px;color:#185FA5;">was '+f2(S.wp)+'</div><div style="font-size:22px;color:'+pAC+';margin:4px 0;">'+pArr+'</div><div style="font-size:26px;font-weight:700;color:#0C447C;">'+f2(S.nP)+'</div><div style="font-size:11px;color:#185FA5;margin-top:4px;">'+pDir+'</div></div></div><div class="next-score-box"><div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:6px;">Predicted score next round</div><div style="display:flex;align-items:center;justify-content:center;gap:12px;"><span style="font-size:16px;color:var(--color-text-secondary,#5f5e5a);text-decoration:line-through;">'+f2(S.score)+'</span><span style="font-size:18px;color:var(--color-text-secondary,#5f5e5a);">&rarr;</span><span style="font-size:26px;font-weight:700;color:'+(S.nextScore>4.4&&S.nextScore<5.6?'#1D9E75':'var(--color-text-primary,#1a1a18)')+';">'+f2(S.nextScore)+'</span></div><div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-top:6px;">'+(sw5Ep<5?'Keep training.':sw5Ep<20?'Getting closer each round.':'&#x2713; Converged to perfect balance.')+'</div></div></div>';
+  }
+
+  function sw5DrawLoss(){
+    var canvas=document.getElementById('sw5-lossChart');
+    if(!canvas)return;
+    var dpr=window.devicePixelRatio||1, W=canvas.offsetWidth||400;
+    canvas.width=W*dpr; canvas.height=64*dpr; canvas.style.height='64px';
+    var ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,64);
+    ctx.fillStyle='#f5f4ed'; ctx.beginPath(); ctx.roundRect(0,0,W,64,10); ctx.fill();
+    if(sw5Hist.length<2){
+      ctx.fillStyle='#73726c'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('Train to see loss history',W/2,32); return;
+    }
+    var maxL=Math.max.apply(null,sw5Hist.concat([0.001]));
+    ctx.strokeStyle='#1D9E75'; ctx.lineWidth=2; ctx.beginPath();
+    for(var i=0;i<sw5Hist.length;i++){
+      var px=(i/(sw5Hist.length-1))*(W-24)+12, py=54-(sw5Hist[i]/maxL)*44;
+      i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.fillStyle='rgba(29,158,117,0.1)';
+    ctx.lineTo((W-24)+12,54); ctx.lineTo(12,54); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#73726c'; ctx.font='11px sans-serif';
+    ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText('loss: '+f2(sw5Hist[sw5Hist.length-1]),8,4);
+    ctx.textAlign='right'; ctx.fillText('round '+sw5Hist.length,W-8,4);
+  }
+
+  function sw5Render(){
+    var S=sw5Compute(sw5WS,sw5WP);
+    var pin=document.getElementById('sw5-scorePin');
+    var circ=document.getElementById('sw5-scorePinC');
+    if(!pin||!circ)return;
+    pin.style.left=(S.score/10*100)+'%';
+    var pc=S.score<4?'#D85A30':S.score>6?'#185FA5':'#1D9E75';
+    circ.style.background=pc; circ.textContent=f2(S.score);
+    var v=sw5V(S.score);
+    var vb=document.getElementById('sw5-verdictBig');
+    if(vb){vb.textContent=v.l; vb.style.color=v.c;}
+    var wsd=document.getElementById('sw5-wSaltDisplay');
+    var wpd=document.getElementById('sw5-wPepDisplay');
+    var wsb=document.getElementById('sw5-wSaltBar');
+    var wpb=document.getElementById('sw5-wPepBar');
+    var wss=document.getElementById('sw5-wSaltSub');
+    var wps=document.getElementById('sw5-wPepSub');
+    if(wsd) wsd.textContent=f2(sw5WS);
+    if(wpd) wpd.textContent=f2(sw5WP);
+    if(wsb) wsb.style.width=(sw5WS/10*100)+'%';
+    if(wpb) wpb.style.width=(sw5WP/10*100)+'%';
+    if(wss) wss.textContent=hw(sw5WS);
+    if(wps) wps.textContent=hw(sw5WP);
+    var ep=document.getElementById('sw5-epochNum');
+    if(ep) ep.textContent=sw5Ep;
+    var sc=document.getElementById('sw5-stepCard');
+    if(sc) sc.innerHTML=sw5Card(S);
+    var sh=document.getElementById('sw5-saltHand');
+    var ph=document.getElementById('sw5-pepHand');
+    if(sh) sh.textContent=hw(sw5WS);
+    if(ph) ph.textContent=hw(sw5WP);
+    sw5DrawLoss();
+  }
+  window.seasoningRender = sw5Render;
+
+  window.sw5TrainN = function(n){
+    for(var i=0;i<n;i++){
+      var S=sw5Compute(sw5WS,sw5WP);
+      sw5Hist.push(S.loss); sw5WS=S.nS; sw5WP=S.nP; sw5Ep++;
+    }
+    sw5Render();
+  };
+  window.sw5ResetAll = function(){
+    var si=document.getElementById('sw5-saltIn');
+    var pi=document.getElementById('sw5-pepIn');
+    sw5WS=si?+si.value:7; sw5WP=pi?+pi.value:2;
+    sw5Ep=0; sw5Hist=[];
+    sw5Render();
+  };
+  window.sw5ResetRender = function(){
+    var si=document.getElementById('sw5-saltIn');
+    var pi=document.getElementById('sw5-pepIn');
+    sw5WS=si?+si.value:7; sw5WP=pi?+pi.value:2;
+    sw5Ep=0; sw5Hist=[];
+    sw5Render();
+  };
+  window.sw5SetStep = function(s){
+    sw5KStep=s;
+    var pills=document.querySelectorAll('.sw5 .spill');
+    pills.forEach(function(p,i){
+      p.classList.toggle('active',i===s);
+      p.style.background=i===s?PC[s]:'';
+    });
+    sw5Render();
+  };
+
+  document.addEventListener('click', function(e){
+    var el=e.target.closest('[id]');
+    if(!el) return;
+    var id=el.id;
+    if(id==='sw5-t1')   sw5TrainN(1);
+    if(id==='sw5-t10')  sw5TrainN(10);
+    if(id==='sw5-t100') sw5TrainN(100);
+    if(id==='sw5-rst')  sw5ResetAll();
+    if(id==='sw5-p0')   sw5SetStep(0);
+    if(id==='sw5-p1')   sw5SetStep(1);
+    if(id==='sw5-p2')   sw5SetStep(2);
+  });
+  document.addEventListener('input', function(e){
+    var id=e.target.id;
+    if(id==='sw5-saltIn'||id==='sw5-pepIn') sw5ResetRender();
+    if(id==='sw5-lrIn'){
+      var lrOut=document.getElementById('sw5-lrOut');
+      if(lrOut) lrOut.textContent=(+e.target.value/100).toFixed(2);
+    }
+  });
+
+  // Render immediately - no waiting for offsetWidth
+  sw5Render();
+})();
+
+/* ── Seasoning by Cuisine ── */
+(function(){
+  var CU=[
+    {name:'American home',  icon:'&#x1F3E0;',tS:4.5,tP:3.5,note:'Light hand on both — balanced home cooking.'},
+    {name:'Chain restaurant',icon:'&#x1F354;',tS:7.0,tP:4.5,note:'Hidden sodium from sauces. Pepper as accent.'},
+    {name:'Southern / soul', icon:'&#x1F357;',tS:8.0,tP:5.5,note:'Salty meats, gravies, brines. Coarse pepper on proteins.'},
+    {name:'Tex-Mex',         icon:'&#x1F32E;',tS:8.0,tP:4.5,note:'Cheese, salsas, spice rubs. Pepper secondary.'},
+    {name:'Italian-American',icon:'&#x1F35D;',tS:6.0,tP:4.0,note:'Tomato sauces carry salt. Pepper is a finish.'},
+    {name:'Chinese-American',icon:'&#x1F961;',tS:9.0,tP:4.5,note:'Soy sauce dominates. One of the saltiest cuisines.'},
+    {name:'Indian-American', icon:'&#x1F35B;',tS:8.0,tP:5.0,note:'Gravies and pickles are salty. Spice blends over pepper.'},
+    {name:'Pepper-forward',  icon:'&#x1F969;',tS:7.0,tP:8.5,note:'Steak au poivre, Sichuan — pepper is the hero.'},
+  ];
+  var LR=0.4;
+  function rw(){ return +(Math.random()*8+1).toFixed(1); }
+  var scWS=rw(), scWP=rw(), scEp=0, scHist=[], scKS=0, scCI=0;
+  function f2(v){ return (+v).toFixed(2); }
+
+  function scCalc(ws,wp,tS,tP){
+    var score=Math.max(0,Math.min(10,5-(ws-tS)*0.5+(wp-tP)*0.5));
+    var err=score-5, gP=2*err*0.5, gS=2*err*-0.5;
+    var nS=Math.max(0,Math.min(10,ws-LR*gS));
+    var nP=Math.max(0,Math.min(10,wp-LR*gP));
+    return{ws:ws,wp:wp,score:score,err:err,loss:err*err,gS:gS,gP:gP,nS:nS,nP:nP,
+      nextScore:Math.max(0,Math.min(10,5-(nS-tS)*0.5+(nP-tP)*0.5))};
+  }
+
+  var VD=[[-5,-2,'Way too little','#D85A30'],[-2,-0.8,'Under-seasoned','#C06040'],[-0.8,-0.2,'Slightly under','#888'],[-0.2,0.2,'Perfect! &#x1F44C;','#1D9E75'],[0.2,0.8,'Slightly over','#888'],[0.8,2,'Over-seasoned','#4080C0'],[2,5,'Way too much','#185FA5']];
+  function scV(e){ for(var i=0;i<VD.length;i++){if(e>=VD[i][0]&&e<VD[i][1])return{l:VD[i][2],c:VD[i][3]};} return{l:'',c:'#888'}; }
+  var PC=['#1D9E75','#854F0B','#534AB7'];
+
+  function ml(m,w,col){
+    return '<div class="ml"><div class="mm" style="color:'+(col||'var(--color-text-primary,#1a1a18)')+';">'+m+'</div><div class="ms"></div><div class="mw">'+w+'</div></div>';
+  }
+
+  function scCard(S,cu){
+    var eC=S.err<-0.2?'#D85A30':S.err>0.2?'#185FA5':'#1D9E75';
+    var eBg=S.err<-0.2?'#FAEEDA':S.err>0.2?'#E6F1FB':'#EAF3DE';
+    var eTx=S.err<-0.2?'#633806':S.err>0.2?'#0C447C':'#085041';
+    var sPct=Math.min(100,Math.abs(S.gS)/5*100);
+    var pPct=Math.min(100,Math.abs(S.gP)/5*100);
+    var sG=+(scWS-cu.tS).toFixed(2), pG=+(scWP-cu.tP).toFixed(2);
+    var sD=S.gS<-0.05?'increase salt ('+f2(scWS)+'&rarr;'+f2(cu.tS)+')':S.gS>0.05?'reduce salt ('+f2(scWS)+'&rarr;'+f2(cu.tS)+')':'at target';
+    var pD=S.gP>0.05?'reduce pepper ('+f2(scWP)+'&rarr;'+f2(cu.tP)+')':S.gP<-0.05?'increase pepper ('+f2(scWP)+'&rarr;'+f2(cu.tP)+')':'at target';
+    var sA=S.nS<S.ws?'&darr;':S.nS>S.ws?'&uarr;':'&mdash;';
+    var pA=S.nP<S.wp?'&darr;':S.nP>S.wp?'&uarr;':'&mdash;';
+    var sAC=S.nS<S.ws?'#D85A30':S.nS>S.ws?'#1D9E75':'#888';
+    var pAC=S.nP<S.wp?'#185FA5':S.nP>S.wp?'#1D9E75':'#888';
+
+    if(scKS===0) return '<div class="card" style="background:'+eBg+';"><div class="ctitle" style="color:'+eTx+';">Round '+scEp+' &mdash; '+cu.icon+' '+cu.name+'</div><div style="font-size:12px;color:'+eTx+';opacity:0.8;margin-bottom:12px;">Perfect for this cuisine: w_salt=<b>'+f2(cu.tS)+'</b>, w_pepper=<b>'+f2(cu.tP)+'</b></div><div class="mb" style="border:1.5px solid '+eC+'30;">'+ml('score = 5 + (w_pepper&minus;target_p)&times;0.5 &minus; (w_salt&minus;target_s)&times;0.5','how far each weight is from the cuisine ideal',eTx)+ml('&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;= <b>'+f2(S.score)+'</b>','5.0 = weights match perfectly; above/below = off target',eC)+ml('mistake = '+f2(S.score)+'&minus;5.0 = <b>'+f2(S.err)+'</b>',S.err<-0.2?'<b>negative</b> &mdash; under-seasoned for '+cu.name:S.err>0.2?'<b>positive</b> &mdash; over-seasoned for '+cu.name:'<b>near zero</b> &mdash; matches the target!',eC)+'</div><div style="background:#fff;border:2px solid '+eC+';border-radius:10px;padding:12px 16px;font-size:13px;color:'+eTx+';line-height:1.6;">'+(S.err<-0.2?'Random weights under-seasoned for '+cu.name+'. Need to reach salt='+f2(cu.tS)+', pepper='+f2(cu.tP)+'.':S.err>0.2?'Random weights over-seasoned. Need to dial back toward '+cu.name+' ideal.':'&#x2713; After '+scEp+' round'+(scEp!==1?'s':'')+' the network learned the '+cu.name+' profile!')+'</div></div>';
+
+    if(scKS===1) return '<div class="card" style="background:var(--color-background-secondary,#f5f4ed);"><div class="ctitle">'+cu.icon+' '+cu.name+' &mdash; which weight is furthest from target?</div><div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:12px;">Salt gap: '+f2(scWS)+' vs '+f2(cu.tS)+' = <b style="color:#D85A30">'+(sG>0?'+':'')+f2(sG)+'</b> &nbsp;|&nbsp; Pepper gap: '+f2(scWP)+' vs '+f2(cu.tP)+' = <b style="color:#185FA5">'+(pG>0?'+':'')+f2(pG)+'</b></div><div class="mb" style="border:1.5px solid #D85A3030;margin-bottom:14px;"><div class="mh" style="background:#FAEEDA;color:#633806;">&#x1F9C2; w_salt = '+f2(S.ws)+' (target: '+f2(cu.tS)+')</div>'+ml('influence = &minus;0.5 per unit','pulls score <b>down</b> by 0.5 per unit','#D85A30')+ml('blame = 2&times;'+f2(S.err)+'&times;(&minus;0.5) = <b>'+f2(S.gS)+'</b>',S.gS<-0.05?'too low &rarr; '+sD:S.gS>0.05?'too high &rarr; '+sD:'at target','#D85A30')+'</div><div class="br"><div class="bw"><span style="font-size:20px;">&#x1F9C2;</span><span style="font-size:13px;font-weight:500;color:#D85A30;">w_salt</span></div><div class="bt"><div class="bf" style="background:#D85A30;width:'+sPct.toFixed(1)+'%"></div></div><span class="bn" style="color:#D85A30;">'+f2(S.gS)+'</span></div><div class="mb" style="border:1.5px solid #185FA530;margin:14px 0 6px;"><div class="mh" style="background:#E6F1FB;color:#0C447C;">&#x1F336; w_pepper = '+f2(S.wp)+' (target: '+f2(cu.tP)+')</div>'+ml('influence = +0.5 per unit','pushes score <b>up</b> by 0.5 per unit','#185FA5')+ml('blame = 2&times;'+f2(S.err)+'&times;0.5 = <b>'+f2(S.gP)+'</b>',S.gP>0.05?'too high &rarr; '+pD:S.gP<-0.05?'too low &rarr; '+pD:'at target','#185FA5')+'</div><div class="br"><div class="bw"><span style="font-size:20px;">&#x1F336;</span><span style="font-size:13px;font-weight:500;color:#185FA5;">w_pepper</span></div><div class="bt"><div class="bf" style="background:#185FA5;width:'+pPct.toFixed(1)+'%"></div></div><span class="bn" style="color:#185FA5;">'+f2(S.gP)+'</span></div></div>';
+
+    return '<div class="card" style="background:var(--color-background-secondary,#f5f4ed);"><div class="ctitle">'+cu.icon+' '+cu.name+' &mdash; nudge both weights (lr='+LR+')</div><div class="mb" style="border:1.5px solid #D85A3030;margin-bottom:12px;"><div class="mh" style="background:#FAEEDA;color:#633806;">&#x1F9C2; w_salt &rarr; target '+f2(cu.tS)+'</div>'+ml('new = '+f2(S.ws)+'&minus;('+LR+'&times;'+f2(S.gS)+') = <b>'+f2(S.nS)+'</b>',sD,'#D85A30')+'</div><div class="mb" style="border:1.5px solid #185FA530;margin-bottom:12px;"><div class="mh" style="background:#E6F1FB;color:#0C447C;">&#x1F336; w_pepper &rarr; target '+f2(cu.tP)+'</div>'+ml('new = '+f2(S.wp)+'&minus;('+LR+'&times;'+f2(S.gP)+') = <b>'+f2(S.nP)+'</b>',pD,'#185FA5')+'</div><div class="uc"><div class="ucard" style="background:#FAEEDA;"><div style="font-size:11px;font-weight:500;color:#633806;text-transform:uppercase;margin-bottom:6px;">&#x1F9C2; w_salt</div><div style="font-size:12px;color:#854F0B;">was '+f2(S.ws)+'</div><div style="font-size:22px;color:'+sAC+';margin:4px 0;">'+sA+'</div><div style="font-size:26px;font-weight:700;color:#633806;">'+f2(S.nS)+'</div><div style="font-size:11px;color:#1D9E75;margin-top:4px;">target: '+f2(cu.tS)+'</div></div><div class="ucard" style="background:#E6F1FB;"><div style="font-size:11px;font-weight:500;color:#0C447C;text-transform:uppercase;margin-bottom:6px;">&#x1F336; w_pepper</div><div style="font-size:12px;color:#185FA5;">was '+f2(S.wp)+'</div><div style="font-size:22px;color:'+pAC+';margin:4px 0;">'+pA+'</div><div style="font-size:26px;font-weight:700;color:#0C447C;">'+f2(S.nP)+'</div><div style="font-size:11px;color:#1D9E75;margin-top:4px;">target: '+f2(cu.tP)+'</div></div></div><div class="ns"><div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-bottom:6px;">Predicted score next round</div><div style="display:flex;align-items:center;justify-content:center;gap:12px;"><span style="font-size:16px;color:var(--color-text-secondary,#5f5e5a);text-decoration:line-through;">'+f2(S.score)+'</span><span style="font-size:18px;">&rarr;</span><span style="font-size:26px;font-weight:700;color:'+(S.nextScore>4.4&&S.nextScore<5.6?'#1D9E75':'var(--color-text-primary,#1a1a18)')+';">'+f2(S.nextScore)+'</span></div><div style="font-size:12px;color:var(--color-text-secondary,#5f5e5a);margin-top:6px;">'+(scEp<5?'Early rounds.':scEp<20?'Converging...':'&#x2713; Learned the profile!')+'</div></div></div>';
+  }
+
+  function scDrawLoss(){
+    var canvas=document.getElementById('sc-lc');
+    if(!canvas)return;
+    var dpr=window.devicePixelRatio||1, W=canvas.offsetWidth||400;
+    canvas.width=W*dpr; canvas.height=56*dpr; canvas.style.height='56px';
+    var ctx=canvas.getContext('2d'); ctx.scale(dpr,dpr); ctx.clearRect(0,0,W,56);
+    ctx.fillStyle='#f5f4ed'; ctx.beginPath(); ctx.roundRect(0,0,W,56,10); ctx.fill();
+    if(scHist.length<2){
+      ctx.fillStyle='#73726c'; ctx.font='12px sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText('Train to see loss history',W/2,28); return;
+    }
+    var maxL=Math.max.apply(null,scHist.concat([0.001]));
+    ctx.strokeStyle='#1D9E75'; ctx.lineWidth=2; ctx.beginPath();
+    for(var i=0;i<scHist.length;i++){
+      var px=(i/(scHist.length-1))*(W-24)+12, py=48-(scHist[i]/maxL)*38;
+      i===0?ctx.moveTo(px,py):ctx.lineTo(px,py);
+    }
+    ctx.stroke();
+    ctx.fillStyle='rgba(29,158,117,0.1)';
+    ctx.lineTo((W-24)+12,48); ctx.lineTo(12,48); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#73726c'; ctx.font='11px sans-serif';
+    ctx.textAlign='left'; ctx.textBaseline='top'; ctx.fillText('loss: '+f2(scHist[scHist.length-1]),8,4);
+    ctx.textAlign='right'; ctx.fillText('round '+scHist.length,W-8,4);
+  }
+
+  function scRender(){
+    var cu=CU[scCI], S=scCalc(scWS,scWP,cu.tS,cu.tP);
+    var ep=document.getElementById('sc-ep'); if(ep) ep.textContent=scEp;
+    var tp=document.getElementById('sc-tp'); if(tp) tp.style.left='50%';
+    var sp=document.getElementById('sc-sp'); if(sp) sp.style.left=(S.score/10*100)+'%';
+    var pc=S.err<-0.2?'#D85A30':S.err>0.2?'#185FA5':'#1D9E75';
+    var circ=document.getElementById('sc-spc'); if(circ){circ.style.background=pc;circ.textContent=f2(S.score);}
+    var v=scV(S.err);
+    var vb=document.getElementById('sc-vd'); if(vb){vb.innerHTML=v.l;vb.style.color=v.c;}
+    var ws=document.getElementById('sc-ws'); if(ws) ws.textContent=f2(scWS);
+    var wp=document.getElementById('sc-wp'); if(wp) wp.textContent=f2(scWP);
+    var wsb=document.getElementById('sc-wsb'); if(wsb) wsb.style.width=(scWS/10*100)+'%';
+    var wpb=document.getElementById('sc-wpb'); if(wpb) wpb.style.width=(scWP/10*100)+'%';
+    var ts=document.getElementById('sc-ts'); if(ts) ts.textContent=f2(cu.tS);
+    var tp2=document.getElementById('sc-tp2'); if(tp2) tp2.textContent=f2(cu.tP);
+    var tsb=document.getElementById('sc-tsb'); if(tsb) tsb.style.width=(cu.tS/10*100)+'%';
+    var tpb=document.getElementById('sc-tpb'); if(tpb) tpb.style.width=(cu.tP/10*100)+'%';
+    var note=document.getElementById('sc-note'); if(note) note.innerHTML='<b>'+cu.icon+' '+cu.name+'</b> &mdash; perfect: w_salt=<b style="color:#D85A30">'+f2(cu.tS)+'</b>, w_pepper=<b style="color:#185FA5">'+f2(cu.tP)+'</b><br><span>'+cu.note+'</span>';
+    var card=document.getElementById('sc-card'); if(card) card.innerHTML=scCard(S,cu);
+    scDrawLoss();
+  }
+  window.cuisineRender = scRender;
+
+  window.scTrain = function(n){
+    var cu=CU[scCI];
+    for(var i=0;i<n;i++){var S=scCalc(scWS,scWP,cu.tS,cu.tP);scHist.push(S.loss);scWS=S.nS;scWP=S.nP;scEp++;}
+    scRender();
+  };
+  window.scReset = function(){scWS=rw();scWP=rw();scEp=0;scHist=[];scRender();};
+  window.scStep = function(s){
+    scKS=s;
+    document.querySelectorAll('.sc .pill').forEach(function(p,i){
+      p.classList.toggle('active',i===s); p.style.background=i===s?PC[s]:'';
+    });
+    scRender();
+  };
+  window.scSel = function(i){
+    scCI=i;
+    document.querySelectorAll('.sc .cc').forEach(function(c,j){c.classList.toggle('active',j===i);});
+    scWS=rw();scWP=rw();scEp=0;scHist=[];scRender();
+  };
+
+  document.addEventListener('click', function(e){
+    var el=e.target.closest('[id]');
+    var id=el ? el.id : '';
+    if(id==='sc-t1')   scTrain(1);
+    if(id==='sc-t10')  scTrain(10);
+    if(id==='sc-t100') scTrain(100);
+    if(id==='sc-rst')  scReset();
+    if(id==='sc-p0')   scStep(0);
+    if(id==='sc-p1')   scStep(1);
+    if(id==='sc-p2')   scStep(2);
+    var cc=e.target.closest('.cc');
+    if(cc&&cc.dataset&&cc.dataset.idx!==undefined) scSel(+cc.dataset.idx);
+  });
+
+  // Build cuisine grid
+  function scBuildGrid(){
+    var grid=document.getElementById('sc-grid');
+    if(!grid) return;
+    grid.innerHTML=CU.map(function(cu,i){
+      return '<div class="cc'+(i===0?' active':'')+'" data-idx="'+i+'"><div class="cc-icon">'+cu.icon+'</div><div class="cc-name">'+cu.name+'</div><div class="cr"><span style="font-size:10px;width:16px;">&#x1F9C2;</span><div class="ct"><div class="cf" style="background:#D85A30;width:'+(cu.tS/10*100)+'%"></div></div><span class="cn">'+cu.tS+'</span></div><div class="cr"><span style="font-size:10px;width:16px;">&#x1F336;</span><div class="ct"><div class="cf" style="background:#185FA5;width:'+(cu.tP/10*100)+'%"></div></div><span class="cn">'+cu.tP+'</span></div></div>';
+    }).join('');
+  }
+
+  // Run on DOMContentLoaded or immediately if already loaded
+  function scInit(){
+    scBuildGrid();
+    scRender();
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded', scInit);
+  } else {
+    scInit();
+  }
+})();
+
+/* ── EMBED: MNIST ── */
+(function(){
+  const container=document.getElementById('mnist-container');
+
+  // Edge colors — one per detector
+  const C = {
+    horiz:  { fill:'#E6F1FB', stroke:'#185FA5', text:'#0C447C', px:'#378ADD' },
+    vert:   { fill:'#EAF3DE', stroke:'#3B6D11', text:'#27500A', px:'#639922' },
+    diag:   { fill:'#FAEEDA', stroke:'#854F0B', text:'#633806', px:'#EF9F27' },
+    curve:  { fill:'#FAECE7', stroke:'#993C1D', text:'#712B13', px:'#D85A30' },
+  };
+
+  // 9×9 pixel grid for the digit "9"
+  // 0=bg, 1=horiz, 2=vert, 3=diag, 4=curve
+  const NINE = [
+    [0,0,1,1,1,1,1,0,0],
+    [0,4,4,0,0,0,4,4,0],
+    [0,2,0,0,0,0,0,2,0],
+    [0,4,4,1,1,1,4,4,0],
+    [0,0,0,0,0,0,0,2,0],
+    [0,0,0,0,0,0,0,2,0],
+    [0,0,3,0,0,0,0,2,0],
+    [0,0,0,3,0,0,2,0,0],
+    [0,0,0,0,3,3,0,0,0],
+  ];
+
+  // 4×4 filter thumbnails: rows=dark(1) or light(0)
+  const FILTERS = {
+    horiz: [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
+    vert:  [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]],
+    diag:  [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]],
+    curve: [[0,1,1,0],[1,0,0,0],[1,0,0,0],[0,1,1,0]],
+  };
+
+  const PXCOLS = [null, C.horiz.px, C.vert.px, C.diag.px, C.curve.px];
+
+  const svg = `<svg width="100%" viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <marker id="am" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- Column headers -->
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#1a1a18" x="62" y="22" text-anchor="middle">Input "9"</text>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#1a1a18" x="290" y="22" text-anchor="middle">Layer 1 — edges</text>
+<text font-family="sans-serif" font-size="12" fill="#5f5e5a" x="290" y="38" text-anchor="middle">each color = one type of edge</text>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#1a1a18" x="490" y="22" text-anchor="middle">Layer 2 — shapes</text>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#1a1a18" x="660" y="22" text-anchor="middle">Output</text>
+
+<!-- ── COLORED "9" PIXEL GRID ── -->
+${NINE.map((row,r)=>row.map((v,col)=>{
+  const x=8+col*12, y=48+r*12;
+  const fill = v===0 ? '#f1efe8' : PXCOLS[v];
+  const op   = v===0 ? '1' : '1';
+  return `<rect x="${x}" y="${y}" width="10" height="10" rx="1.5" fill="${fill}" stroke="${v===0?'#d3d1c7':'none'}" stroke-width="0.5"/>`;
+}).join('')).join('')}
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="62" y="168" text-anchor="middle">colors show which</text>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="62" y="181" text-anchor="middle">edge fires where</text>
+
+<!-- ── COLOR LEGEND ── -->
+<rect x="8" y="192" width="10" height="10" rx="2" fill="${C.horiz.px}"/>
+<text font-family="sans-serif" font-size="10" fill="#5f5e5a" x="22" y="201">horiz</text>
+<rect x="8" y="206" width="10" height="10" rx="2" fill="${C.vert.px}"/>
+<text font-family="sans-serif" font-size="10" fill="#5f5e5a" x="22" y="215">vert</text>
+<rect x="8" y="220" width="10" height="10" rx="2" fill="${C.diag.px}"/>
+<text font-family="sans-serif" font-size="10" fill="#5f5e5a" x="22" y="229">diag</text>
+<rect x="8" y="234" width="10" height="10" rx="2" fill="${C.curve.px}"/>
+<text font-family="sans-serif" font-size="10" fill="#5f5e5a" x="22" y="243">curve</text>
+
+<!-- ── LAYER 1 EDGE BOXES with filter thumbnails ── -->
+
+<!-- Horizontal edge -->
+<rect x="172" y="58" width="150" height="56" rx="8" stroke-width="0.5" fill="${C.horiz.fill}" stroke="${C.horiz.stroke}"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="${C.horiz.text}" x="270" y="81" text-anchor="middle" dominant-baseline="central">Horizontal edge</text>
+${FILTERS.horiz.map((row,r)=>row.map((v,col)=>{
+  const x=180+col*8, y=92+r*8;
+  return `<rect x="${x}" y="${y}" width="7" height="7" rx="1" fill="${v?C.horiz.px:'#fff'}" stroke="${C.horiz.stroke}" stroke-width="0.3" opacity="${v?1:0.4}"/>`;
+}).join('')).join('')}
+<text font-family="sans-serif" font-size="9" fill="${C.horiz.stroke}" x="215" y="128" text-anchor="middle">filter pattern</text>
+
+<!-- Vertical edge -->
+<rect x="172" y="146" width="150" height="56" rx="8" stroke-width="0.5" fill="${C.vert.fill}" stroke="${C.vert.stroke}"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="${C.vert.text}" x="270" y="169" text-anchor="middle" dominant-baseline="central">Vertical edge</text>
+${FILTERS.vert.map((row,r)=>row.map((v,col)=>{
+  const x=180+col*8, y=180+r*8;
+  return `<rect x="${x}" y="${y}" width="7" height="7" rx="1" fill="${v?C.vert.px:'#fff'}" stroke="${C.vert.stroke}" stroke-width="0.3" opacity="${v?1:0.4}"/>`;
+}).join('')).join('')}
+<text font-family="sans-serif" font-size="9" fill="${C.vert.stroke}" x="215" y="216" text-anchor="middle">filter pattern</text>
+
+<!-- Diagonal edge -->
+<rect x="172" y="234" width="150" height="56" rx="8" stroke-width="0.5" fill="${C.diag.fill}" stroke="${C.diag.stroke}"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="${C.diag.text}" x="270" y="257" text-anchor="middle" dominant-baseline="central">Diagonal edge</text>
+${FILTERS.diag.map((row,r)=>row.map((v,col)=>{
+  const x=180+col*8, y=268+r*8;
+  return `<rect x="${x}" y="${y}" width="7" height="7" rx="1" fill="${v?C.diag.px:'#fff'}" stroke="${C.diag.stroke}" stroke-width="0.3" opacity="${v?1:0.4}"/>`;
+}).join('')).join('')}
+<text font-family="sans-serif" font-size="9" fill="${C.diag.stroke}" x="215" y="304" text-anchor="middle">filter pattern</text>
+
+<!-- Short curve -->
+<rect x="172" y="322" width="150" height="56" rx="8" stroke-width="0.5" fill="${C.curve.fill}" stroke="${C.curve.stroke}"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="${C.curve.text}" x="270" y="345" text-anchor="middle" dominant-baseline="central">Short curve</text>
+${FILTERS.curve.map((row,r)=>row.map((v,col)=>{
+  const x=180+col*8, y=356+r*8;
+  return `<rect x="${x}" y="${y}" width="7" height="7" rx="1" fill="${v?C.curve.px:'#fff'}" stroke="${C.curve.stroke}" stroke-width="0.3" opacity="${v?1:0.4}"/>`;
+}).join('')).join('')}
+<text font-family="sans-serif" font-size="9" fill="${C.curve.stroke}" x="215" y="392" text-anchor="middle">filter pattern</text>
+
+<!-- ── LAYER 2 SHAPE BOXES ── -->
+<rect x="390" y="120" width="150" height="60" rx="8" stroke-width="0.5" fill="#E1F5EE" stroke="#0F6E56"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#085041" x="465" y="143" text-anchor="middle" dominant-baseline="central">Circular loop</text>
+<text font-family="sans-serif" font-size="11" fill="#0F6E56" x="465" y="163" text-anchor="middle" dominant-baseline="central">top of the "9"</text>
+<ellipse cx="465" cy="165" rx="0" ry="0" fill="none"/>
+
+<rect x="390" y="250" width="150" height="60" rx="8" stroke-width="0.5" fill="#E1F5EE" stroke="#0F6E56"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#085041" x="465" y="273" text-anchor="middle" dominant-baseline="central">Descending line</text>
+<text font-family="sans-serif" font-size="11" fill="#0F6E56" x="465" y="293" text-anchor="middle" dominant-baseline="central">tail of the "9"</text>
+
+<!-- ── OUTPUT ── -->
+<rect x="594" y="168" width="116" height="56" rx="8" stroke-width="1" fill="#FAEEDA" stroke="#854F0B"/>
+<text font-family="sans-serif" font-size="13" font-weight="500" fill="#633806" x="652" y="189" text-anchor="middle" dominant-baseline="central">Digit "9"</text>
+<text font-family="sans-serif" font-size="11" fill="#854F0B" x="652" y="209" text-anchor="middle" dominant-baseline="central">98.4% confidence</text>
+
+<!-- ── ARROWS: colored input → layer 1 ── -->
+<line x1="125" y1="80"  x2="170" y2="86"  stroke="${C.horiz.px}" stroke-width="1.5" fill="none" marker-end="url(#am)"/>
+<line x1="125" y1="100" x2="170" y2="174" stroke="${C.vert.px}"  stroke-width="1.5" fill="none" marker-end="url(#am)"/>
+<line x1="125" y1="115" x2="170" y2="262" stroke="${C.diag.px}"  stroke-width="1.5" fill="none" marker-end="url(#am)"/>
+<line x1="125" y1="125" x2="170" y2="350" stroke="${C.curve.px}" stroke-width="1.5" fill="none" marker-end="url(#am)"/>
+
+<!-- ── ARROWS: layer 1 → layer 2 ── -->
+<path d="M322 86  C360 86  360 150 388 150"  fill="none" stroke="${C.horiz.px}" stroke-width="1"   marker-end="url(#am)"/>
+<path d="M322 174 C355 174 355 155 388 155"  fill="none" stroke="${C.vert.px}"  stroke-width="1.5" marker-end="url(#am)"/>
+<path d="M322 262 C355 262 355 160 388 160"  fill="none" stroke="${C.diag.px}"  stroke-width="1"   marker-end="url(#am)"/>
+<path d="M322 350 C355 350 355 165 388 165"  fill="none" stroke="${C.curve.px}" stroke-width="1"   marker-end="url(#am)"/>
+<path d="M322 174 C354 174 354 270 388 270"  fill="none" stroke="${C.vert.px}"  stroke-width="1.5" marker-end="url(#am)"/>
+<path d="M322 262 C354 262 354 275 388 275"  fill="none" stroke="${C.diag.px}"  stroke-width="1"   marker-end="url(#am)"/>
+
+<!-- ── ARROWS: layer 2 → output ── -->
+<path d="M540 150 C566 150 566 186 592 186" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#am)"/>
+<path d="M540 280 C566 280 566 204 592 204" fill="none" stroke="#5DCAA5" stroke-width="1.5" marker-end="url(#am)"/>
+
+<!-- ── BOTTOM LABELS ── -->
+<line x1="62" y1="430" x2="652" y2="430" stroke="#b4b2a9" stroke-width="1.5" fill="none" marker-end="url(#am)"/>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="62"  y="448" text-anchor="middle">pixels</text>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="290" y="448" text-anchor="middle">edges &amp; curves</text>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="465" y="448" text-anchor="middle">shapes &amp; parts</text>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="652" y="448" text-anchor="middle">digit</text>
+<text font-family="sans-serif" font-size="11" fill="#5f5e5a" x="357" y="468" text-anchor="middle">increasing abstraction, receptive field grows, spatial resolution shrinks</text>
+</svg>`;
+
+  // Evaluate template literals in the svg string (using JS template engine trick)
+  const fn = new Function(
+    'C','NINE','PXCOLS','FILTERS',
+    'return `' + svg.replace(/`/g,'\\`') + '`'
+  );
+  const rendered = fn(C, NINE, PXCOLS, FILTERS);
+  container.innerHTML = '<div style="padding:1.5rem;font-family:sans-serif;background:#fff;">' + rendered + '</div>';
+})();
+</script>
+</body>
+</html>

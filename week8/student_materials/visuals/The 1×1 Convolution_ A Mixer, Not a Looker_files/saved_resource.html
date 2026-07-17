@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<!-- saved from url=(0253)https://53dc98cb-3551-44e4-99cf-5618f4ed223a.frame.claudeusercontent.com/_f/1784222791-6372/?__frame_t=ikkmU5vTgDdE-vTkruZ0DVLV.5bad497c-b5d3-4b43-8e14-513bb2194a0c.a703476d-bcd1-49e3-b760-7a7987f8f049.1784226965&__frame_v=manifest.4af8359bd414963e.json -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!--<base href="/_f/1784222791-6372/">--><base href="."><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.DUzXFHNF.js","mcp":"mcp.CLzOm9JX.js","permissions":"permissions.C9OCnDjh.js","self":"self.DqF_PxOe.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.Dp6RDy7J.js"}</script><script>(function(){"use strict";const ce="modulepreload",le=function(e){return"/"+e},ue={},x=function(t,n,u){let o=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return o.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})},K=["light","dark","system"];function G(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_init;return t!=null&&typeof t=="object"}function J(e){return e!=null&&typeof e=="object"&&e.__frame_size_poke===!0}function V(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_theme;if(t==null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&K.includes(n)}function Y(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}function z(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){n=a;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const u=n.getAttribute("href");if(!u)return;let o,s;try{o=new URL(u,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(o.protocol==="http:"||o.protocol==="https:")&&o.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:o.href},"*"))}const D={};function T(e){if(window===top)return;const t=Date.now();t-(D[e]||0)<500||(D[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const Q=2e3,U=["wheel","touchstart","touchmove","keydown","pointerdown"];let B=0;function X(e){e.isTrusted&&(B=Date.now())}function Z(){addEventListener("click",z,!0),addEventListener("auxclick",z,!0)}function ee(){for(let e=0;e<U.length;e++)addEventListener(U[e],X,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-B<Q&&T("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&T("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&T("click")},{capture:!0,passive:!0})}function te(e,t,n){const u=[...t.values()].filter(o=>o.targets.some(s=>s.startsWith(e+".")));return{wrap(o,s){const f=`${e}.${o}`,a=u.filter(i=>i.targets.includes(f));return a.length===0?(...i)=>{try{return s(...i)}catch(p){return Promise.reject(p)}}:(...i)=>{let p=i;for(const c of a){const l=c.module.parameters;if(l)try{p=l(p)}catch{return Promise.reject({code:"transform_error",id:c.id,scope:e,message:"parameters transform failed"})}}let h;try{h=s(...p)}catch(c){h=Promise.reject(c)}return h.then(c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.returns;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"returns"}),c}}return c},c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.throws;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"throws"}),Promise.reject(c)}}return Promise.reject(c)})}}}}function ne(e,t,n,u=()=>{}){const o=new Set(e.changes??[]),s=new Map;for(const f of o){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:o,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>te(f,s,u)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let u=0;for(let o=0;o<n.length;o++){const s=n[o];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&u++}if(u&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:u},"*")}catch{}})();const re=1e4,oe=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function se(e){for(const t of oe)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities??{}}),A=window.__FRAME_PREAMBLE?.transforms,k=window.__FRAME_PREAMBLE?.comments,C=/^[\w.-]+\.js$/,ie=/^[a-z][a-z0-9_-]{0,63}$/;let F=null,v=null;function N(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let I=!1;function H(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,I=!0):I&&(delete t.dataset.theme,t.style.colorScheme="",I=!1)}const E={mcp:{watchTool:{handlerArg:3}}},P=new Map;function ae(e,t){const n=P.get(e);if(!n)return;Object.assign(n.impl,t),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const u=n.queue;n.queue=[];for(const o of u){const s=t[o.method];if(s)if(E[e]?.[o.method])try{o.resolve(s(...o.args))}catch{O(o,E[e][o.method].handlerArg,{code:"transform_error",message:`${e}.${o.method} rejected its arguments`})}else s(...o.args).then(o.resolve,o.reject);else{const f={code:"capability_removed",message:`${e}.${o.method} is not in this runtime`},a=E[e]?.[o.method];if(a){O(o,a.handlerArg,f);continue}o.reject(f)}}}function $(e,t){const n=P.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const u=n.queue;n.queue=[];for(const o of u){const s=E[e]?.[o.method];if(s){O(o,s.handlerArg,t);continue}o.reject(t)}}function O(e,t,n){if(e.syncState?.dead)return;const u=e.args[t];typeof u=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{u({type:"error",error:n})}catch(o){Y(o)}})}const q=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(q&&q.writable===!1)){Z(),ee();const e=q?.value??{};N(window,"claude",e);const t=i=>{const p={impl:Object.create(null),queue:[]};P.set(i,p);const h=new Proxy(p.impl,{get:(c,l)=>{if(typeof l!="string"||l==="then"||l==="toJSON"||l==="valueOf")return;if(l==="toString")return Object.prototype.toString;const m=E[i]?.[l];return m?(...d)=>{if(typeof d[m.handlerArg]!="function")throw new TypeError(`${i}.${l} requires a handler function`);const g=c[l];if(g)return g(...d);if(c.__settled){const _={dead:!1},S={args:[...d],syncState:_};return c.__settled().catch(j=>O(S,m.handlerArg,j)),()=>{_.dead=!0}}let y=null;const w={dead:!1};return p.queue.push({method:l,args:d,resolve:_=>{y=typeof _=="function"?_:null,w.dead&&y?.()},reject:()=>{},syncState:w}),()=>{w.dead=!0,y?.()}}:(...d)=>{const g=c[l]??c.__settled;return g?g(...d):new Promise((y,w)=>{p.queue.push({method:l,args:d,resolve:y,reject:w})})}},set:()=>!1});N(e,i,h)};for(const i of Object.keys(R)){if(e[i]!==void 0){N(e,i,e[i]);continue}t(i)}let n=null,u=null,o=0;const s=i=>{i.source!==parent||!se(i.origin)||G(i.data)&&(n=i.data.__frame_init,v=i.origin,removeEventListener("message",s),clearTimeout(o),u?.())};addEventListener("message",s),parent.postMessage({__frame_connect:!0},"*");const f=new Promise(i=>{u=i,o=setTimeout(()=>{removeEventListener("message",s),i()},re)}),a=document.readyState==="loading"?new Promise(i=>document.addEventListener("DOMContentLoaded",()=>i(),{once:!0})):Promise.resolve();f.then(async()=>{if(!n||!v){for(const r of P.keys())$(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}H(n.theme);const i=v;let p=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==i)return;V(r.data)&&H(r.data.__frame_theme.theme);const b=r.data?.__fc_mode;b&&typeof b=="object"&&!p&&k&&C.test(k)&&(p=!0,h(k).then(L=>L.install?.(i,b.on===!0)).catch(()=>{}))});const h=r=>x(()=>import("/_runtime/"+r),void 0),c=Object.keys(n.capabilities??{});for(const r of c)Object.hasOwn(R,r)||ie.test(r)&&e[r]===void 0&&(t(r),$(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const l=c.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&C.test(r[1])),[m,...d]=await Promise.allSettled([A&&C.test(A)?h(A):Promise.resolve({}),...l.map(([,r])=>h(r))]),g=v;F=ne(n,m.status==="fulfilled"&&m.value?.TRANSFORMS||{},{shellOrigin:g,mount:ae},r=>parent.postMessage({__frame_cap_telemetry:r},g));const y=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},g),w=F;d.forEach((r,b)=>{const L=l[b][0];if(r.status!=="fulfilled"){y(L);return}try{r.value?.install?.(w)}catch{y(L)}});for(const[r,b]of P)b.queue.length===0&&Object.keys(b.impl).length>0||$(r,{code:c.includes(r)?"capability_disabled":"not_granted",message:"capability not available in this session"});await a,parent.postMessage({__frame_ready:!0},v);let _=-1,S=0;const j=()=>{S=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==_&&(_=r,parent.postMessage({__frame_size:!0,h:r},g))},M=()=>{S||(S=setTimeout(j,200))},W=new ResizeObserver(M);W.observe(document.documentElement),document.body&&W.observe(document.body),document.addEventListener("load",M,!0),document.fonts?.ready.then(M,()=>{}),addEventListener("beforeprint",()=>{_=-1,j()}),M(),addEventListener("message",r=>{r.source!==parent||r.origin!==g||J(r.data)&&(_=-1,M())})})}})();</script><!-- /frame-runtime --><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>The 1×1 Convolution: A Mixer, Not a Looker</title>
+<style>
+  :root {
+    --bg: #f5f8f8;
+    --surface: #fdfefe;
+    --ink: #182528;
+    --muted: #5a6b70;
+    --line: #d3dee0;
+    --cheap: #0a8a9e;
+    --cheap-soft: rgba(10, 138, 158, 0.16);
+    --cost: #d2622f;
+    --cost-soft: rgba(210, 98, 47, 0.14);
+    --mix: #6d5fae;
+    --mix-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0;
+    --on-accent: #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+      --line: #2c3c41; --cheap: #1ca5b8; --cheap-soft: rgba(28, 165, 184, 0.22);
+      --cost: #d96c2c; --cost-soft: rgba(217, 108, 44, 0.20);
+      --mix: #8e7dd6; --mix-soft: rgba(142, 125, 214, 0.26);
+      --chip-bg: #1e2d32; --on-accent: #0c1517;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+    --line: #2c3c41; --cheap: #1ca5b8; --cheap-soft: rgba(28, 165, 184, 0.22);
+    --cost: #d96c2c; --cost-soft: rgba(217, 108, 44, 0.20);
+    --mix: #8e7dd6; --mix-soft: rgba(142, 125, 214, 0.26);
+    --chip-bg: #1e2d32; --on-accent: #0c1517;
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f8f8; --surface: #fdfefe; --ink: #182528; --muted: #5a6b70;
+    --line: #d3dee0; --cheap: #0a8a9e; --cheap-soft: rgba(10, 138, 158, 0.16);
+    --cost: #d2622f; --cost-soft: rgba(210, 98, 47, 0.14);
+    --mix: #6d5fae; --mix-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0; --on-accent: #ffffff;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Avenir Next", "Seravek", system-ui, sans-serif;
+    line-height: 1.6; padding: 3rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+
+  header .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--mix); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; text-wrap: balance; margin-bottom: 0.6rem; }
+  header p.lede { color: var(--muted); max-width: 46rem; font-size: 1.02rem; }
+  header p.lede strong { color: var(--ink); }
+
+  .label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; color: var(--muted);
+  }
+  section { display: flex; flex-direction: column; gap: 0.9rem; }
+  section h2 { font-size: 1.22rem; font-weight: 600; text-wrap: balance; }
+  section > p { max-width: 46rem; }
+  .t-mix { color: var(--mix); font-weight: 600; }
+  .t-cost { color: var(--cost); font-weight: 600; }
+  .t-cheap { color: var(--cheap); font-weight: 600; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.25rem; overflow-x: auto;
+  }
+  code.k {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.85em;
+    background: var(--chip-bg); padding: 0.1em 0.4em; border-radius: 4px;
+  }
+
+  /* stacks & bricks */
+  .stackblock { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+  .stack { position: relative; }
+  .stack .sheet {
+    position: absolute; border: 1.5px solid var(--line); background: var(--surface);
+    border-radius: 4px;
+  }
+  .stack .sheet.top { background: var(--mix-soft); border-color: var(--mix); }
+  .stack svg.pin { position: absolute; inset: 0; overflow: visible; pointer-events: none; }
+  .stackcap {
+    font-size: 0.74rem; color: var(--muted); text-align: center; line-height: 1.4;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .stackcap strong { color: var(--ink); font-family: inherit; }
+  .flowline { display: flex; align-items: center; gap: 1.25rem; flex-wrap: nowrap; }
+  .arrow { color: var(--muted); font-size: 1.2rem; flex-shrink: 0; }
+  .opchip {
+    font-size: 0.76rem; font-weight: 600; border-radius: 999px; padding: 0.3rem 0.8rem;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: nowrap;
+    background: var(--mix-soft); box-shadow: inset 0 0 0 1.5px var(--mix); flex-shrink: 0;
+  }
+  .opchip.plain { background: var(--chip-bg); box-shadow: inset 0 0 0 1.5px var(--line); }
+
+  /* section 1: brick */
+  .brickline { min-width: 640px; }
+  .bricknote { font-size: 0.85rem; color: var(--muted); margin-top: 1rem; max-width: 46rem; }
+  .bricknote strong { color: var(--ink); }
+
+  /* section 2: pin + mixing */
+  .pinline { display: flex; align-items: center; gap: 1.25rem; min-width: 640px; margin-bottom: 1.4rem; }
+  .mixrows { display: flex; flex-direction: column; gap: 0.9rem; min-width: 620px; }
+  .mixrow { display: flex; align-items: center; gap: 0.6rem; }
+  .mixrow .rowlab {
+    width: 11rem; font-size: 0.8rem; color: var(--muted); text-align: right; flex-shrink: 0;
+  }
+  .vals { display: flex; gap: 4px; }
+  .vcell {
+    width: 42px; height: 42px; display: grid; place-items: center; border-radius: 5px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums;
+    font-size: 0.9rem; font-weight: 600;
+  }
+  .vcell.chan { background: var(--mix-soft); box-shadow: inset 0 0 0 1.5px var(--mix); }
+  .vcell.wt { background: var(--chip-bg); font-size: 0.78rem; font-weight: 500; }
+  .vcell.out { background: var(--cheap); color: var(--on-accent); width: 56px; }
+  .mixrow .eq { font-size: 1rem; color: var(--muted); font-weight: 600; }
+  .chanlabels { display: flex; gap: 4px; }
+  .chanlabels span {
+    width: 42px; text-align: center; font-size: 0.62rem; color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .mixnote { font-size: 0.85rem; color: var(--muted); margin-top: 0.9rem; max-width: 46rem; }
+  .mixnote strong { color: var(--ink); }
+
+  /* section 3: 64 filters */
+  .frows { display: flex; flex-direction: column; gap: 0.8rem; min-width: 640px; }
+  .frow { display: flex; align-items: center; gap: 0.9rem; }
+  .frow .fchip {
+    width: 15rem; text-align: center; font-size: 0.76rem; font-weight: 600;
+    border-radius: 999px; padding: 0.35rem 0.6rem; flex-shrink: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    background: var(--mix-soft); box-shadow: inset 0 0 0 1.5px var(--mix);
+  }
+  .frow .maplab { font-size: 0.8rem; color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .frow.more { color: var(--muted); font-size: 0.9rem; justify-content: flex-start; padding-left: 5rem; }
+  .sheet1 {
+    width: 52px; height: 38px; border: 1.5px solid var(--mix); background: var(--mix-soft);
+    border-radius: 4px; flex-shrink: 0;
+  }
+  .fresult { display: flex; align-items: center; gap: 1rem; margin-top: 1rem; padding-top: 1rem;
+    border-top: 1px dashed var(--line); }
+  .fresult .txt { font-size: 0.9rem; max-width: 24rem; }
+  .fresult .txt strong { color: var(--ink); }
+
+  /* problem 1: skip mismatch */
+  .fixgrid { display: flex; gap: 1.5rem; min-width: 660px; }
+  .fixcase {
+    flex: 1; border: 1px solid var(--line); border-radius: 10px; padding: 1rem;
+    display: flex; flex-direction: column; gap: 0.7rem; background: var(--bg);
+  }
+  .fixcase h3 { font-size: 0.92rem; font-weight: 600; text-align: center; }
+  .fixcase .paths { display: flex; gap: 1rem; justify-content: center; }
+  .fixcase .pathcol { display: flex; flex-direction: column; align-items: center; gap: 0.45rem; flex: 1; }
+  .pathlab { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; }
+  .pathlab.main { color: var(--muted); }
+  .pathlab.skip { color: var(--cost); }
+  .shapechip {
+    font-size: 0.76rem; font-weight: 600; padding: 0.3rem 0.7rem; border-radius: 6px;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: nowrap;
+    background: var(--surface); border: 1.5px solid var(--line);
+  }
+  .stepchip {
+    font-size: 0.7rem; padding: 0.25rem 0.6rem; border-radius: 999px; text-align: center;
+    background: var(--chip-bg); font-family: ui-monospace, "SF Mono", Menlo, monospace; line-height: 1.5;
+  }
+  .stepchip.skipfix { background: var(--cost-soft); box-shadow: inset 0 0 0 1.5px var(--cost); border-style: dashed; font-weight: 600; }
+  .downarr { color: var(--muted); line-height: 1; }
+  .verdict {
+    text-align: center; font-size: 0.88rem; font-weight: 600; padding: 0.5rem 0.6rem;
+    border-radius: 8px;
+  }
+  .verdict.bad { background: var(--cost-soft); color: var(--cost); }
+  .verdict.good { background: var(--cheap-soft); color: var(--cheap); }
+  .verdict .sub { display: block; font-weight: 500; font-size: 0.75rem; color: var(--muted); }
+  .fixcase .xin { text-align: center; }
+
+  /* problem 2: bottleneck */
+  .funnel { display: flex; align-items: center; gap: 0.7rem; min-width: 760px; }
+  .funnel .stackblock { flex-shrink: 0; }
+  .funnel .step { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; flex-shrink: 0; }
+  .funnel .cost { font-size: 0.72rem; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .barrow { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.5rem; }
+  .barrow .blab { width: 9.5rem; font-size: 0.8rem; font-weight: 600; text-align: right; flex-shrink: 0; }
+  .bartrack { flex: 1; max-width: 400px; height: 18px; background: var(--chip-bg); border-radius: 4px; }
+  .barfill { height: 100%; border-radius: 4px; }
+  .barrow .bval {
+    font-size: 0.8rem; color: var(--muted); flex-shrink: 0;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums;
+  }
+  .barrow .bval strong { color: var(--ink); }
+
+  .note {
+    border-left: 3px solid var(--mix); background: var(--surface);
+    border-radius: 0 10px 10px 0; padding: 0.9rem 1.1rem; max-width: 46rem;
+    font-size: 0.9rem; color: var(--muted);
+  }
+  .note strong { color: var(--ink); }
+
+  .takeaway {
+    border-left: 3px solid var(--mix); padding: 0.35rem 0 0.35rem 1.1rem;
+    font-size: 1.02rem; font-weight: 500; max-width: 46rem; text-wrap: balance;
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ELI5 · Convolutional networks</div>
+    <h1>The 1×1 Convolution: A Mixer, Not a Looker</h1>
+    <p class="lede">This page starts with the fact most courses skip:
+    <strong>every conv filter is a 3D brick, not a flat square</strong>. Once that clicks,
+    "1×1 conv" stops being mysterious — it's the brick shrunk to a pin — and ResNet's two
+    plumbing fixes follow in one step each.</p>
+  </header>
+
+  <section>
+    <div class="label">1 · The missing fact</div>
+    <h2>Every filter is a brick — it spans ALL input channels</h2>
+    <p>When we say "a 3×3 filter" on a 6-channel input, the filter is actually
+    <strong>3×3×6</strong> — a brick of <strong>54 weights</strong> that reads a 3×3 neighborhood
+    on <em>every one</em> of the 6 input maps at once. One brick always produces exactly
+    <strong>one</strong> output map. Want 32 output channels? Use 32 bricks.</p>
+    <div class="panel">
+      <div class="flowline brickline">
+        <div class="stackblock">
+          <div class="stack" data-stack="96,6" style="width: 121px; height: 94px;"><div class="sheet" style="width: 96px; height: 69px; left: 0px; top: 25px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 5px; top: 20px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 10px; top: 15px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 15px; top: 10px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 20px; top: 5px;"></div><div class="sheet top" style="width: 96px; height: 69px; left: 25px; top: 0px;"></div></div>
+          <div class="stackcap">input · 14×14 × <strong>6 ch</strong></div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stackblock">
+          <div class="stack" data-stack="34,6" style="width: 59px; height: 49px;"><div class="sheet" style="width: 34px; height: 24px; left: 0px; top: 25px;"></div><div class="sheet" style="width: 34px; height: 24px; left: 5px; top: 20px;"></div><div class="sheet" style="width: 34px; height: 24px; left: 10px; top: 15px;"></div><div class="sheet" style="width: 34px; height: 24px; left: 15px; top: 10px;"></div><div class="sheet" style="width: 34px; height: 24px; left: 20px; top: 5px;"></div><div class="sheet top" style="width: 34px; height: 24px; left: 25px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>one filter</strong><br>3×3×6 brick<br>54 weights</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stackblock">
+          <div class="stack" data-stack="96,1" style="width: 96px; height: 69px;"><div class="sheet top" style="width: 96px; height: 69px; left: 0px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>ONE</strong> output map<br>14×14</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stackblock">
+          <div class="opchip plain">× 32 bricks = 32 output channels</div>
+          <div class="stackcap" style="margin-top:0.4rem">filters in = channels out</div>
+        </div>
+      </div>
+      <p class="bricknote"><strong>Check it against your own Week 8 model:</strong> layer 2 is
+      "3×3" on 32 input channels, so each filter is really 3×3×32 = 288 weights (+1 bias) = 289,
+      and 289 × 32 filters = <strong>9,248</strong> — exactly what
+      <code class="k">model.summary()</code> prints. The formula
+      <code class="k">params = k_h·k_w · C_in · C_out</code> is just "brick volume × number of
+      bricks."</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">2 · So what's a 1×1 filter?</div>
+    <h2>The brick shrunk to a pin</h2>
+    <p>Set k = 1 and the brick becomes a <strong>1×1×6 pin</strong>: it sees no neighbors at all —
+    just the 6 values stacked at one pixel position, one from each channel's map (push a pin
+    through the deck of 6 transparencies; it crosses 6 numbers). Its 6 weights compute a
+    weighted sum of those values. That weighted sum is all "mixing" means:</p>
+    <div class="panel">
+      <div class="pinline">
+        <div class="stackblock">
+          <div class="stack" data-stack="96,6" data-pin="62,22" style="width: 121px; height: 94px;"><div class="sheet" style="width: 96px; height: 69px; left: 0px; top: 25px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 5px; top: 20px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 10px; top: 15px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 15px; top: 10px;"></div><div class="sheet" style="width: 96px; height: 69px; left: 20px; top: 5px;"></div><div class="sheet top" style="width: 96px; height: 69px; left: 25px; top: 0px;"></div><svg class="pin" width="121" height="94" viewBox="0 0 121 94"><line x1="97" y1="12" x2="54" y2="55" stroke="var(--ink)" stroke-width="2"></line><circle cx="97" cy="12" r="4.5" fill="var(--ink)"></circle><circle cx="62" cy="47" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle><circle cx="67" cy="42" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle><circle cx="72" cy="37" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle><circle cx="77" cy="32" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle><circle cx="82" cy="27" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle><circle cx="87" cy="22" r="3" fill="var(--mix)" stroke="var(--surface)" stroke-width="1"></circle></svg></div>
+          <div class="stackcap">the pin crosses the deck<br>at ONE pixel position</div>
+        </div>
+        <div class="arrow">→</div>
+        <div class="stackblock">
+          <div class="chanlabels"><span>ch1</span><span>ch2</span><span>ch3</span><span>ch4</span><span>ch5</span><span>ch6</span></div>
+          <div class="vals">
+            <div class="vcell chan">3</div><div class="vcell chan">0</div><div class="vcell chan">7</div>
+            <div class="vcell chan">2</div><div class="vcell chan">5</div><div class="vcell chan">1</div>
+          </div>
+          <div class="stackcap">it reads 6 numbers — that spot's score<br>from each of the 6 filters below</div>
+        </div>
+      </div>
+      <div class="mixrows">
+        <div class="mixrow">
+          <div class="rowlab">1×1 filter A — its 6 weights</div>
+          <div class="vals">
+            <div class="vcell wt">×.4</div><div class="vcell wt">×.1</div><div class="vcell wt">×.2</div>
+            <div class="vcell wt">×0</div><div class="vcell wt">×.2</div><div class="vcell wt">×.1</div>
+          </div>
+          <div class="eq">→</div>
+          <div class="vcell out">3.7</div>
+        </div>
+        <div class="mixrow">
+          <div class="rowlab">1×1 filter B — different weights</div>
+          <div class="vals">
+            <div class="vcell wt">×0</div><div class="vcell wt">×.5</div><div class="vcell wt">×−.3</div>
+            <div class="vcell wt">×.5</div><div class="vcell wt">×0</div><div class="vcell wt">×.3</div>
+          </div>
+          <div class="eq">→</div>
+          <div class="vcell out">−0.8</div>
+        </div>
+      </div>
+      <p class="mixnote">Filter A: 0.4·3 + 0.1·0 + 0.2·7 + 0·2 + 0.2·5 + 0.1·1 =
+      <strong>3.7</strong>. The same 6 weights are applied at <strong>every</strong> pixel position
+      (the pin visits all 14×14 spots), so filter A produces one full 14×14 output map. What it
+      <strong>can't</strong> do: see neighbors — no edges, no shapes. That's why 3×3 bricks keep
+      their job.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">3 · The channel change</div>
+    <h2>256 → 64 isn't one filter — it's 64 pins, each making one map</h2>
+    <p>On a 256-channel input, each 1×1 filter is a 1×1×<strong>256</strong> pin: 256 weights,
+    one weighted sum per pixel, <strong>one output map</strong>. Stack 64 such filters — each with
+    its own 256 weights, each producing its own map — and the output has 64 channels:</p>
+    <div class="panel">
+      <div class="frows">
+        <div class="frow">
+          <div class="fchip">filter #1 · 1×1×256 · 256 weights</div>
+          <div class="arrow">→</div>
+          <div class="sheet1"></div>
+          <div class="maplab">output map #1 · 14×14</div>
+        </div>
+        <div class="frow">
+          <div class="fchip">filter #2 · its own 256 weights</div>
+          <div class="arrow">→</div>
+          <div class="sheet1"></div>
+          <div class="maplab">output map #2 · 14×14</div>
+        </div>
+        <div class="frow more">⋮ &nbsp; 62 more filters, each with its own 256 weights</div>
+        <div class="frow">
+          <div class="fchip">filter #64</div>
+          <div class="arrow">→</div>
+          <div class="sheet1"></div>
+          <div class="maplab">output map #64 · 14×14</div>
+        </div>
+      </div>
+      <div class="fresult">
+        <div class="stackblock">
+          <div class="stack" data-stack="72,3" style="width: 82px; height: 62px;"><div class="sheet" style="width: 72px; height: 52px; left: 0px; top: 10px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 5px; top: 5px;"></div><div class="sheet top" style="width: 72px; height: 52px; left: 10px; top: 0px;"></div></div>
+          <div class="stackcap">stack all 64 maps<br>→ 14×14 × <strong>64 ch</strong></div>
+        </div>
+        <div class="txt"><strong>Total: 256 × 64 = 16,384 weights</strong> (+64 biases) — the
+        "16K" in the bottleneck below. In linear-algebra terms: one 64×256 matrix multiplying the
+        256-vector that lives at every pixel — the same matrix everywhere.</div>
+      </div>
+    </div>
+    <div class="note"><strong>Why this is meaningful, not just cheap:</strong> the 256 input
+    channels are 256 filters' opinions about each spot ("rim-ness: 3, fur-ness: 0, stripe-ness:
+    7…"). Each 1×1 filter is a learned recipe for a composite opinion — "wheel-ness = 0.4·rim +
+    0.2·spoke − 0.1·fur…". Sixty-four recipes turn a 256-word description into a 64-word one, at
+    every pixel, without ever looking sideways.</div>
+  </section>
+
+  <section>
+    <div class="label">4 · Problem 1</div>
+    <h2>The skip can't add mismatched shapes</h2>
+    <p>At every ResNet stage boundary the main path halves the map and doubles the channels
+    (56²×64 → 28²×128). But the ⊕ needs to compute <code class="k">x + F(x)</code> — and
+    x is still the old shape. You can't add tensors that don't line up.</p>
+    <div class="panel">
+      <div class="fixgrid">
+        <div class="fixcase">
+          <h3>Without 1×1 — broken</h3>
+          <div class="xin shapechip">x · 56² × 64</div>
+          <div class="paths">
+            <div class="pathcol">
+              <div class="pathlab main">main path</div>
+              <div class="stepchip">stage blocks<br>stride 2 · 128 filters</div>
+              <div class="downarr">↓</div>
+              <div class="shapechip">F(x) · 28² × 128</div>
+            </div>
+            <div class="pathcol">
+              <div class="pathlab skip">skip</div>
+              <div class="stepchip">carries x unchanged<br>(a bare wire)</div>
+              <div class="downarr">↓</div>
+              <div class="shapechip">x · 56² × 64</div>
+            </div>
+          </div>
+          <div class="verdict bad">⊕ ✗ &nbsp;28²×128 + 56²×64
+            <span class="sub">different sizes, different channel counts — the add is impossible</span>
+          </div>
+        </div>
+        <div class="fixcase">
+          <h3>With 1×1 — fixed</h3>
+          <div class="xin shapechip">x · 56² × 64</div>
+          <div class="paths">
+            <div class="pathcol">
+              <div class="pathlab main">main path</div>
+              <div class="stepchip">stage blocks<br>stride 2 · 128 filters</div>
+              <div class="downarr">↓</div>
+              <div class="shapechip">F(x) · 28² × 128</div>
+            </div>
+            <div class="pathcol">
+              <div class="pathlab skip">skip</div>
+              <div class="stepchip skipfix">128 pins (1×1×64)<br>stride 2</div>
+              <div class="downarr">↓</div>
+              <div class="shapechip">x′ · 28² × 128</div>
+            </div>
+          </div>
+          <div class="verdict good">⊕ ✓ &nbsp;shapes match — the add works
+            <span class="sub">cost: 64 · 128 = 8K weights — the only skips in ResNet that learn anything</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p>The 1×1 here is a <em>shape adapter</em>: stride 2 halves the map to 28², and 128 pins —
+    each blending the old 64 channels its own way — produce the new channel count. The skip stays
+    as close to "a bare wire" as the shapes allow.</p>
+  </section>
+
+  <section>
+    <div class="label">5 · Problem 2</div>
+    <h2>3×3 bricks at 256 channels are brutally expensive</h2>
+    <p>Deep in the network, channels are wide — and brick volume is
+    <code class="k">9 × C_in</code> <em>per filter</em>: one 3×3 conv at 256→256 costs
+    3·3·256·256 ≈ <span class="t-cost">590K weights</span>. The bottleneck block uses pins to
+    <span class="t-mix">compress</span>, does the spatial work with small bricks in the cheap
+    space, then <span class="t-mix">re-expands</span>:</p>
+    <div class="panel">
+      <div class="funnel">
+        <div class="stackblock">
+          <div class="stack" data-stack="72,8" style="width: 107px; height: 87px;"><div class="sheet" style="width: 72px; height: 52px; left: 0px; top: 35px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 5px; top: 30px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 10px; top: 25px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 15px; top: 20px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 20px; top: 15px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 25px; top: 10px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 30px; top: 5px;"></div><div class="sheet top" style="width: 72px; height: 52px; left: 35px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>256 ch</strong></div>
+        </div>
+        <div class="step">
+          <div class="opchip">64 pins (1×1×256)</div>
+          <div class="cost">256·64 ≈ 16K</div>
+        </div>
+        <div class="stackblock">
+          <div class="stack" data-stack="72,3" style="width: 82px; height: 62px;"><div class="sheet" style="width: 72px; height: 52px; left: 0px; top: 10px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 5px; top: 5px;"></div><div class="sheet top" style="width: 72px; height: 52px; left: 10px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>64 ch</strong><br>summarized</div>
+        </div>
+        <div class="step">
+          <div class="opchip plain">64 bricks (3×3×64)</div>
+          <div class="cost">9·64·64 ≈ 37K</div>
+        </div>
+        <div class="stackblock">
+          <div class="stack" data-stack="72,3" style="width: 82px; height: 62px;"><div class="sheet" style="width: 72px; height: 52px; left: 0px; top: 10px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 5px; top: 5px;"></div><div class="sheet top" style="width: 72px; height: 52px; left: 10px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>64 ch</strong><br>spatial work done</div>
+        </div>
+        <div class="step">
+          <div class="opchip">256 pins (1×1×64)</div>
+          <div class="cost">64·256 ≈ 16K</div>
+        </div>
+        <div class="stackblock">
+          <div class="stack" data-stack="72,8" style="width: 107px; height: 87px;"><div class="sheet" style="width: 72px; height: 52px; left: 0px; top: 35px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 5px; top: 30px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 10px; top: 25px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 15px; top: 20px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 20px; top: 15px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 25px; top: 10px;"></div><div class="sheet" style="width: 72px; height: 52px; left: 30px; top: 5px;"></div><div class="sheet top" style="width: 72px; height: 52px; left: 35px; top: 0px;"></div></div>
+          <div class="stackcap"><strong>256 ch</strong><br>full vocabulary back</div>
+        </div>
+      </div>
+      <div style="margin-top: 1.25rem">
+        <div class="barrow">
+          <div class="blab">one 3×3 at 256 ch</div>
+          <div class="bartrack"><div class="barfill" style="width:100%; background: var(--cost)"></div></div>
+          <div class="bval"><strong>590K</strong> weights</div>
+        </div>
+        <div class="barrow">
+          <div class="blab">bottleneck (1×1 · 3×3 · 1×1)</div>
+          <div class="bartrack"><div class="barfill" style="width:11.8%; background: var(--cheap)"></div></div>
+          <div class="bval"><strong>70K</strong> weights — ×8.5 cheaper</div>
+        </div>
+      </div>
+    </div>
+    <p>The ELI5: 256 channels = a committee of 256 opinions at every pixel. The first set of pins
+    <strong>elects 64 delegates</strong> (each a learned blend of all 256 opinions), the expensive
+    3×3 meeting happens with just the delegates, and the last pins <strong>report back</strong> to
+    all 256 seats. Only the middle step ever looks at neighboring pixels — and it runs in the
+    cheap room. This sandwich is why ResNet-50/101/152 exist; ResNet-18/34 use plain 3×3 blocks
+    and simply couldn't afford to go deeper.</p>
+  </section>
+
+  <p class="takeaway">A filter is a brick that spans all input channels and always yields one
+  output map — a 1×1 filter is that brick shrunk to a pin: C_in weights blending the stacked
+  scores at each pixel. 64 pins = 64 new channels. ResNet uses pins twice: as a shape adapter so
+  the skip's add works, and as the compress-work-expand sandwich that made 152 layers affordable.</p>
+</div>
+
+<script>
+  (function () {
+    document.querySelectorAll(".stack").forEach(function (s) {
+      var spec = s.getAttribute("data-stack").split(",");
+      var w = parseInt(spec[0], 10), count = parseInt(spec[1], 10);
+      var off = 5, h = Math.round(w * 0.72);
+      var W = w + off * (count - 1), H = h + off * (count - 1);
+      s.style.width = W + "px";
+      s.style.height = H + "px";
+      for (var i = 0; i < count; i++) {
+        var sheet = document.createElement("div");
+        sheet.className = "sheet" + (i === count - 1 ? " top" : "");
+        sheet.style.width = w + "px";
+        sheet.style.height = h + "px";
+        sheet.style.left = (i * off) + "px";
+        sheet.style.top = ((count - 1 - i) * off) + "px";
+        s.appendChild(sheet);
+      }
+      var pin = s.getAttribute("data-pin");
+      if (pin) {
+        var pp = pin.split(",");
+        var px = +pp[0], py = +pp[1];
+        var NS = "http://www.w3.org/2000/svg";
+        var svg = document.createElementNS(NS, "svg");
+        svg.setAttribute("class", "pin");
+        svg.setAttribute("width", W);
+        svg.setAttribute("height", H);
+        svg.setAttribute("viewBox", "0 0 " + W + " " + H);
+        var pts = [];
+        for (var j = 0; j < count; j++) {
+          pts.push([j * off + px, (count - 1 - j) * off + py]);
+        }
+        var top = pts[count - 1], bot = pts[0];
+        var line = document.createElementNS(NS, "line");
+        line.setAttribute("x1", top[0] + 10); line.setAttribute("y1", top[1] - 10);
+        line.setAttribute("x2", bot[0] - 8); line.setAttribute("y2", bot[1] + 8);
+        line.setAttribute("stroke", "var(--ink)"); line.setAttribute("stroke-width", "2");
+        svg.appendChild(line);
+        var head = document.createElementNS(NS, "circle");
+        head.setAttribute("cx", top[0] + 10); head.setAttribute("cy", top[1] - 10);
+        head.setAttribute("r", "4.5"); head.setAttribute("fill", "var(--ink)");
+        svg.appendChild(head);
+        pts.forEach(function (p) {
+          var dot = document.createElementNS(NS, "circle");
+          dot.setAttribute("cx", p[0]); dot.setAttribute("cy", p[1]);
+          dot.setAttribute("r", "3"); dot.setAttribute("fill", "var(--mix)");
+          dot.setAttribute("stroke", "var(--surface)"); dot.setAttribute("stroke-width", "1");
+          svg.appendChild(dot);
+        });
+        s.appendChild(svg);
+      }
+    });
+  })();
+</script>
+
+</body></html>

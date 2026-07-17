@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<!-- saved from url=(0253)https://f39216c9-4266-4f49-a5c0-d7001a02e314.frame.claudeusercontent.com/_f/1784203259-44d8/?__frame_t=hEHvEpBqdDsrh7AMt99Kze-U.5bad497c-b5d3-4b43-8e14-513bb2194a0c.a703476d-bcd1-49e3-b760-7a7987f8f049.1784206917&__frame_v=manifest.4af8359bd414963e.json -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!--<base href="/_f/1784203259-44d8/">--><base href="."><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.DUzXFHNF.js","mcp":"mcp.CLzOm9JX.js","permissions":"permissions.C9OCnDjh.js","self":"self.DqF_PxOe.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.Dp6RDy7J.js"}</script><script>(function(){"use strict";const ce="modulepreload",le=function(e){return"/"+e},ue={},x=function(t,n,u){let o=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return o.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})},K=["light","dark","system"];function G(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_init;return t!=null&&typeof t=="object"}function J(e){return e!=null&&typeof e=="object"&&e.__frame_size_poke===!0}function V(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_theme;if(t==null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&K.includes(n)}function Y(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}function z(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){n=a;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const u=n.getAttribute("href");if(!u)return;let o,s;try{o=new URL(u,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(o.protocol==="http:"||o.protocol==="https:")&&o.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:o.href},"*"))}const D={};function T(e){if(window===top)return;const t=Date.now();t-(D[e]||0)<500||(D[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const Q=2e3,U=["wheel","touchstart","touchmove","keydown","pointerdown"];let B=0;function X(e){e.isTrusted&&(B=Date.now())}function Z(){addEventListener("click",z,!0),addEventListener("auxclick",z,!0)}function ee(){for(let e=0;e<U.length;e++)addEventListener(U[e],X,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-B<Q&&T("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&T("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&T("click")},{capture:!0,passive:!0})}function te(e,t,n){const u=[...t.values()].filter(o=>o.targets.some(s=>s.startsWith(e+".")));return{wrap(o,s){const f=`${e}.${o}`,a=u.filter(i=>i.targets.includes(f));return a.length===0?(...i)=>{try{return s(...i)}catch(p){return Promise.reject(p)}}:(...i)=>{let p=i;for(const c of a){const l=c.module.parameters;if(l)try{p=l(p)}catch{return Promise.reject({code:"transform_error",id:c.id,scope:e,message:"parameters transform failed"})}}let h;try{h=s(...p)}catch(c){h=Promise.reject(c)}return h.then(c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.returns;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"returns"}),c}}return c},c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.throws;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"throws"}),Promise.reject(c)}}return Promise.reject(c)})}}}}function ne(e,t,n,u=()=>{}){const o=new Set(e.changes??[]),s=new Map;for(const f of o){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:o,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>te(f,s,u)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let u=0;for(let o=0;o<n.length;o++){const s=n[o];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&u++}if(u&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:u},"*")}catch{}})();const re=1e4,oe=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function se(e){for(const t of oe)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities??{}}),A=window.__FRAME_PREAMBLE?.transforms,k=window.__FRAME_PREAMBLE?.comments,C=/^[\w.-]+\.js$/,ie=/^[a-z][a-z0-9_-]{0,63}$/;let F=null,v=null;function N(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let I=!1;function H(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,I=!0):I&&(delete t.dataset.theme,t.style.colorScheme="",I=!1)}const E={mcp:{watchTool:{handlerArg:3}}},P=new Map;function ae(e,t){const n=P.get(e);if(!n)return;Object.assign(n.impl,t),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const u=n.queue;n.queue=[];for(const o of u){const s=t[o.method];if(s)if(E[e]?.[o.method])try{o.resolve(s(...o.args))}catch{O(o,E[e][o.method].handlerArg,{code:"transform_error",message:`${e}.${o.method} rejected its arguments`})}else s(...o.args).then(o.resolve,o.reject);else{const f={code:"capability_removed",message:`${e}.${o.method} is not in this runtime`},a=E[e]?.[o.method];if(a){O(o,a.handlerArg,f);continue}o.reject(f)}}}function $(e,t){const n=P.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const u=n.queue;n.queue=[];for(const o of u){const s=E[e]?.[o.method];if(s){O(o,s.handlerArg,t);continue}o.reject(t)}}function O(e,t,n){if(e.syncState?.dead)return;const u=e.args[t];typeof u=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{u({type:"error",error:n})}catch(o){Y(o)}})}const q=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(q&&q.writable===!1)){Z(),ee();const e=q?.value??{};N(window,"claude",e);const t=i=>{const p={impl:Object.create(null),queue:[]};P.set(i,p);const h=new Proxy(p.impl,{get:(c,l)=>{if(typeof l!="string"||l==="then"||l==="toJSON"||l==="valueOf")return;if(l==="toString")return Object.prototype.toString;const m=E[i]?.[l];return m?(...d)=>{if(typeof d[m.handlerArg]!="function")throw new TypeError(`${i}.${l} requires a handler function`);const g=c[l];if(g)return g(...d);if(c.__settled){const _={dead:!1},S={args:[...d],syncState:_};return c.__settled().catch(j=>O(S,m.handlerArg,j)),()=>{_.dead=!0}}let y=null;const w={dead:!1};return p.queue.push({method:l,args:d,resolve:_=>{y=typeof _=="function"?_:null,w.dead&&y?.()},reject:()=>{},syncState:w}),()=>{w.dead=!0,y?.()}}:(...d)=>{const g=c[l]??c.__settled;return g?g(...d):new Promise((y,w)=>{p.queue.push({method:l,args:d,resolve:y,reject:w})})}},set:()=>!1});N(e,i,h)};for(const i of Object.keys(R)){if(e[i]!==void 0){N(e,i,e[i]);continue}t(i)}let n=null,u=null,o=0;const s=i=>{i.source!==parent||!se(i.origin)||G(i.data)&&(n=i.data.__frame_init,v=i.origin,removeEventListener("message",s),clearTimeout(o),u?.())};addEventListener("message",s),parent.postMessage({__frame_connect:!0},"*");const f=new Promise(i=>{u=i,o=setTimeout(()=>{removeEventListener("message",s),i()},re)}),a=document.readyState==="loading"?new Promise(i=>document.addEventListener("DOMContentLoaded",()=>i(),{once:!0})):Promise.resolve();f.then(async()=>{if(!n||!v){for(const r of P.keys())$(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}H(n.theme);const i=v;let p=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==i)return;V(r.data)&&H(r.data.__frame_theme.theme);const b=r.data?.__fc_mode;b&&typeof b=="object"&&!p&&k&&C.test(k)&&(p=!0,h(k).then(L=>L.install?.(i,b.on===!0)).catch(()=>{}))});const h=r=>x(()=>import("/_runtime/"+r),void 0),c=Object.keys(n.capabilities??{});for(const r of c)Object.hasOwn(R,r)||ie.test(r)&&e[r]===void 0&&(t(r),$(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const l=c.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&C.test(r[1])),[m,...d]=await Promise.allSettled([A&&C.test(A)?h(A):Promise.resolve({}),...l.map(([,r])=>h(r))]),g=v;F=ne(n,m.status==="fulfilled"&&m.value?.TRANSFORMS||{},{shellOrigin:g,mount:ae},r=>parent.postMessage({__frame_cap_telemetry:r},g));const y=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},g),w=F;d.forEach((r,b)=>{const L=l[b][0];if(r.status!=="fulfilled"){y(L);return}try{r.value?.install?.(w)}catch{y(L)}});for(const[r,b]of P)b.queue.length===0&&Object.keys(b.impl).length>0||$(r,{code:c.includes(r)?"capability_disabled":"not_granted",message:"capability not available in this session"});await a,parent.postMessage({__frame_ready:!0},v);let _=-1,S=0;const j=()=>{S=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==_&&(_=r,parent.postMessage({__frame_size:!0,h:r},g))},M=()=>{S||(S=setTimeout(j,200))},W=new ResizeObserver(M);W.observe(document.documentElement),document.body&&W.observe(document.body),document.addEventListener("load",M,!0),document.fonts?.ready.then(M,()=>{}),addEventListener("beforeprint",()=>{_=-1,j()}),M(),addEventListener("message",r=>{r.source!==parent||r.origin!==g||J(r.data)&&(_=-1,M())})})}})();</script><!-- /frame-runtime --><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>Receptive Field Explorer: The Bicycle</title>
+<style>
+  :root {
+    --bg: #f5f8f8;
+    --surface: #fdfefe;
+    --ink: #182528;
+    --muted: #5a6b70;
+    --line: #d3dee0;
+    --accent: #0a8a9e;
+    --accent-soft: rgba(10, 138, 158, 0.14);
+    --frame: #d2622f;
+    --chip-bg: #e8eff0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+      --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.20);
+      --frame: #d96c2c; --chip-bg: #1e2d32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+    --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.20);
+    --frame: #d96c2c; --chip-bg: #1e2d32;
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f8f8; --surface: #fdfefe; --ink: #182528; --muted: #5a6b70;
+    --line: #d3dee0; --accent: #0a8a9e; --accent-soft: rgba(10, 138, 158, 0.14);
+    --frame: #d2622f; --chip-bg: #e8eff0;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Avenir Next", "Seravek", system-ui, sans-serif;
+    line-height: 1.6; padding: 3rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem; }
+
+  header .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; text-wrap: balance; margin-bottom: 0.6rem; }
+  header p.lede { color: var(--muted); max-width: 46rem; font-size: 1.02rem; }
+  header p.lede strong { color: var(--ink); }
+
+  .controls { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .controls button {
+    font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--line); border-radius: 999px;
+    padding: 0.4rem 1rem; cursor: pointer; line-height: 1.35;
+  }
+  .controls button .sub { display: block; font-size: 0.68rem; font-weight: 500; color: var(--muted); }
+  .controls button.active { border-color: var(--accent); background: var(--accent-soft); }
+  .controls button.active .sub { color: var(--accent); }
+  .controls button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+  .explorer { display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: flex-start; }
+  .stage {
+    flex: 1 1 340px; max-width: 560px; background: var(--surface);
+    border: 1px solid var(--line); border-radius: 10px; padding: 0.75rem;
+  }
+  .stage canvas { width: 100%; display: block; border-radius: 6px; cursor: crosshair; touch-action: manipulation; }
+  .stage .hint { font-size: 0.78rem; color: var(--muted); text-align: center; padding-top: 0.5rem; }
+
+  .loupe { width: 280px; flex: 0 1 280px; display: flex; flex-direction: column; gap: 0.75rem; }
+  .loupe-card {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem;
+    display: flex; flex-direction: column; gap: 0.6rem;
+  }
+  .loupe-card .label {
+    font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; color: var(--muted);
+  }
+  .loupe-card canvas {
+    width: 100%; border-radius: 6px; border: 2px solid var(--accent); display: block;
+  }
+  #cellCaption { font-size: 0.92rem; line-height: 1.5; }
+  #cellCaption strong { color: var(--accent); }
+  #cellMeta {
+    font-size: 0.74rem; color: var(--muted);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .tier-coda {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 0.9rem 1rem; font-size: 0.85rem; color: var(--muted);
+  }
+  .tier-coda strong { color: var(--ink); }
+
+  .why { max-width: 46rem; }
+  .why h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.5rem; }
+  .why p { margin-bottom: 0.6rem; }
+  .nuance {
+    border-left: 3px solid var(--frame); background: var(--surface);
+    border-radius: 0 10px 10px 0; padding: 0.9rem 1.1rem; max-width: 46rem;
+    font-size: 0.9rem; color: var(--muted);
+  }
+  .nuance strong { color: var(--ink); }
+
+  .takeaway {
+    border-left: 3px solid var(--accent); padding: 0.35rem 0 0.35rem 1.1rem;
+    font-size: 1.02rem; font-weight: 500; max-width: 46rem; text-wrap: balance;
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ELI5 · Convolutional networks · Interactive</div>
+    <h1>What Fits in One Cell? Resize the Map and See</h1>
+    <p class="lede">Same bicycle, same image — only the feature-map resolution changes.
+    <strong>Hover or tap any cell</strong> to see exactly what one activation's window contains
+    at that depth: at 28×28 a cell catches the edge of a spoke; at 3×3 it swallows the whole wheel.</p>
+  </header>
+
+  <div class="controls" role="group" aria-label="Feature map resolution">
+    <button data-n="28" class="">28×28<span class="sub">conv1 map · edge world</span></button>
+    <button data-n="14" class="">14×14<span class="sub">after pool 1 · texture world</span></button>
+    <button data-n="7" class="">7×7<span class="sub">after pool 2 · part world</span></button>
+    <button data-n="3" class="active">3×3<span class="sub">deep map · object world</span></button>
+  </div>
+
+  <div class="explorer">
+    <div class="stage">
+      <canvas id="main" aria-label="Bicycle drawing with a resizable feature-map grid overlaid" width="1120" height="1120" style="height: 560px;"></canvas>
+      <div class="hint">hover / tap a cell · use the buttons to change depth</div>
+    </div>
+    <div class="loupe">
+      <div class="loupe-card">
+        <div class="label">One cell = one activation's window</div>
+        <canvas id="loupe" aria-label="Magnified view of the selected cell" width="492" height="492" style="height: 246px;"></canvas>
+        <div id="cellCaption">This window holds most of the <strong>rear wheel</strong> — rim curve + spoke fan <em>and</em> a <strong>straight bit of frame tube</strong> — one oriented edge — several things at once.</div>
+        <div id="cellMeta">cell (2,0) of 3×3 · window ≈ 33% of image width</div>
+      </div>
+      <div class="tier-coda" id="tierCoda"><strong>Object world.</strong> One window can hold an entire wheel <em>plus</em> frame <em>plus</em> pedal. One filter answers one question, so describing all of this takes many concept channels — which is exactly what GAP hands the classifier: one number per concept.</div>
+    </div>
+  </div>
+
+  <div class="why">
+    <h2>Why this forces channel growth</h2>
+    <p>At 28×28, every window holds a <em>fragment</em> — an edge, an arc, a bit of tube. There are
+    only so many distinct fragments in the world, so ~32 filters cover the vocabulary.</p>
+    <p>At 3×3, one window can hold <em>an entire wheel, plus frame tubes, plus the crank</em> —
+    many simultaneous things. One filter answers one question (“is my pattern here?”), so describing
+    everything in that big window takes far more filters. Resolution shrinks, vocabulary grows.</p>
+  </div>
+
+  <div class="nuance">
+    <strong>One nuance for precision:</strong> a feature-map cell doesn't literally store the pixels
+    you see in the loupe — it stores <strong>one score per filter</strong> for that window
+    (32 channels = 32 numbers per cell). The loupe shows the window; the filters decide what in it
+    gets noticed. That's exactly why a richer window needs more scores.
+  </div>
+
+  <p class="takeaway">Deep in the network, “one spot on the map” means “one big region of the image.”
+  The map stops telling you <em>where</em> things are and starts telling you <em>what</em> is there —
+  and saying <em>what</em> takes more channels.</p>
+</div>
+
+<script>
+  (function () {
+    var S = 588; // logical scene size
+
+    // ---------- geometry ----------
+    var FW = { c: [432, 400], r: 100, label: "front wheel" };
+    var RW = { c: [160, 400], r: 100, label: "rear wheel" };
+    var BB = [300, 412], ST = [272, 262], HT = [424, 258], HB = [434, 296];
+    var FRAME_SEGS = [
+      [300, 412, 272, 262],  // seat tube
+      [272, 262, 422, 262],  // top tube
+      [300, 412, 430, 290],  // down tube
+      [160, 400, 272, 262],  // seat stay
+      [160, 400, 300, 412],  // chain stay
+      [424, 258, 434, 296],  // head tube
+      [434, 296, 432, 400]   // fork
+    ];
+    var BAR_SEGS = [[424, 258, 418, 240], [398, 242, 430, 232], [430, 232, 462, 248]];
+    var SEAT_SEGS = [[272, 262, 266, 240], [246, 238, 292, 236]];
+    var CRANK = { c: [300, 412], r: 30 };
+    var CRANK_SEGS = [[300, 412, 326, 444], [314, 444, 338, 444]];
+
+    function tok(name) {
+      return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+    }
+
+    // ---------- scene drawing (logical coords) ----------
+    function drawScene(ctx) {
+      var ink = tok("--ink"), muted = tok("--muted"), line = tok("--line"), frame = tok("--frame");
+      ctx.lineCap = "round"; ctx.lineJoin = "round";
+
+      // ground
+      ctx.strokeStyle = line; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(30, 504); ctx.lineTo(558, 504); ctx.stroke();
+
+      [RW, FW].forEach(function (w) {
+        var cx = w.c[0], cy = w.c[1], r = w.r;
+        // spokes
+        ctx.strokeStyle = muted; ctx.lineWidth = 2;
+        for (var i = 0; i < 14; i++) {
+          var a = (Math.PI * 2 * i) / 14 + 0.22;
+          ctx.beginPath();
+          ctx.moveTo(cx + 10 * Math.cos(a), cy + 10 * Math.sin(a));
+          ctx.lineTo(cx + 84 * Math.cos(a), cy + 84 * Math.sin(a));
+          ctx.stroke();
+        }
+        // rim
+        ctx.strokeStyle = muted; ctx.lineWidth = 3.5;
+        ctx.beginPath(); ctx.arc(cx, cy, 86, 0, Math.PI * 2); ctx.stroke();
+        // tire
+        ctx.strokeStyle = ink; ctx.lineWidth = 10;
+        ctx.beginPath(); ctx.arc(cx, cy, 100, 0, Math.PI * 2); ctx.stroke();
+        // hub
+        ctx.fillStyle = ink;
+        ctx.beginPath(); ctx.arc(cx, cy, 9, 0, Math.PI * 2); ctx.fill();
+      });
+
+      // chain
+      ctx.strokeStyle = muted; ctx.lineWidth = 3;
+      ctx.beginPath(); ctx.moveTo(168, 392); ctx.lineTo(288, 388); ctx.stroke();
+
+      // chainring + crank + pedal
+      ctx.strokeStyle = ink; ctx.lineWidth = 4;
+      ctx.beginPath(); ctx.arc(CRANK.c[0], CRANK.c[1], CRANK.r, 0, Math.PI * 2); ctx.stroke();
+      ctx.lineWidth = 5.5;
+      ctx.beginPath(); ctx.moveTo(300, 412); ctx.lineTo(326, 444); ctx.stroke();
+      ctx.lineWidth = 7;
+      ctx.beginPath(); ctx.moveTo(314, 444); ctx.lineTo(338, 444); ctx.stroke();
+
+      // frame
+      ctx.strokeStyle = frame; ctx.lineWidth = 9;
+      FRAME_SEGS.forEach(function (s) {
+        ctx.beginPath(); ctx.moveTo(s[0], s[1]); ctx.lineTo(s[2], s[3]); ctx.stroke();
+      });
+
+      // handlebars
+      ctx.strokeStyle = ink; ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(424, 258); ctx.lineTo(418, 240); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(398, 242);
+      ctx.quadraticCurveTo(430, 226, 462, 248); ctx.stroke();
+
+      // seat post + saddle
+      ctx.lineWidth = 6;
+      ctx.beginPath(); ctx.moveTo(272, 262); ctx.lineTo(266, 240); ctx.stroke();
+      ctx.lineWidth = 9;
+      ctx.beginPath(); ctx.moveTo(246, 238); ctx.lineTo(292, 236); ctx.stroke();
+    }
+
+    // ---------- caption logic ----------
+    function inCell(x, y, cell) {
+      return x >= cell.x && x < cell.x + cell.s && y >= cell.y && y < cell.y + cell.s;
+    }
+    function segFracInCell(segs, cell) {
+      var tot = 0, hit = 0;
+      segs.forEach(function (s) {
+        for (var i = 0; i <= 30; i++) {
+          var t = i / 30, x = s[0] + (s[2] - s[0]) * t, y = s[1] + (s[3] - s[1]) * t;
+          tot++; if (inCell(x, y, cell)) hit++;
+        }
+      });
+      return tot ? hit / tot : 0;
+    }
+    function wheelInfo(w, cell) {
+      var tot = 0, hit = 0, tireHit = false, spokeHit = false;
+      for (var i = 0; i < 16; i++) {
+        for (var j = 0; j < 16; j++) {
+          var x = w.c[0] - w.r + (2 * w.r * i) / 15, y = w.c[1] - w.r + (2 * w.r * j) / 15;
+          var d = Math.hypot(x - w.c[0], y - w.c[1]);
+          if (d > w.r) continue;
+          tot++;
+          if (inCell(x, y, cell)) {
+            hit++;
+            if (d > 92) tireHit = true;
+            else if (d > 14 && d < 86) spokeHit = true;
+          }
+        }
+      }
+      return { frac: tot ? hit / tot : 0, tireHit: tireHit, spokeHit: spokeHit };
+    }
+    function circleFracInCell(circle, cell) {
+      var hit = 0, n = 24;
+      for (var i = 0; i < n; i++) {
+        var a = (Math.PI * 2 * i) / n;
+        if (inCell(circle.c[0] + circle.r * Math.cos(a), circle.c[1] + circle.r * Math.sin(a), cell)) hit++;
+      }
+      return hit / n;
+    }
+
+    function buildCaption(cell) {
+      var bits = [];
+      [FW, RW].forEach(function (w) {
+        var info = wheelInfo(w, cell);
+        if (info.frac > 0.88) bits.push("the <strong>entire " + w.label + "</strong> — a whole object");
+        else if (info.frac > 0.4) bits.push("most of the <strong>" + w.label + "</strong> — rim curve + spoke fan");
+        else if (info.frac > 0.08) bits.push("a chunk of the <strong>" + w.label + "</strong> — curved rim + spoke texture");
+        else if (info.tireHit) bits.push("a short <strong>arc of the " + w.label + "'s tire</strong> — basically one curved edge");
+        else if (info.spokeHit) bits.push("<strong>spoke fragments</strong> — thin parallel-line texture");
+      });
+      var ff = segFracInCell(FRAME_SEGS, cell);
+      if (ff > 0.75) bits.push("the <strong>whole frame</strong>");
+      else if (ff > 0.2) bits.push("<strong>frame tubes meeting at a joint</strong> — a recognizable part");
+      else if (ff > 0.02) bits.push("a <strong>straight bit of frame tube</strong> — one oriented edge");
+      var bf = segFracInCell(BAR_SEGS, cell);
+      if (bf > 0.7) bits.push("the <strong>handlebars</strong>");
+      else if (bf > 0.05) bits.push("part of the <strong>handlebars</strong>");
+      var sf = segFracInCell(SEAT_SEGS, cell);
+      if (sf > 0.7) bits.push("the <strong>saddle</strong>");
+      else if (sf > 0.05) bits.push("a piece of the <strong>saddle</strong>");
+      var cf = Math.max(circleFracInCell(CRANK, cell), segFracInCell(CRANK_SEGS, cell));
+      if (cf > 0.7) bits.push("the <strong>crank & pedal</strong>");
+      else if (cf > 0.08) bits.push("part of the <strong>crank</strong>");
+
+      if (!bits.length) return "Flat <strong>background</strong> — nothing here for any filter to react to (activations stay near zero).";
+      if (bits.length === 1) return "This window holds " + bits[0] + ".";
+      return "This window holds " + bits.slice(0, -1).join(", ") + " <em>and</em> " + bits[bits.length - 1] + " — several things at once.";
+    }
+
+    var CODA = {
+      28: "<strong>Edge world.</strong> Windows this small only ever catch fragments — an arc, a line, a blob. A small vocabulary of ~32 edge/corner filters covers everything, so early layers need few channels.",
+      14: "<strong>Texture world.</strong> Windows now catch motifs — parallel spokes, rim curvature, tube crossings. Filters here combine edges into textures; the vocabulary is growing.",
+      7: "<strong>Part world.</strong> Windows catch whole parts — half a wheel, the saddle, the crank. Filters become part detectors, and there are many more distinct parts than edges.",
+      3: "<strong>Object world.</strong> One window can hold an entire wheel <em>plus</em> frame <em>plus</em> pedal. One filter answers one question, so describing all of this takes many concept channels — which is exactly what GAP hands the classifier: one number per concept."
+    };
+
+    // ---------- state + rendering ----------
+    var N = 28, sel = null;
+    var main = document.getElementById("main"), loupe = document.getElementById("loupe");
+    var caption = document.getElementById("cellCaption"), meta = document.getElementById("cellMeta");
+    var coda = document.getElementById("tierCoda");
+
+    function defaultCell() {
+      var s = S / N;
+      return { col: Math.floor(430 / s), row: Math.floor(302 / s) };
+    }
+
+    function renderMain() {
+      var dpr = window.devicePixelRatio || 1;
+      var cssW = main.clientWidth || 540;
+      main.width = cssW * dpr; main.height = cssW * dpr;
+      main.style.height = cssW + "px";
+      var ctx = main.getContext("2d");
+      var k = (cssW * dpr) / S;
+      ctx.setTransform(k, 0, 0, k, 0, 0);
+      ctx.clearRect(0, 0, S, S);
+      ctx.fillStyle = tok("--surface"); ctx.fillRect(0, 0, S, S);
+      drawScene(ctx);
+
+      var s = S / N;
+      // selected cell highlight (under grid lines)
+      if (sel) {
+        ctx.fillStyle = tok("--accent-soft");
+        ctx.fillRect(sel.col * s, sel.row * s, s, s);
+      }
+      // grid
+      ctx.strokeStyle = tok("--line"); ctx.lineWidth = N > 14 ? 0.75 : 1.25;
+      ctx.beginPath();
+      for (var i = 0; i <= N; i++) {
+        ctx.moveTo(i * s, 0); ctx.lineTo(i * s, S);
+        ctx.moveTo(0, i * s); ctx.lineTo(S, i * s);
+      }
+      ctx.stroke();
+      if (sel) {
+        ctx.strokeStyle = tok("--accent"); ctx.lineWidth = N > 14 ? 2 : 3;
+        ctx.strokeRect(sel.col * s, sel.row * s, s, s);
+      }
+    }
+
+    function renderLoupe() {
+      if (!sel) return;
+      var dpr = window.devicePixelRatio || 1;
+      var cssW = loupe.clientWidth || 246;
+      loupe.width = cssW * dpr; loupe.height = cssW * dpr;
+      loupe.style.height = cssW + "px";
+      var ctx = loupe.getContext("2d");
+      var s = S / N;
+      var k = (cssW * dpr) / s;
+      ctx.setTransform(k, 0, 0, k, -sel.col * s * k, -sel.row * s * k);
+      ctx.fillStyle = tok("--surface");
+      ctx.fillRect(sel.col * s, sel.row * s, s, s);
+      ctx.save();
+      ctx.beginPath(); ctx.rect(sel.col * s, sel.row * s, s, s); ctx.clip();
+      drawScene(ctx);
+      ctx.restore();
+
+      var cell = { x: sel.col * s, y: sel.row * s, s: s };
+      caption.innerHTML = buildCaption(cell);
+      var pct = Math.round((s / S) * 100);
+      meta.textContent = "cell (" + sel.row + "," + sel.col + ") of " + N + "×" + N +
+        " · window ≈ " + pct + "% of image width";
+      coda.innerHTML = CODA[N];
+    }
+
+    function renderAll() { renderMain(); renderLoupe(); }
+
+    function setN(n) {
+      N = n; sel = defaultCell();
+      document.querySelectorAll(".controls button").forEach(function (b) {
+        b.classList.toggle("active", +b.getAttribute("data-n") === n);
+      });
+      renderAll();
+    }
+
+    document.querySelectorAll(".controls button").forEach(function (b) {
+      b.addEventListener("click", function () { setN(+b.getAttribute("data-n")); });
+    });
+
+    function pickCell(e) {
+      var rect = main.getBoundingClientRect();
+      var pt = e.touches ? e.touches[0] : e;
+      var x = ((pt.clientX - rect.left) / rect.width) * S;
+      var y = ((pt.clientY - rect.top) / rect.height) * S;
+      if (x < 0 || y < 0 || x >= S || y >= S) return;
+      var s = S / N;
+      var col = Math.min(N - 1, Math.floor(x / s)), row = Math.min(N - 1, Math.floor(y / s));
+      if (!sel || sel.col !== col || sel.row !== row) { sel = { col: col, row: row }; renderAll(); }
+    }
+    main.addEventListener("mousemove", pickCell);
+    main.addEventListener("click", pickCell);
+    main.addEventListener("touchstart", pickCell, { passive: true });
+
+    window.addEventListener("resize", renderAll);
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", renderAll);
+    }
+    new MutationObserver(renderAll).observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+
+    setN(28);
+  })();
+</script>
+
+</body></html>

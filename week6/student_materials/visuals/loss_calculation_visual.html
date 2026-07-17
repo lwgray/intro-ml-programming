@@ -1,0 +1,422 @@
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: var(--font-sans, sans-serif); }
+
+.tabs { display: flex; gap: 6px; margin-bottom: 2rem; flex-wrap: wrap; }
+.tab { padding: 7px 18px; border-radius: 99px; border: 0.5px solid var(--color-border-secondary); background: transparent; color: var(--color-text-secondary); font-size: 13px; cursor: pointer; transition: all .15s; }
+.tab.on { background: var(--color-background-secondary); color: var(--color-text-primary); font-weight: 500; border-color: var(--color-border-primary); }
+
+.panel { display: none; }
+.panel.on { display: block; }
+
+/* sliders */
+.slider-block { margin-bottom: 1.5rem; }
+.slider-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.slider-label { font-size: 13px; color: var(--color-text-secondary); min-width: 100px; }
+.slider-row input[type=range] { flex: 1; }
+.slider-val { font-size: 15px; font-weight: 500; font-family: var(--font-mono, monospace); min-width: 36px; text-align: right; }
+
+/* THE CALCULATION DISPLAY — the main thing */
+.calc-display {
+  background: var(--color-background-secondary);
+  border-radius: var(--border-radius-lg, 12px);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* each step row */
+.step {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  margin-bottom: 0;
+  min-height: 52px;
+}
+
+/* connector between steps — the vertical pipe */
+.step-connector {
+  display: flex;
+  align-items: stretch;
+  padding: 0 0 0 20px;
+  min-height: 16px;
+}
+.step-connector-line {
+  width: 1.5px;
+  background: var(--color-border-secondary);
+  margin-left: 0;
+}
+
+/* label on left */
+.step-label {
+  font-size: 12px;
+  color: var(--color-text-secondary);
+  min-width: 100px;
+  padding-right: 12px;
+  line-height: 1.4;
+  flex-shrink: 0;
+}
+
+/* the actual math visual */
+.step-math {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+/* number tokens — the key visual element */
+.num-token {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.num-token .num {
+  font-size: 22px;
+  font-weight: 500;
+  font-family: var(--font-mono, monospace);
+  line-height: 1;
+  padding: 6px 12px;
+  border-radius: 8px;
+  min-width: 52px;
+  text-align: center;
+  transition: background .3s, color .3s;
+}
+.num-token .sublabel {
+  font-size: 11px;
+  color: var(--color-text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* colours for token types */
+.token-pred  .num { background: #E6F1FB; color: #0C447C; }
+.token-truth .num { background: #EAF3DE; color: #27500A; }
+.token-error .num { background: #FAEEDA; color: #633806; }
+.token-error-neg .num { background: #FCEBEB; color: #791F1F; }
+.token-result .num { background: #534AB7; color: #EEEDFE; font-size: 26px; padding: 8px 16px; }
+.token-result-good .num { background: #1D9E75; color: #E1F5EE; font-size: 26px; padding: 8px 16px; }
+.token-result-bad  .num { background: #D85A30; color: #FAECE7; font-size: 26px; padding: 8px 16px; }
+.token-result-ugly .num { background: #A32D2D; color: #FCEBEB; font-size: 26px; padding: 8px 16px; }
+.token-op { font-size: 20px; color: var(--color-text-secondary); font-weight: 400; padding: 0 2px; align-self: center; margin-bottom: 18px; }
+
+/* equals row — final answer */
+.equals-divider {
+  border: none;
+  border-top: 1.5px solid var(--color-border-secondary);
+  margin: 8px 0 12px 100px;
+}
+
+/* narrative sentence — plain English below each step */
+.step-narrative {
+  font-size: 13px;
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  padding: 6px 0 6px 100px;
+  margin-bottom: 4px;
+}
+.step-narrative b { color: var(--color-text-primary); font-weight: 500; }
+
+/* penalty meter */
+.penalty-meter {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 0.5px solid var(--color-border-tertiary);
+}
+.penalty-label { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .06em; font-weight: 500; }
+.penalty-track { height: 12px; background: var(--color-background-primary); border-radius: 6px; overflow: hidden; width: 100%; }
+.penalty-fill { height: 12px; border-radius: 6px; transition: width .4s, background .4s; }
+.penalty-row { display: flex; align-items: center; gap: 10px; }
+.penalty-note { font-size: 13px; color: var(--color-text-secondary); margin-top: 8px; line-height: 1.6; }
+.penalty-note b { color: var(--color-text-primary); font-weight: 500; }
+
+/* BCE special */
+.prob-visual { display: flex; height: 28px; border-radius: 6px; overflow: hidden; width: 100%; margin: 8px 0; }
+.prob-yes { background: #185FA5; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #E6F1FB; font-weight: 500; transition: width .3s; }
+.prob-no  { background: #E6F1FB; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #0C447C; font-weight: 500; transition: width .3s; }
+</style>
+
+<div style="padding: 1rem 0;">
+
+<div class="tabs">
+  <button class="tab on" id="tab-mse" onclick="show('mse')">MSE</button>
+  <button class="tab"    id="tab-mae" onclick="show('mae')">MAE</button>
+  <button class="tab"    id="tab-bce" onclick="show('bce')">Binary cross-entropy</button>
+  <button class="tab"    id="tab-cce" onclick="show('cce')">Categorical cross-entropy</button>
+</div>
+
+<!-- ══════════════════ MSE ══════════════════ -->
+<div class="panel on" id="panel-mse">
+  <div class="slider-block">
+    <div class="slider-row">
+      <span class="slider-label">Truth</span>
+      <input type="range" min="0" max="10" step="0.5" value="5" id="mse-truth">
+      <span class="slider-val" id="mse-truth-v" style="color:#27500A;">5.0</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Prediction</span>
+      <input type="range" min="0" max="10" step="0.5" value="8" id="mse-pred">
+      <span class="slider-val" id="mse-pred-v" style="color:#0C447C;">8.0</span>
+    </div>
+  </div>
+  <div class="calc-display" id="mse-calc"></div>
+</div>
+
+<!-- ══════════════════ MAE ══════════════════ -->
+<div class="panel" id="panel-mae">
+  <div class="slider-block">
+    <div class="slider-row">
+      <span class="slider-label">Truth</span>
+      <input type="range" min="0" max="10" step="0.5" value="5" id="mae-truth">
+      <span class="slider-val" id="mae-truth-v" style="color:#27500A;">5.0</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Prediction</span>
+      <input type="range" min="0" max="10" step="0.5" value="8" id="mae-pred">
+      <span class="slider-val" id="mae-pred-v" style="color:#0C447C;">8.0</span>
+    </div>
+  </div>
+  <div class="calc-display" id="mae-calc"></div>
+</div>
+
+<!-- ══════════════════ BCE ══════════════════ -->
+<div class="panel" id="panel-bce">
+  <div class="slider-block">
+    <div class="slider-row">
+      <span class="slider-label">True label</span>
+      <input type="range" min="0" max="1" step="1" value="1" id="bce-truth">
+      <span class="slider-val" id="bce-truth-v" style="color:#27500A;">1 — yes</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">Predicted p</span>
+      <input type="range" min="0.01" max="0.99" step="0.01" value="0.80" id="bce-pred">
+      <span class="slider-val" id="bce-pred-v" style="color:#0C447C;">0.80</span>
+    </div>
+  </div>
+  <div class="calc-display" id="bce-calc"></div>
+</div>
+
+<!-- ══════════════════ CCE ══════════════════ -->
+<div class="panel" id="panel-cce">
+  <div class="slider-block">
+    <div class="slider-row">
+      <span class="slider-label">True class</span>
+      <input type="range" min="0" max="2" step="1" value="0" id="cce-class">
+      <span class="slider-val" id="cce-class-v" style="color:#27500A;">cat</span>
+    </div>
+    <div class="slider-row">
+      <span class="slider-label">p(cat)</span>
+      <input type="range" min="0.01" max="0.97" step="0.01" value="0.70" id="cce-p0">
+      <span class="slider-val" id="cce-p0-v" style="color:#0C447C;">0.70</span>
+    </div>
+  </div>
+  <div class="calc-display" id="cce-calc"></div>
+</div>
+
+</div>
+
+<script>
+const f2 = v => (+v).toFixed(2);
+const f3 = v => (+v).toFixed(3);
+
+function lossClass(loss, max) {
+  const t = loss / max;
+  if (t < 0.1) return 'token-result-good';
+  if (t < 0.35) return 'token-result';
+  if (t < 0.65) return 'token-result-bad';
+  return 'token-result-ugly';
+}
+
+function numToken(val, label, cls) {
+  return `<div class="num-token ${cls}">
+    <div class="num">${val}</div>
+    <div class="sublabel">${label}</div>
+  </div>`;
+}
+
+function op(sym) {
+  return `<div class="token-op">${sym}</div>`;
+}
+
+function step(label, mathHTML, narrative) {
+  return `<div class="step">
+    <div class="step-label">${label}</div>
+    <div class="step-math">${mathHTML}</div>
+  </div>
+  <div class="step-narrative">${narrative}</div>`;
+}
+
+function connector() {
+  return `<div class="step-connector"><div class="step-connector-line"></div></div>`;
+}
+
+function penaltyMeter(loss, max, noteHTML) {
+  const pct = Math.min(100, (loss / max) * 100);
+  const bg = pct < 10 ? '#1D9E75' : pct < 35 ? '#534AB7' : pct < 65 ? '#D85A30' : '#A32D2D';
+  return `<div class="penalty-meter">
+    <div class="penalty-label">penalty size</div>
+    <div class="penalty-row">
+      <div class="penalty-track" style="flex:1;"><div class="penalty-fill" style="width:${pct.toFixed(1)}%;background:${bg};"></div></div>
+      <span style="font-size:12px;color:var(--color-text-secondary);min-width:48px;text-align:right;">${pct.toFixed(0)}% of max</span>
+    </div>
+    <div class="penalty-note">${noteHTML}</div>
+  </div>`;
+}
+
+/* ── MSE ── */
+function renderMSE() {
+  const truth = +document.getElementById('mse-truth').value;
+  const pred  = +document.getElementById('mse-pred').value;
+  document.getElementById('mse-truth-v').textContent = f2(truth);
+  document.getElementById('mse-pred-v').textContent  = f2(pred);
+
+  const error = pred - truth;
+  const loss  = error * error;
+  const errCls = error < 0 ? 'token-error-neg' : 'token-error';
+  const resCls = lossClass(loss, 25);
+  const errorDir = error > 0 ? `predicted <b>${f2(Math.abs(error))}</b> too high` : error < 0 ? `predicted <b>${f2(Math.abs(error))}</b> too low` : `spot on`;
+
+  document.getElementById('mse-calc').innerHTML =
+    step('step 1', numToken(f2(pred),'prediction','token-pred') + op('−') + numToken(f2(truth),'truth','token-truth') + op('=') + numToken(f2(error),'error',errCls),
+      `The prediction missed by <b>${f2(error)}</b>. ${errorDir}.`) +
+    connector() +
+    step('step 2', numToken(f2(error),'error',errCls) + op('²') + op('=') + numToken(f2(loss),'loss',resCls),
+      `Square it — negatives become positive, and <b>big errors grow much faster than small ones</b>.`) +
+    `<hr class="equals-divider">` +
+    `<div class="step"><div class="step-label" style="font-weight:500;color:var(--color-text-primary);">loss</div><div class="step-math">${numToken(f2(loss), 'final loss', resCls)}</div></div>` +
+    penaltyMeter(loss, 25, `Error of <b>${f2(Math.abs(error))}</b> → loss of <b>${f2(loss)}</b>. If you doubled the error to ${f2(Math.abs(error)*2)}, loss would be <b>${f2((error*2)**2)}</b> — four times bigger, not two times.`);
+}
+
+/* ── MAE ── */
+function renderMAE() {
+  const truth = +document.getElementById('mae-truth').value;
+  const pred  = +document.getElementById('mae-pred').value;
+  document.getElementById('mae-truth-v').textContent = f2(truth);
+  document.getElementById('mae-pred-v').textContent  = f2(pred);
+
+  const error = pred - truth;
+  const loss  = Math.abs(error);
+  const errCls = error < 0 ? 'token-error-neg' : 'token-error';
+  const resCls = lossClass(loss, 10);
+
+  document.getElementById('mae-calc').innerHTML =
+    step('step 1', numToken(f2(pred),'prediction','token-pred') + op('−') + numToken(f2(truth),'truth','token-truth') + op('=') + numToken(f2(error),'error',errCls),
+      `The prediction missed by <b>${f2(error)}</b>. Sign tells direction — we don't care about direction, just size.`) +
+    connector() +
+    step('step 2', numToken(f2(error),'error',errCls) + op('| |') + op('=') + numToken(f2(loss),'loss',resCls),
+      `Absolute value strips the sign. Error of <b>−${f2(loss)}</b> and <b>+${f2(loss)}</b> are treated identically.`) +
+    `<hr class="equals-divider">` +
+    `<div class="step"><div class="step-label" style="font-weight:500;color:var(--color-text-primary);">loss</div><div class="step-math">${numToken(f2(loss), 'final loss', resCls)}</div></div>` +
+    penaltyMeter(loss, 10, `Error of <b>${f2(loss)}</b> → loss of <b>${f2(loss)}</b>. If you doubled the error to ${f2(loss*2)}, loss doubles to <b>${f2(loss*2)}</b>. Perfectly proportional — no squaring.`);
+}
+
+/* ── BCE ── */
+function renderBCE() {
+  const truth = +document.getElementById('bce-truth').value;
+  const pred  = +document.getElementById('bce-pred').value;
+  document.getElementById('bce-truth-v').textContent = truth === 1 ? '1 — yes' : '0 — no';
+  document.getElementById('bce-pred-v').textContent  = f2(pred);
+
+  const eps = 1e-7;
+  const p = Math.max(eps, Math.min(1-eps, pred));
+  const loss = truth === 1 ? -Math.log(p) : -Math.log(1-p);
+  const resCls = lossClass(loss, 5);
+  const pCorrect = truth === 1 ? p : (1-p);
+  const pPct = Math.round(pCorrect * 100);
+  const yesW = Math.round(pred * 100);
+
+  const correct = (truth === 1 && pred > 0.5) || (truth === 0 && pred < 0.5);
+  const confident = Math.abs(pred - 0.5) > 0.3;
+  let narrative3 = '';
+  if (correct && confident) narrative3 = `Confident and <b>correct</b>. Low loss — a small gradient update. The network barely adjusts.`;
+  else if (!correct && confident) narrative3 = `Confident and <b>wrong</b>. The log of a tiny number is a large negative → huge loss. The network gets a massive correction signal.`;
+  else narrative3 = `Uncertain prediction near 50/50. Moderate loss — the network nudges its weights gently.`;
+
+  const formulaLabel = truth === 1 ? `−log( p(yes) )` : `−log( 1 − p(yes) ) = −log( p(no) )`;
+  const tokenVal = truth === 1 ? f2(pred) : f2(1-pred);
+  const tokenLabel = truth === 1 ? 'p(correct class)' : 'p(correct class)';
+
+  document.getElementById('bce-calc').innerHTML =
+    step('step 1',
+      `<div style="flex:1;">
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-bottom:4px;">probability bar — where did your ${yesW}% go?</div>
+        <div class="prob-visual">
+          <div class="prob-yes" style="width:${yesW}%;">${yesW > 12 ? `${yesW}% yes` : ''}</div>
+          <div class="prob-no"  style="width:${100-yesW}%;">${100-yesW > 12 ? `${100-yesW}% no` : ''}</div>
+        </div>
+        <div style="font-size:12px;color:var(--color-text-secondary);margin-top:4px;">truth = <b style="color:var(--color-text-primary);">${truth === 1 ? 'yes' : 'no'}</b> → we care about the <b style="color:var(--color-text-primary);">${truth === 1 ? `yes (${yesW}%)` : `no (${100-yesW}%)`}</b> bar</div>
+      </div>`,
+      `True answer is <b>${truth === 1 ? 'yes' : 'no'}</b>. We only look at the probability you gave to the correct answer: <b>${f2(pCorrect)}</b>.`) +
+    connector() +
+    step('step 2', numToken(`−log(${f2(pCorrect)})`,'formula','token-error') + op('=') + numToken(f2(loss),'loss',resCls),
+      `log(${f2(pCorrect)}) = ${f2(Math.log(pCorrect))}. Negate it → <b>${f2(loss)}</b>. As p → 0, loss → ∞. As p → 1, loss → 0.`) +
+    `<hr class="equals-divider">` +
+    `<div class="step"><div class="step-label" style="font-weight:500;color:var(--color-text-primary);">loss</div><div class="step-math">${numToken(f2(loss), 'final loss', resCls)}</div></div>` +
+    penaltyMeter(loss, 5, narrative3);
+}
+
+/* ── CCE ── */
+function renderCCE() {
+  const classes = ['cat', 'dog', 'bird'];
+  const trueIdx = +document.getElementById('cce-class').value;
+  const p0 = +document.getElementById('cce-p0').value;
+  document.getElementById('cce-class-v').textContent = classes[trueIdx];
+  document.getElementById('cce-p0-v').textContent    = f2(p0);
+
+  // distribute remaining prob
+  const remain = 1 - p0;
+  const p1 = +(remain * 0.6).toFixed(2);
+  const p2 = +(1 - p0 - p1).toFixed(2);
+  const probs = [p0, p1, p2];
+  const pTrue = probs[trueIdx];
+  const loss = -Math.log(Math.max(1e-7, pTrue));
+  const resCls = lossClass(loss, 5);
+
+  const colors = ['#185FA5','#639922','#854F0B'];
+  const bgColors = ['#E6F1FB','#EAF3DE','#FAEEDA'];
+  const textColors = ['#0C447C','#27500A','#633806'];
+
+  const barsHTML = classes.map((c, i) => {
+    const pct = Math.round(probs[i] * 100);
+    const isTrue = i === trueIdx;
+    return `<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
+      <div style="font-size:12px;color:var(--color-text-secondary);min-width:36px;">${c}</div>
+      <div style="flex:1;height:24px;background:var(--color-background-primary);border-radius:4px;overflow:hidden;">
+        <div style="height:24px;width:${pct}%;background:${colors[i]};display:flex;align-items:center;padding-left:8px;font-size:12px;color:${bgColors[i]};font-weight:500;min-width:${pct > 10 ? 'auto' : '0'};transition:width .3s;">${pct > 8 ? `${pct}%` : ''}</div>
+      </div>
+      ${isTrue ? `<div style="font-size:11px;background:${bgColors[i]};color:${textColors[i]};padding:2px 8px;border-radius:4px;font-weight:500;white-space:nowrap;">← true class</div>` : `<div style="min-width:80px;"></div>`}
+    </div>`;
+  }).join('');
+
+  document.getElementById('cce-calc').innerHTML =
+    step('step 1',
+      `<div style="flex:1;">${barsHTML}</div>`,
+      `Network assigned <b>${f2(pTrue)}</b> probability to <b>${classes[trueIdx]}</b> (the true class). The other probabilities are ignored.`) +
+    connector() +
+    step('step 2', numToken(`−log(${f2(pTrue)})`,'formula','token-error') + op('=') + numToken(f2(loss),'loss',resCls),
+      `Only the true class probability goes into the formula. Everything else is irrelevant.`) +
+    `<hr class="equals-divider">` +
+    `<div class="step"><div class="step-label" style="font-weight:500;color:var(--color-text-primary);">loss</div><div class="step-math">${numToken(f2(loss), 'final loss', resCls)}</div></div>` +
+    penaltyMeter(loss, 5, `Predicted <b>${f2(pTrue)}</b> for the correct class <b>${classes[trueIdx]}</b>. ${pTrue > 0.7 ? 'Confident and correct — small loss, small weight update.' : pTrue > 0.4 ? 'Uncertain. Moderate penalty.' : 'Low confidence on the right class — large penalty, large correction.'}`);
+}
+
+function show(name) {
+  ['mse','mae','bce','cce'].forEach(n => {
+    document.getElementById(`panel-${n}`).classList.toggle('on', n===name);
+    document.getElementById(`tab-${n}`).classList.toggle('on', n===name);
+  });
+}
+
+document.getElementById('mse-truth').addEventListener('input', renderMSE);
+document.getElementById('mse-pred').addEventListener('input', renderMSE);
+document.getElementById('mae-truth').addEventListener('input', renderMAE);
+document.getElementById('mae-pred').addEventListener('input', renderMAE);
+document.getElementById('bce-truth').addEventListener('input', renderBCE);
+document.getElementById('bce-pred').addEventListener('input', renderBCE);
+document.getElementById('cce-class').addEventListener('input', renderCCE);
+document.getElementById('cce-p0').addEventListener('input', renderCCE);
+
+renderMSE(); renderMAE(); renderBCE(); renderCCE();
+</script>

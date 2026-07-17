@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression MSE Educational Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        .canvas-container {
+            position: relative;
+        }
+
+        canvas {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            cursor: crosshair;
+            background: #f9f9f9;
+            display: block;
+        }
+
+        .controls {
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .control-group {
+            margin-bottom: 20px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #ddd;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+        }
+
+        .value-display {
+            display: inline-block;
+            background: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 10px;
+            font-family: monospace;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .equation-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        .equation-box h3 {
+            margin-bottom: 10px;
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .equation {
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            color: #333;
+            margin: 5px 0;
+        }
+
+        .mse-display {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .mse-display h3 {
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .mse-value {
+            font-size: 2em;
+            font-weight: bold;
+            font-family: monospace;
+        }
+
+        .optimal-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .optimal-box h3 {
+            color: #155724;
+            margin-bottom: 10px;
+        }
+
+        .optimal-box .equation {
+            color: #155724;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .formula-box {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .formula-box h3 {
+            color: #856404;
+            margin-bottom: 10px;
+        }
+
+        .formula {
+            text-align: center;
+            font-size: 1.2em;
+            color: #856404;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .legend {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 0.9em;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 8px 0;
+        }
+
+        .legend-color {
+            width: 30px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 3px;
+            border: 1px solid #ddd;
+        }
+
+        .calculation-section {
+            margin-top: 30px;
+            background: #f5f5f5;
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .calculation-section h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+
+        .calculation-table {
+            width: 100%;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .calculation-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .calculation-table th {
+            background: #667eea;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .calculation-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #eee;
+            font-family: 'Courier New', monospace;
+        }
+
+        .calculation-table tr:nth-child(even) {
+            background: #f9f9f9;
+        }
+
+        .calculation-table tr:hover {
+            background: #f0f0f0;
+        }
+
+        .calculation-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .calculation-summary h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .calculation-step {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+        }
+
+        .calculation-step .step-label {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .calculation-step .step-value {
+            color: #333;
+        }
+
+        .final-result {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 968px) {
+            .content {
+                grid-template-columns: 1fr;
+            }
+
+            .calculation-table {
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Linear Regression & MSE Explorer</h1>
+        <p class="subtitle">Interactive visualization to understand Mean Squared Error</p>
+
+        <div class="content">
+            <div class="canvas-container">
+                <canvas id="canvas" width="700" height="600"></canvas>
+            </div>
+
+            <div class="controls">
+                <div class="formula-box">
+                    <h3>📐 MSE Formula</h3>
+                    <div class="formula">
+                        MSE = (1/n) Σ(yᵢ - ŷᵢ)²
+                    </div>
+                    <div style="font-size: 0.85em; color: #856404; margin-top: 10px;">
+                        <div>n = number of points</div>
+                        <div>yᵢ = actual value</div>
+                        <div>ŷᵢ = predicted value</div>
+                    </div>
+                </div>
+
+                <div class="mse-display">
+                    <h3>Current MSE</h3>
+                    <div class="mse-value" id="mse-value">0.00</div>
+                </div>
+
+                <div class="equation-box">
+                    <h3>Current Line</h3>
+                    <div class="equation" id="current-equation">y = 0.00x + 0.00</div>
+                </div>
+
+                <div class="optimal-box">
+                    <h3>✨ Optimal Line (Global Minimum)</h3>
+                    <div class="equation" id="optimal-equation">y = 0.00x + 0.00</div>
+                    <div class="equation" id="optimal-mse">MSE: 0.00</div>
+                </div>
+
+                <div class="control-group">
+                    <label>
+                        Slope (m): <span class="value-display" id="slope-value">1.00</span>
+                    </label>
+                    <input type="range" id="slope-slider" min="-5" max="5" step="0.1" value="1">
+                </div>
+
+                <div class="control-group">
+                    <label>
+                        Intercept (b): <span class="value-display" id="intercept-value">0.00</span>
+                    </label>
+                    <input type="range" id="intercept-slider" min="-10" max="10" step="0.1" value="0">
+                </div>
+
+                <button class="btn-success" id="show-optimal">Show Optimal Line</button>
+                <button class="btn-primary" id="randomize">Generate New Random Data</button>
+                <button class="btn-secondary" id="clear">Clear All Points</button>
+
+                <div class="legend">
+                    <h3 style="margin-bottom: 10px;">Legend</h3>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #3498db;"></div>
+                        <span>Data Points</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #e74c3c;"></div>
+                        <span>Your Line</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: #27ae60;"></div>
+                        <span>Optimal Line</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background: rgba(231, 76, 60, 0.3);"></div>
+                        <span>Error Bars</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="calculation-section">
+            <h2>🧮 Step-by-Step MSE Calculation</h2>
+
+            <div class="calculation-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Point #</th>
+                            <th>x</th>
+                            <th>y (actual)</th>
+                            <th>ŷ (predicted)</th>
+                            <th>Error (y - ŷ)</th>
+                            <th>Error²</th>
+                        </tr>
+                    </thead>
+                    <tbody id="calculation-tbody">
+                        <tr>
+                            <td colspan="6" style="text-align: center; color: #999;">No data points yet. Click on the plot or generate random data.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="calculation-summary">
+                <h3>Calculation Steps:</h3>
+                <div class="calculation-step">
+                    <span class="step-label">1. Sum of Squared Errors:</span>
+                    <span class="step-value" id="sum-squared-errors">Σ(yᵢ - ŷᵢ)² = 0.0000</span>
+                </div>
+                <div class="calculation-step">
+                    <span class="step-label">2. Number of Points:</span>
+                    <span class="step-value" id="num-points">n = 0</span>
+                </div>
+                <div class="calculation-step">
+                    <span class="step-label">3. Mean Squared Error:</span>
+                    <span class="step-value" id="mse-formula">MSE = Σ(yᵢ - ŷᵢ)² / n = 0.0000 / 0 = N/A</span>
+                </div>
+                <div class="final-result" id="final-mse">
+                    MSE = 0.0000
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const slopeSlider = document.getElementById('slope-slider');
+        const interceptSlider = document.getElementById('intercept-slider');
+        const slopeValue = document.getElementById('slope-value');
+        const interceptValue = document.getElementById('intercept-value');
+        const mseValueDisplay = document.getElementById('mse-value');
+        const currentEquationDisplay = document.getElementById('current-equation');
+        const optimalEquationDisplay = document.getElementById('optimal-equation');
+        const optimalMseDisplay = document.getElementById('optimal-mse');
+        const randomizeBtn = document.getElementById('randomize');
+        const clearBtn = document.getElementById('clear');
+        const showOptimalBtn = document.getElementById('show-optimal');
+        const calculationTbody = document.getElementById('calculation-tbody');
+        const sumSquaredErrorsDisplay = document.getElementById('sum-squared-errors');
+        const numPointsDisplay = document.getElementById('num-points');
+        const mseFormulaDisplay = document.getElementById('mse-formula');
+        const finalMseDisplay = document.getElementById('final-mse');
+
+        // Canvas settings
+        const padding = 60;
+        const plotWidth = canvas.width - 2 * padding;
+        const plotHeight = canvas.height - 2 * padding;
+
+        // Data points
+        let points = [];
+        let optimalSlope = 0;
+        let optimalIntercept = 0;
+        let optimalMSE = 0;
+        let showOptimalLine = false;
+
+        // Initialize with random data
+        generateRandomData();
+
+        // Event listeners
+        slopeSlider.addEventListener('input', updateLine);
+        interceptSlider.addEventListener('input', updateLine);
+        randomizeBtn.addEventListener('click', generateRandomData);
+        clearBtn.addEventListener('click', clearPoints);
+        showOptimalBtn.addEventListener('click', toggleOptimalLine);
+        canvas.addEventListener('click', addPoint);
+
+        function generateRandomData() {
+            points = [];
+            const numPoints = 15;
+            const trueSlope = Math.random() * 4 - 2; // Random slope between -2 and 2
+            const trueIntercept = Math.random() * 6 - 3; // Random intercept between -3 and 3
+
+            for (let i = 0; i < numPoints; i++) {
+                const x = Math.random() * 10 - 5; // x between -5 and 5
+                const y = trueSlope * x + trueIntercept + (Math.random() * 2 - 1); // Add some noise
+                points.push({ x, y });
+            }
+
+            calculateOptimalLine();
+            showOptimalLine = false;
+            updateLine();
+        }
+
+        function clearPoints() {
+            points = [];
+            showOptimalLine = false;
+            calculateOptimalLine();
+            updateLine();
+        }
+
+        function addPoint(event) {
+            const rect = canvas.getBoundingClientRect();
+            const canvasX = event.clientX - rect.left;
+            const canvasY = event.clientY - rect.top;
+
+            // Convert canvas coordinates to data coordinates
+            const x = (canvasX - padding) / plotWidth * 10 - 5;
+            const y = -(canvasY - padding - plotHeight) / plotHeight * 10 - 5;
+
+            if (canvasX >= padding && canvasX <= canvas.width - padding &&
+                canvasY >= padding && canvasY <= canvas.height - padding) {
+                points.push({ x, y });
+                calculateOptimalLine();
+                updateLine();
+            }
+        }
+
+        function toggleOptimalLine() {
+            showOptimalLine = !showOptimalLine;
+            if (showOptimalLine) {
+                showOptimalBtn.textContent = 'Hide Optimal Line';
+                showOptimalBtn.classList.remove('btn-success');
+                showOptimalBtn.classList.add('btn-secondary');
+            } else {
+                showOptimalBtn.textContent = 'Show Optimal Line';
+                showOptimalBtn.classList.remove('btn-secondary');
+                showOptimalBtn.classList.add('btn-success');
+            }
+            updateLine();
+        }
+
+        function calculateOptimalLine() {
+            if (points.length < 2) {
+                optimalSlope = 0;
+                optimalIntercept = 0;
+                optimalMSE = 0;
+                return;
+            }
+
+            // Calculate means
+            const n = points.length;
+            const sumX = points.reduce((sum, p) => sum + p.x, 0);
+            const sumY = points.reduce((sum, p) => sum + p.y, 0);
+            const meanX = sumX / n;
+            const meanY = sumY / n;
+
+            // Calculate slope using least squares
+            let numerator = 0;
+            let denominator = 0;
+            for (let i = 0; i < n; i++) {
+                numerator += (points[i].x - meanX) * (points[i].y - meanY);
+                denominator += (points[i].x - meanX) ** 2;
+            }
+
+            optimalSlope = denominator !== 0 ? numerator / denominator : 0;
+            optimalIntercept = meanY - optimalSlope * meanX;
+
+            // Calculate optimal MSE
+            optimalMSE = calculateMSE(optimalSlope, optimalIntercept);
+
+            // Update display
+            optimalEquationDisplay.textContent = `y = ${optimalSlope.toFixed(2)}x + ${optimalIntercept.toFixed(2)}`;
+            optimalMseDisplay.textContent = `MSE: ${optimalMSE.toFixed(4)}`;
+        }
+
+        function calculateMSE(slope, intercept) {
+            if (points.length === 0) return 0;
+
+            let sumSquaredErrors = 0;
+            for (let i = 0; i < points.length; i++) {
+                const predicted = slope * points[i].x + intercept;
+                const error = points[i].y - predicted;
+                sumSquaredErrors += error ** 2;
+            }
+
+            return sumSquaredErrors / points.length;
+        }
+
+        function updateLine() {
+            const slope = parseFloat(slopeSlider.value);
+            const intercept = parseFloat(interceptSlider.value);
+
+            slopeValue.textContent = slope.toFixed(2);
+            interceptValue.textContent = intercept.toFixed(2);
+
+            const mse = calculateMSE(slope, intercept);
+            mseValueDisplay.textContent = mse.toFixed(4);
+
+            currentEquationDisplay.textContent = `y = ${slope.toFixed(2)}x + ${intercept >= 0 ? '+' : ''}${intercept.toFixed(2)}`;
+
+            updateCalculationDisplay(slope, intercept, mse);
+            draw(slope, intercept);
+        }
+
+        function updateCalculationDisplay(slope, intercept, mse) {
+            // Clear table
+            calculationTbody.innerHTML = '';
+
+            if (points.length === 0) {
+                calculationTbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: #999;">No data points yet. Click on the plot or generate random data.</td></tr>';
+                sumSquaredErrorsDisplay.textContent = 'Σ(yᵢ - ŷᵢ)² = 0.0000';
+                numPointsDisplay.textContent = 'n = 0';
+                mseFormulaDisplay.textContent = 'MSE = Σ(yᵢ - ŷᵢ)² / n = 0.0000 / 0 = N/A';
+                finalMseDisplay.textContent = 'MSE = N/A';
+                return;
+            }
+
+            let sumSquaredErrors = 0;
+
+            // Populate table rows
+            for (let i = 0; i < points.length; i++) {
+                const point = points[i];
+                const predicted = slope * point.x + intercept;
+                const error = point.y - predicted;
+                const squaredError = error ** 2;
+                sumSquaredErrors += squaredError;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${i + 1}</td>
+                    <td>${point.x.toFixed(3)}</td>
+                    <td>${point.y.toFixed(3)}</td>
+                    <td>${predicted.toFixed(3)}</td>
+                    <td>${error.toFixed(3)}</td>
+                    <td>${squaredError.toFixed(4)}</td>
+                `;
+                calculationTbody.appendChild(row);
+            }
+
+            // Update summary
+            const n = points.length;
+            sumSquaredErrorsDisplay.textContent = `Σ(yᵢ - ŷᵢ)² = ${sumSquaredErrors.toFixed(4)}`;
+            numPointsDisplay.textContent = `n = ${n}`;
+            mseFormulaDisplay.textContent = `MSE = Σ(yᵢ - ŷᵢ)² / n = ${sumSquaredErrors.toFixed(4)} / ${n} = ${mse.toFixed(4)}`;
+            finalMseDisplay.textContent = `MSE = ${mse.toFixed(4)}`;
+        }
+
+        function dataToCanvas(x, y) {
+            const canvasX = padding + (x + 5) / 10 * plotWidth;
+            const canvasY = padding + plotHeight - (y + 5) / 10 * plotHeight;
+            return { x: canvasX, y: canvasY };
+        }
+
+        function draw(slope, intercept) {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw grid
+            drawGrid();
+
+            // Draw axes
+            drawAxes();
+
+            // Draw error bars
+            drawErrorBars(slope, intercept);
+
+            // Draw optimal line if enabled
+            if (showOptimalLine) {
+                drawLine(optimalSlope, optimalIntercept, '#27ae60', 3);
+            }
+
+            // Draw current line
+            drawLine(slope, intercept, '#e74c3c', 3);
+
+            // Draw points
+            drawPoints();
+        }
+
+        function drawGrid() {
+            ctx.strokeStyle = '#e0e0e0';
+            ctx.lineWidth = 1;
+
+            for (let i = -5; i <= 5; i++) {
+                // Vertical lines
+                const startX = dataToCanvas(i, -5);
+                const endX = dataToCanvas(i, 5);
+                ctx.beginPath();
+                ctx.moveTo(startX.x, startX.y);
+                ctx.lineTo(endX.x, endX.y);
+                ctx.stroke();
+
+                // Horizontal lines
+                const startY = dataToCanvas(-5, i);
+                const endY = dataToCanvas(5, i);
+                ctx.beginPath();
+                ctx.moveTo(startY.x, startY.y);
+                ctx.lineTo(endY.x, endY.y);
+                ctx.stroke();
+            }
+        }
+
+        function drawAxes() {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+
+            // X-axis
+            const xAxisStart = dataToCanvas(-5, 0);
+            const xAxisEnd = dataToCanvas(5, 0);
+            ctx.beginPath();
+            ctx.moveTo(xAxisStart.x, xAxisStart.y);
+            ctx.lineTo(xAxisEnd.x, xAxisEnd.y);
+            ctx.stroke();
+
+            // Y-axis
+            const yAxisStart = dataToCanvas(0, -5);
+            const yAxisEnd = dataToCanvas(0, 5);
+            ctx.beginPath();
+            ctx.moveTo(yAxisStart.x, yAxisStart.y);
+            ctx.lineTo(yAxisEnd.x, yAxisEnd.y);
+            ctx.stroke();
+
+            // Labels
+            ctx.fillStyle = '#333';
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'center';
+
+            for (let i = -5; i <= 5; i++) {
+                if (i !== 0) {
+                    const pos = dataToCanvas(i, 0);
+                    ctx.fillText(i.toString(), pos.x, pos.y + 20);
+
+                    const posY = dataToCanvas(0, i);
+                    ctx.fillText(i.toString(), posY.x - 20, posY.y + 5);
+                }
+            }
+
+            // Axis labels
+            ctx.font = 'bold 16px Arial';
+            ctx.fillText('X', canvas.width - 30, dataToCanvas(0, 0).y + 20);
+            ctx.fillText('Y', dataToCanvas(0, 0).x - 20, 40);
+        }
+
+        function drawLine(slope, intercept, color, lineWidth) {
+            const y1 = slope * (-5) + intercept;
+            const y2 = slope * 5 + intercept;
+
+            const start = dataToCanvas(-5, y1);
+            const end = dataToCanvas(5, y2);
+
+            ctx.strokeStyle = color;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(start.x, start.y);
+            ctx.lineTo(end.x, end.y);
+            ctx.stroke();
+        }
+
+        function drawErrorBars(slope, intercept) {
+            ctx.strokeStyle = 'rgba(231, 76, 60, 0.3)';
+            ctx.lineWidth = 2;
+
+            for (let i = 0; i < points.length; i++) {
+                const point = points[i];
+                const predictedY = slope * point.x + intercept;
+
+                const actualPos = dataToCanvas(point.x, point.y);
+                const predictedPos = dataToCanvas(point.x, predictedY);
+
+                ctx.beginPath();
+                ctx.moveTo(actualPos.x, actualPos.y);
+                ctx.lineTo(predictedPos.x, predictedPos.y);
+                ctx.stroke();
+            }
+        }
+
+        function drawPoints() {
+            for (let i = 0; i < points.length; i++) {
+                const pos = dataToCanvas(points[i].x, points[i].y);
+
+                ctx.fillStyle = '#3498db';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 6, 0, 2 * Math.PI);
+                ctx.fill();
+
+                ctx.strokeStyle = '#2980b9';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+        }
+
+        // Initial draw
+        updateLine();
+    </script>
+</body>
+</html>

@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>XGBoost Step-by-Step</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Libre+Baskerville:wght@400;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: #1a1a2e;
+    color: #e0ddd5;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  .app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 30px 20px 100px;
+  }
+
+  h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.6rem;
+    color: #f4a261;
+    margin-bottom: 4px;
+  }
+
+  .tagline {
+    color: #7a7790;
+    font-size: 0.8rem;
+    margin-bottom: 30px;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 30px;
+  }
+
+  .progress-pip {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: #2a2a4a;
+    transition: background 0.3s;
+  }
+
+  .progress-pip.done {
+    background: #f4a261;
+  }
+
+  .progress-pip.current {
+    background: #e76f51;
+    box-shadow: 0 0 8px rgba(231, 111, 81, 0.5);
+  }
+
+  /* Step card */
+  .step-card {
+    background: #16213e;
+    border: 1px solid #2a2a4a;
+    border-radius: 16px;
+    padding: 32px;
+    margin-bottom: 24px;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .step-label {
+    display: inline-block;
+    background: #e76f51;
+    color: #1a1a2e;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 3px 12px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    letter-spacing: 1px;
+  }
+
+  .step-card h2 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 1.15rem;
+    color: #f4a261;
+    margin-bottom: 16px;
+    font-weight: 400;
+  }
+
+  .step-card p {
+    color: #9a97ae;
+    font-size: 0.82rem;
+    margin-bottom: 14px;
+    line-height: 1.8;
+  }
+
+  .step-card p strong {
+    color: #e0ddd5;
+  }
+
+  /* Tables */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.8rem;
+  }
+
+  th {
+    background: #1a1a2e;
+    color: #7a7790;
+    padding: 10px 10px;
+    text-align: left;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 2px solid #2a2a4a;
+  }
+
+  td {
+    padding: 9px 10px;
+    border-bottom: 1px solid #1e1e3a;
+  }
+
+  .r-neg { color: #e76f51; font-weight: 600; }
+  .r-pos { color: #2a9d8f; font-weight: 600; }
+  .pred { color: #f4a261; font-weight: 500; }
+  .actual-0 { color: #2a9d8f; }
+  .actual-1 { color: #e76f51; }
+  .dim { color: #6a6780; }
+
+  tr.highlight-row td {
+    background: rgba(244, 162, 97, 0.06);
+  }
+
+  /* Callout */
+  .callout {
+    background: rgba(244, 162, 97, 0.08);
+    border-left: 3px solid #f4a261;
+    padding: 14px 18px;
+    border-radius: 0 10px 10px 0;
+    font-size: 0.82rem;
+    color: #c0bdb5;
+    margin: 18px 0;
+    line-height: 1.8;
+  }
+
+  .callout strong { color: #f4a261; }
+
+  .callout.green {
+    background: rgba(42, 157, 143, 0.08);
+    border-left-color: #2a9d8f;
+  }
+
+  .callout.green strong { color: #2a9d8f; }
+
+  /* Formula */
+  .formula {
+    background: #0f0f23;
+    border: 1px solid #2a2a4a;
+    padding: 14px 20px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    margin: 14px 0;
+    color: #e0ddd5;
+    text-align: center;
+    letter-spacing: 0.5px;
+  }
+
+  .formula .op { color: #7a7790; }
+  .formula .val { color: #f4a261; font-weight: 600; }
+  .formula .res { color: #e76f51; }
+  .formula .gn { color: #2a9d8f; }
+
+  /* Tree diagram */
+  .tree-wrap {
+    background: #0f0f23;
+    border: 1px dashed #2a2a4a;
+    border-radius: 12px;
+    padding: 20px 10px;
+    margin: 18px 0;
+    text-align: center;
+    overflow-x: auto;
+  }
+
+  /* Navigation */
+  .nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .nav-btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 12px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .btn-back {
+    background: #2a2a4a;
+    color: #9a97ae;
+  }
+
+  .btn-back:hover:not(:disabled) {
+    background: #3a3a5a;
+  }
+
+  .btn-next {
+    background: #e76f51;
+    color: #1a1a2e;
+  }
+
+  .btn-next:hover:not(:disabled) {
+    background: #f4a261;
+  }
+
+  .step-count {
+    color: #7a7790;
+    font-size: 0.8rem;
+  }
+
+  /* Comparison bars */
+  .compare {
+    margin: 14px 0;
+  }
+
+  .compare-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 8px 0;
+    font-size: 0.78rem;
+  }
+
+  .compare-name {
+    width: 65px;
+    text-align: right;
+    color: #7a7790;
+    flex-shrink: 0;
+  }
+
+  .compare-track {
+    flex: 1;
+    height: 20px;
+    background: #1a1a2e;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid #2a2a4a;
+  }
+
+  .compare-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.5s ease;
+    position: relative;
+  }
+
+  .compare-val {
+    width: 45px;
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+
+  .compare-target {
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    width: 3px;
+    background: #e0ddd5;
+    border-radius: 2px;
+    z-index: 2;
+  }
+
+  .compare-target-label {
+    position: absolute;
+    top: -16px;
+    font-size: 0.65rem;
+    color: #e0ddd5;
+    transform: translateX(-50%);
+  }
+
+  /* Split tries */
+  .split-try {
+    background: #1a1a2e;
+    border: 1px solid #2a2a4a;
+    border-radius: 10px;
+    padding: 14px 16px;
+    margin: 10px 0;
+    font-size: 0.78rem;
+    transition: all 0.3s;
+  }
+
+  .split-try.winner {
+    border-color: #2a9d8f;
+    background: rgba(42, 157, 143, 0.08);
+  }
+
+  .split-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    color: #9a97ae;
+  }
+
+  .split-header strong { color: #e0ddd5; }
+
+  .split-groups {
+    display: flex;
+    gap: 16px;
+  }
+
+  .split-group {
+    flex: 1;
+    padding: 8px 10px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 6px;
+    font-size: 0.75rem;
+  }
+
+  .split-group .label {
+    color: #7a7790;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .winner-badge {
+    color: #2a9d8f;
+    font-weight: 600;
+    font-size: 0.75rem;
+    margin-top: 6px;
+  }
+
+  @media (max-width: 600px) {
+    .app { padding: 20px 14px 80px; }
+    .step-card { padding: 22px 18px; }
+    h1 { font-size: 1.3rem; }
+    .split-groups { flex-direction: column; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+<div class="app">
+  <h1>XGBoost, Step by Step</h1>
+  <p class="tagline">5 patients · 1 feature · 2 trees · every number explained</p>
+
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div id="stepContent"></div>
+
+  <div class="nav">
+    <button class="nav-btn btn-back" id="btnBack" onclick="goBack()">← Back</button>
+    <span class="step-count" id="stepCount"></span>
+    <button class="nav-btn btn-next" id="btnNext" onclick="goNext()">Next →</button>
+  </div>
+</div>
+
+<script>
+const STEPS = [
+  // STEP 0: The Data
+  {
+    label: "THE DATA",
+    title: "Meet our 5 patients",
+    html: `
+      <p>We have <strong>one feature</strong> (blood pressure) and a <strong>label</strong> (heart attack: yes or no).</p>
+      <p>For math, we convert: <span class="actual-1">Heart Attack = 1</span>, <span class="actual-0">No Heart Attack = 0</span></p>
+      <table>
+        <tr><th>Patient</th><th>Blood Pressure</th><th>Heart Attack?</th><th>Label (y)</th></tr>
+        <tr><td>🧑 Alice</td><td>110</td><td class="actual-0">No</td><td>0</td></tr>
+        <tr><td>👨 Bob</td><td>120</td><td class="actual-0">No</td><td>0</td></tr>
+        <tr><td>👩 Carol</td><td>140</td><td class="actual-1">Yes</td><td>1</td></tr>
+        <tr><td>🧔 Dave</td><td>160</td><td class="actual-1">Yes</td><td>1</td></tr>
+        <tr><td>👵 Eve</td><td>180</td><td class="actual-1">Yes</td><td>1</td></tr>
+      </table>
+      <p>Goal: predict heart attack from blood pressure.</p>
+    `
+  },
+
+  // STEP 1: Initial guess
+  {
+    label: "STEP 1",
+    title: "Start with a dumb guess",
+    html: `
+      <p>Before building any trees, XGBoost makes <strong>one guess for every patient</strong> — the average of all labels:</p>
+      <div class="formula">
+        ( 0 + 0 + 1 + 1 + 1 ) / 5 = <span class="val">0.6</span>
+      </div>
+      <p>Right now, the model says: <em>"Every single patient has a 0.6 chance of heart attack."</em></p>
+      <table>
+        <tr><th>Patient</th><th>BP</th><th>Actual</th><th>Prediction</th></tr>
+        <tr><td>🧑 Alice</td><td>110</td><td>0</td><td class="pred">0.6</td></tr>
+        <tr><td>👨 Bob</td><td>120</td><td>0</td><td class="pred">0.6</td></tr>
+        <tr><td>👩 Carol</td><td>140</td><td>1</td><td class="pred">0.6</td></tr>
+        <tr><td>🧔 Dave</td><td>160</td><td>1</td><td class="pred">0.6</td></tr>
+        <tr><td>👵 Eve</td><td>180</td><td>1</td><td class="pred">0.6</td></tr>
+      </table>
+      <div class="callout">
+        <strong>This is not a tree.</strong> It's just a single number. This is the starting point that the first tree will try to improve.
+      </div>
+    `
+  },
+
+  // STEP 2: Residuals
+  {
+    label: "STEP 2",
+    title: "How wrong are we? (Compute residuals)",
+    html: `
+      <p>For each patient: <strong>residual = actual − prediction</strong></p>
+      <table>
+        <tr><th>Patient</th><th>Actual</th><th>Prediction</th><th>Residual</th><th>Meaning</th></tr>
+        <tr><td>🧑 Alice</td><td>0</td><td class="pred">0.6</td><td class="r-neg">−0.6</td><td class="dim">We guessed too high</td></tr>
+        <tr><td>👨 Bob</td><td>0</td><td class="pred">0.6</td><td class="r-neg">−0.6</td><td class="dim">We guessed too high</td></tr>
+        <tr><td>👩 Carol</td><td>1</td><td class="pred">0.6</td><td class="r-pos">+0.4</td><td class="dim">We guessed too low</td></tr>
+        <tr><td>🧔 Dave</td><td>1</td><td class="pred">0.6</td><td class="r-pos">+0.4</td><td class="dim">We guessed too low</td></tr>
+        <tr><td>👵 Eve</td><td>1</td><td class="pred">0.6</td><td class="r-pos">+0.4</td><td class="dim">We guessed too low</td></tr>
+      </table>
+      <div class="callout">
+        <strong>Residuals tell us how to fix the prediction.</strong><br>
+        Negative → we need to push the prediction DOWN.<br>
+        Positive → we need to push the prediction UP.
+      </div>
+    `
+  },
+
+  // STEP 3: Tree 1 training data
+  {
+    label: "STEP 3",
+    title: "What does Tree 1 see as its training data?",
+    html: `
+      <p>Here's the key insight. We <strong>swap out the original labels</strong> and replace them with the <strong>residuals</strong>:</p>
+      <table>
+        <tr><th></th><th>Feature (BP)</th><th style="color:#e76f51">Target to predict</th></tr>
+        <tr><td>🧑 Alice</td><td>110</td><td class="r-neg">−0.6</td></tr>
+        <tr><td>👨 Bob</td><td>120</td><td class="r-neg">−0.6</td></tr>
+        <tr><td>👩 Carol</td><td>140</td><td class="r-pos">+0.4</td></tr>
+        <tr><td>🧔 Dave</td><td>160</td><td class="r-pos">+0.4</td></tr>
+        <tr><td>👵 Eve</td><td>180</td><td class="r-pos">+0.4</td></tr>
+      </table>
+      <div class="callout">
+        <strong>The tree is NOT trying to predict heart attack.</strong> It's trying to predict how wrong the current model is. The feature (BP) stays the same. Only the target changed.
+      </div>
+      <p>Now the tree needs to find the best place to split this data...</p>
+    `
+  },
+
+  // STEP 4: Try splits
+  {
+    label: "STEP 4",
+    title: "Tree 1: Try every possible split",
+    html: `
+      <p>The tree tries splitting between each pair of BP values and checks: <strong>which split makes the most similar groups?</strong></p>
+
+      <div class="split-try">
+        <div class="split-header"><strong>Try: BP &lt; 115</strong> <span>(between Alice & Bob)</span></div>
+        <div class="split-groups">
+          <div class="split-group">
+            <div class="label">Left group</div>
+            Alice: <span class="r-neg">−0.6</span><br>avg = <strong>−0.6</strong>
+          </div>
+          <div class="split-group">
+            <div class="label">Right group</div>
+            Bob: <span class="r-neg">−0.6</span>, Carol: <span class="r-pos">+0.4</span>, Dave: <span class="r-pos">+0.4</span>, Eve: <span class="r-pos">+0.4</span><br>avg = <strong>+0.15</strong> ← mix of values, not great
+          </div>
+        </div>
+      </div>
+
+      <div class="split-try winner">
+        <div class="split-header"><strong>Try: BP &lt; 130</strong> <span>(between Bob & Carol)</span></div>
+        <div class="split-groups">
+          <div class="split-group">
+            <div class="label">Left group</div>
+            Alice: <span class="r-neg">−0.6</span>, Bob: <span class="r-neg">−0.6</span><br>avg = <strong>−0.6</strong> ← both identical ✓
+          </div>
+          <div class="split-group">
+            <div class="label">Right group</div>
+            Carol: <span class="r-pos">+0.4</span>, Dave: <span class="r-pos">+0.4</span>, Eve: <span class="r-pos">+0.4</span><br>avg = <strong>+0.4</strong> ← all identical ✓
+          </div>
+        </div>
+        <div class="winner-badge">✓ BEST SPLIT — zero variance in both groups</div>
+      </div>
+
+      <div class="split-try">
+        <div class="split-header"><strong>Try: BP &lt; 150</strong> <span>(between Carol & Dave)</span></div>
+        <div class="split-groups">
+          <div class="split-group">
+            <div class="label">Left group</div>
+            <span class="r-neg">−0.6</span>, <span class="r-neg">−0.6</span>, <span class="r-pos">+0.4</span><br>avg = <strong>−0.27</strong> ← messy mix
+          </div>
+          <div class="split-group">
+            <div class="label">Right group</div>
+            <span class="r-pos">+0.4</span>, <span class="r-pos">+0.4</span><br>avg = <strong>+0.4</strong> ← fine
+          </div>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <strong>Winner: BP &lt; 130.</strong> The tree picks this because both groups are perfectly clean — every member equals the group average. This is "low variance."
+      </div>
+    `
+  },
+
+  // STEP 5: Tree 1 result
+  {
+    label: "STEP 5",
+    title: "Tree 1 is built",
+    html: `
+      <p>Each leaf stores the <strong>average residual</strong> of the patients that landed in it:</p>
+      <div class="tree-wrap">
+        <svg viewBox="0 0 460 185" width="460">
+          <style>
+            .t { font-family: 'IBM Plex Mono', monospace; text-anchor: middle; }
+          </style>
+          <rect x="145" y="8" width="170" height="36" rx="10" fill="#16213e" stroke="#f4a261" stroke-width="1.5"/>
+          <text x="230" y="31" class="t" fill="#f4a261" font-size="13" font-weight="600">BP &lt; 130 ?</text>
+
+          <line x1="190" y1="44" x2="100" y2="85" stroke="#2a2a4a" stroke-width="1.5"/>
+          <line x1="270" y1="44" x2="360" y2="85" stroke="#2a2a4a" stroke-width="1.5"/>
+          <text x="135" y="65" class="t" fill="#7a7790" font-size="10">YES</text>
+          <text x="320" y="65" class="t" fill="#7a7790" font-size="10">NO</text>
+
+          <rect x="10" y="88" width="180" height="85" rx="10" fill="rgba(231,111,81,0.08)" stroke="#e76f51" stroke-width="1.5"/>
+          <text x="100" y="115" class="t" fill="#e76f51" font-size="14" font-weight="600">−0.6</text>
+          <text x="100" y="135" class="t" fill="#7a7790" font-size="10">Alice, Bob</text>
+          <text x="100" y="153" class="t" fill="#7a7790" font-size="9">"push prediction DOWN"</text>
+
+          <rect x="270" y="88" width="180" height="85" rx="10" fill="rgba(42,157,143,0.08)" stroke="#2a9d8f" stroke-width="1.5"/>
+          <text x="360" y="115" class="t" fill="#2a9d8f" font-size="14" font-weight="600">+0.4</text>
+          <text x="360" y="135" class="t" fill="#7a7790" font-size="10">Carol, Dave, Eve</text>
+          <text x="360" y="153" class="t" fill="#7a7790" font-size="9">"push prediction UP"</text>
+        </svg>
+      </div>
+      <div class="callout">
+        <strong>The leaf values are not predictions of heart attack.</strong> They are <em>correction amounts</em> — how much to adjust the current prediction.
+      </div>
+    `
+  },
+
+  // STEP 6: Update predictions
+  {
+    label: "STEP 6",
+    title: "Add Tree 1's corrections to update predictions",
+    html: `
+      <p>We use a <strong>learning rate of 0.5</strong> — we don't fully trust any single tree.</p>
+      <div class="formula">
+        new prediction <span class="op">=</span> old prediction <span class="op">+</span> <span class="val">0.5</span> <span class="op">×</span> tree output
+      </div>
+      <table>
+        <tr><th>Patient</th><th>Old Pred</th><th>Tree 1</th><th>× 0.5</th><th>New Pred</th><th>Actual</th></tr>
+        <tr>
+          <td>🧑 Alice</td><td class="pred">0.6</td>
+          <td class="r-neg">−0.6</td><td class="dim">−0.3</td>
+          <td><strong class="pred">0.30</strong></td><td>0</td>
+        </tr>
+        <tr>
+          <td>👨 Bob</td><td class="pred">0.6</td>
+          <td class="r-neg">−0.6</td><td class="dim">−0.3</td>
+          <td><strong class="pred">0.30</strong></td><td>0</td>
+        </tr>
+        <tr>
+          <td>👩 Carol</td><td class="pred">0.6</td>
+          <td class="r-pos">+0.4</td><td class="dim">+0.2</td>
+          <td><strong class="pred">0.80</strong></td><td>1</td>
+        </tr>
+        <tr>
+          <td>🧔 Dave</td><td class="pred">0.6</td>
+          <td class="r-pos">+0.4</td><td class="dim">+0.2</td>
+          <td><strong class="pred">0.80</strong></td><td>1</td>
+        </tr>
+        <tr>
+          <td>👵 Eve</td><td class="pred">0.6</td>
+          <td class="r-pos">+0.4</td><td class="dim">+0.2</td>
+          <td><strong class="pred">0.80</strong></td><td>1</td>
+        </tr>
+      </table>
+
+      <p style="margin-top:16px"><strong>How close are we now?</strong></p>
+      <div class="compare">
+        <div class="compare-row">
+          <span class="compare-name">Alice</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:30%;background:#e76f51"></div>
+            <div class="compare-target" style="left:0%"><span class="compare-target-label">0</span></div>
+          </div>
+          <span class="compare-val pred">0.30</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Bob</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:30%;background:#e76f51"></div>
+            <div class="compare-target" style="left:0%"><span class="compare-target-label">0</span></div>
+          </div>
+          <span class="compare-val pred">0.30</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Carol</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:80%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.80</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Dave</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:80%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.80</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Eve</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:80%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.80</span>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <strong>Closer!</strong> But not perfect. Alice & Bob are at 0.30 (should be 0). Carol/Dave/Eve are at 0.80 (should be 1). We need another tree.
+      </div>
+    `
+  },
+
+  // STEP 7: New residuals
+  {
+    label: "STEP 7",
+    title: "Compute new residuals (for Tree 2)",
+    html: `
+      <p>Same formula: <strong>residual = actual − current prediction</strong></p>
+      <table>
+        <tr><th>Patient</th><th>Actual</th><th>Current Pred</th><th>New Residual</th></tr>
+        <tr><td>🧑 Alice</td><td>0</td><td class="pred">0.30</td><td class="r-neg">−0.30</td></tr>
+        <tr><td>👨 Bob</td><td>0</td><td class="pred">0.30</td><td class="r-neg">−0.30</td></tr>
+        <tr><td>👩 Carol</td><td>1</td><td class="pred">0.80</td><td class="r-pos">+0.20</td></tr>
+        <tr><td>🧔 Dave</td><td>1</td><td class="pred">0.80</td><td class="r-pos">+0.20</td></tr>
+        <tr><td>👵 Eve</td><td>1</td><td class="pred">0.80</td><td class="r-pos">+0.20</td></tr>
+      </table>
+      <div class="callout">
+        <strong>Notice: the residuals are SMALLER now.</strong><br>
+        Before: −0.6 and +0.4<br>
+        Now: −0.3 and +0.2<br><br>
+        The errors are shrinking. Each tree chips away at the remaining mistakes.
+      </div>
+    `
+  },
+
+  // STEP 8: Tree 2 training data
+  {
+    label: "STEP 8",
+    title: "Tree 2 sees these new residuals as its target",
+    html: `
+      <p>Exact same process as before. The tree gets:</p>
+      <table>
+        <tr><th></th><th>Feature (BP)</th><th style="color:#e76f51">Target (new residual)</th></tr>
+        <tr><td>🧑 Alice</td><td>110</td><td class="r-neg">−0.30</td></tr>
+        <tr><td>👨 Bob</td><td>120</td><td class="r-neg">−0.30</td></tr>
+        <tr><td>👩 Carol</td><td>140</td><td class="r-pos">+0.20</td></tr>
+        <tr><td>🧔 Dave</td><td>160</td><td class="r-pos">+0.20</td></tr>
+        <tr><td>👵 Eve</td><td>180</td><td class="r-pos">+0.20</td></tr>
+      </table>
+      <p>It tries every split, picks BP &lt; 130 again (same pattern), and builds:</p>
+      <div class="tree-wrap">
+        <svg viewBox="0 0 460 185" width="460">
+          <style>
+            .t { font-family: 'IBM Plex Mono', monospace; text-anchor: middle; }
+          </style>
+          <rect x="145" y="8" width="170" height="36" rx="10" fill="#16213e" stroke="#f4a261" stroke-width="1.5"/>
+          <text x="230" y="31" class="t" fill="#f4a261" font-size="13" font-weight="600">BP &lt; 130 ?</text>
+
+          <line x1="190" y1="44" x2="100" y2="85" stroke="#2a2a4a" stroke-width="1.5"/>
+          <line x1="270" y1="44" x2="360" y2="85" stroke="#2a2a4a" stroke-width="1.5"/>
+          <text x="135" y="65" class="t" fill="#7a7790" font-size="10">YES</text>
+          <text x="320" y="65" class="t" fill="#7a7790" font-size="10">NO</text>
+
+          <rect x="10" y="88" width="180" height="75" rx="10" fill="rgba(231,111,81,0.08)" stroke="#e76f51" stroke-width="1.5"/>
+          <text x="100" y="115" class="t" fill="#e76f51" font-size="14" font-weight="600">−0.30</text>
+          <text x="100" y="135" class="t" fill="#7a7790" font-size="10">Alice, Bob</text>
+          <text x="100" y="150" class="t" fill="#7a7790" font-size="9">smaller correction now</text>
+
+          <rect x="270" y="88" width="180" height="75" rx="10" fill="rgba(42,157,143,0.08)" stroke="#2a9d8f" stroke-width="1.5"/>
+          <text x="360" y="115" class="t" fill="#2a9d8f" font-size="14" font-weight="600">+0.20</text>
+          <text x="360" y="135" class="t" fill="#7a7790" font-size="10">Carol, Dave, Eve</text>
+          <text x="360" y="150" class="t" fill="#7a7790" font-size="9">smaller correction now</text>
+        </svg>
+      </div>
+    `
+  },
+
+  // STEP 9: Final predictions
+  {
+    label: "STEP 9",
+    title: "Add Tree 2's corrections → final predictions",
+    html: `
+      <div class="formula">
+        new prediction <span class="op">=</span> current prediction <span class="op">+</span> <span class="val">0.5</span> <span class="op">×</span> Tree 2 output
+      </div>
+      <table>
+        <tr><th>Patient</th><th>Current</th><th>Tree 2</th><th>× 0.5</th><th>Final Pred</th><th>Actual</th></tr>
+        <tr>
+          <td>🧑 Alice</td><td class="pred">0.30</td>
+          <td class="r-neg">−0.30</td><td class="dim">−0.15</td>
+          <td><strong class="pred">0.15</strong></td><td>0</td>
+        </tr>
+        <tr>
+          <td>👨 Bob</td><td class="pred">0.30</td>
+          <td class="r-neg">−0.30</td><td class="dim">−0.15</td>
+          <td><strong class="pred">0.15</strong></td><td>0</td>
+        </tr>
+        <tr>
+          <td>👩 Carol</td><td class="pred">0.80</td>
+          <td class="r-pos">+0.20</td><td class="dim">+0.10</td>
+          <td><strong class="pred">0.90</strong></td><td>1</td>
+        </tr>
+        <tr>
+          <td>🧔 Dave</td><td class="pred">0.80</td>
+          <td class="r-pos">+0.20</td><td class="dim">+0.10</td>
+          <td><strong class="pred">0.90</strong></td><td>1</td>
+        </tr>
+        <tr>
+          <td>👵 Eve</td><td class="pred">0.80</td>
+          <td class="r-pos">+0.20</td><td class="dim">+0.10</td>
+          <td><strong class="pred">0.90</strong></td><td>1</td>
+        </tr>
+      </table>
+
+      <div class="compare" style="margin-top:20px">
+        <div class="compare-row">
+          <span class="compare-name">Alice</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:15%;background:#e76f51"></div>
+            <div class="compare-target" style="left:0%"><span class="compare-target-label">0</span></div>
+          </div>
+          <span class="compare-val pred">0.15</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Bob</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:15%;background:#e76f51"></div>
+            <div class="compare-target" style="left:0%"><span class="compare-target-label">0</span></div>
+          </div>
+          <span class="compare-val pred">0.15</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Carol</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:90%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.90</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Dave</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:90%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.90</span>
+        </div>
+        <div class="compare-row">
+          <span class="compare-name">Eve</span>
+          <div class="compare-track">
+            <div class="compare-fill" style="width:90%;background:#2a9d8f"></div>
+            <div class="compare-target" style="left:calc(100% - 3px)"><span class="compare-target-label">1</span></div>
+          </div>
+          <span class="compare-val pred">0.90</span>
+        </div>
+      </div>
+
+      <div class="callout green">
+        <strong>After just 2 trees:</strong> Alice & Bob are at 0.15 (close to 0 ✓). Carol/Dave/Eve are at 0.90 (close to 1 ✓). More trees would keep pushing these closer.
+      </div>
+    `
+  },
+
+  // STEP 10: Summary
+  {
+    label: "THE BIG PICTURE",
+    title: "The whole model is just addition",
+    html: `
+      <div class="formula" style="text-align:left;line-height:2.2">
+        <span class="op">prediction =</span><br>
+        &nbsp;&nbsp;<span class="val">0.6</span> <span class="dim">&nbsp;← starting guess</span><br>
+        &nbsp;&nbsp;<span class="op">+</span> <span class="val">0.5</span> × <span class="gn">Tree1(BP)</span> <span class="dim">&nbsp;← first correction</span><br>
+        &nbsp;&nbsp;<span class="op">+</span> <span class="val">0.5</span> × <span class="gn">Tree2(BP)</span> <span class="dim">&nbsp;← second correction</span>
+      </div>
+
+      <p style="margin-top:20px"><strong>What each tree learned:</strong></p>
+      <table>
+        <tr><th></th><th>Split</th><th>Left leaf</th><th>Right leaf</th></tr>
+        <tr><td>Tree 1</td><td>BP &lt; 130</td><td class="r-neg">−0.6</td><td class="r-pos">+0.4</td></tr>
+        <tr><td>Tree 2</td><td>BP &lt; 130</td><td class="r-neg">−0.3</td><td class="r-pos">+0.2</td></tr>
+      </table>
+
+      <div class="callout">
+        <strong>The pattern:</strong><br><br>
+        1. Make a prediction<br>
+        2. Measure the errors (residuals)<br>
+        3. Train a tree to predict those errors<br>
+        4. Add the tree's corrections to the prediction<br>
+        5. Go back to step 2<br><br>
+        Each tree's corrections get <strong>smaller</strong> because there's less error left to fix. That's gradient boosting.
+      </div>
+    `
+  },
+];
+
+let currentStep = 0;
+
+function render() {
+  const step = STEPS[currentStep];
+  const total = STEPS.length;
+
+  // Progress bar
+  let pips = '';
+  for (let i = 0; i < total; i++) {
+    let cls = 'progress-pip';
+    if (i < currentStep) cls += ' done';
+    if (i === currentStep) cls += ' current';
+    pips += `<div class="${cls}"></div>`;
+  }
+  document.getElementById('progressBar').innerHTML = pips;
+
+  // Content
+  document.getElementById('stepContent').innerHTML = `
+    <div class="step-card">
+      <div class="step-label">${step.label}</div>
+      <h2>${step.title}</h2>
+      ${step.html}
+    </div>
+  `;
+
+  // Nav
+  document.getElementById('btnBack').disabled = currentStep === 0;
+  document.getElementById('btnNext').disabled = currentStep === total - 1;
+  document.getElementById('btnNext').textContent = currentStep === total - 1 ? 'Done ✓' : 'Next →';
+  document.getElementById('stepCount').textContent = `${currentStep + 1} / ${total}`;
+}
+
+function goNext() {
+  if (currentStep < STEPS.length - 1) { currentStep++; render(); window.scrollTo(0, 0); }
+}
+
+function goBack() {
+  if (currentStep > 0) { currentStep--; render(); window.scrollTo(0, 0); }
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowRight') goNext();
+  if (e.key === 'ArrowLeft') goBack();
+});
+
+render();
+</script>
+</body>
+</html>

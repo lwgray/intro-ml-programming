@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<!-- saved from url=(0253)https://9f8babfb-8404-4031-94cb-6b3784fc6e5b.frame.claudeusercontent.com/_f/1784211346-00e8/?__frame_t=M1jHkNN50NHEsylliVWEYUbo.5bad497c-b5d3-4b43-8e14-513bb2194a0c.a703476d-bcd1-49e3-b760-7a7987f8f049.1784224683&__frame_v=manifest.4af8359bd414963e.json -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><!-- frame-runtime --><!--<base href="/_f/1784211346-00e8/">--><base href="."><script>window.__FRAME_PREAMBLE={"capabilities":{"downloads":"downloads.DUzXFHNF.js","mcp":"mcp.CLzOm9JX.js","permissions":"permissions.C9OCnDjh.js","self":"self.DqF_PxOe.js"},"transforms":"_transforms.DYk1Ltlh.js","comments":"_comments.Dp6RDy7J.js"}</script><script>(function(){"use strict";const ce="modulepreload",le=function(e){return"/"+e},ue={},x=function(t,n,u){let o=Promise.resolve();function s(f){const a=new Event("vite:preloadError",{cancelable:!0});if(a.payload=f,window.dispatchEvent(a),!a.defaultPrevented)throw f}return o.then(f=>{for(const a of f||[])a.status==="rejected"&&s(a.reason);return t().catch(s)})},K=["light","dark","system"];function G(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_init;return t!=null&&typeof t=="object"}function J(e){return e!=null&&typeof e=="object"&&e.__frame_size_poke===!0}function V(e){if(e==null||typeof e!="object")return!1;const t=e.__frame_theme;if(t==null||typeof t!="object")return!1;const n=t.theme;return typeof n=="string"&&K.includes(n)}function Y(e){try{typeof reportError=="function"?reportError(e):setTimeout(()=>{throw e},0)}catch{}}function z(e){if(window===top||e.type==="auxclick"&&e.button!==1)return;const t=e.composedPath?e.composedPath():[e.target];let n=null;for(let f=0;f<t.length;f++){const a=t[f];if(a&&a.matches&&a.matches("a[href],area[href]")){n=a;break}}if(!n&&e.target&&e.target.closest&&(n=e.target.closest("a[href],area[href]")),!n)return;const u=n.getAttribute("href");if(!u)return;let o,s;try{o=new URL(u,document.baseURI),s=new URL(document.baseURI).origin}catch{return}(o.protocol==="http:"||o.protocol==="https:")&&o.origin!==s&&(e.preventDefault(),parent.postMessage({__frame_nav:!0,url:o.href},"*"))}const D={};function T(e){if(window===top)return;const t=Date.now();t-(D[e]||0)<500||(D[e]=t,parent.postMessage({__frame_engaged:!0,kind:e},"*"))}const Q=2e3,U=["wheel","touchstart","touchmove","keydown","pointerdown"];let B=0;function X(e){e.isTrusted&&(B=Date.now())}function Z(){addEventListener("click",z,!0),addEventListener("auxclick",z,!0)}function ee(){for(let e=0;e<U.length;e++)addEventListener(U[e],X,{capture:!0,passive:!0});addEventListener("scroll",e=>{e.isTrusted&&Date.now()-B<Q&&T("scroll")},{capture:!0,passive:!0}),addEventListener("pointermove",e=>{e.isTrusted&&T("pointer")},{capture:!0,passive:!0}),addEventListener("click",e=>{e.isTrusted&&T("click")},{capture:!0,passive:!0})}function te(e,t,n){const u=[...t.values()].filter(o=>o.targets.some(s=>s.startsWith(e+".")));return{wrap(o,s){const f=`${e}.${o}`,a=u.filter(i=>i.targets.includes(f));return a.length===0?(...i)=>{try{return s(...i)}catch(p){return Promise.reject(p)}}:(...i)=>{let p=i;for(const c of a){const l=c.module.parameters;if(l)try{p=l(p)}catch{return Promise.reject({code:"transform_error",id:c.id,scope:e,message:"parameters transform failed"})}}let h;try{h=s(...p)}catch(c){h=Promise.reject(c)}return h.then(c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.returns;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"returns"}),c}}return c},c=>{for(let l=a.length-1;l>=0;l--){const m=a[l],d=m.module.throws;if(d)try{c=d(c)}catch{return n({id:m.id,scope:e,leg:"throws"}),Promise.reject(c)}}return Promise.reject(c)})}}}}function ne(e,t,n,u=()=>{}){const o=new Set(e.changes??[]),s=new Map;for(const f of o){const a=t[f];a&&s.set(f,a)}return{contract:e.contract,changes:o,flags:new Set(e.flags??[]),capabilities:e.capabilities??{},capBudgets:e.capBudgets??{},transforms:s,shellOrigin:n.shellOrigin,mount:n.mount,pipe:f=>te(f,s,u)}}(function(){const e=Object.defineProperty,t=globalThis,n=["RTCPeerConnection","webkitRTCPeerConnection","RTCDataChannel","RTCIceCandidate","RTCSessionDescription","RTCRtpSender","RTCRtpReceiver"];let u=0;for(let o=0;o<n.length;o++){const s=n[o];try{e(t,s,{value:void 0,writable:!1,configurable:!1})}catch{try{delete t[s]}catch{}try{e(t,s,{value:void 0,writable:!1,configurable:!0})}catch{}}typeof t[s]=="function"&&u++}if(u&&window!==top)try{parent.postMessage({__frame_rtc_lockdown_failed:u},"*")}catch{}})();const re=1e4,oe=Object.freeze([...window.__FRAME_PREAMBLE?.origins??["https://claude.ai","https://preview.claude.ai"]]);function se(e){for(const t of oe)if(t.endsWith(":*"))try{const n=new URL(e);if(`${n.protocol}//${n.hostname}:*`===t)return!0}catch{}else if(e===t)return!0;return!1}const R=Object.freeze({...window.__FRAME_PREAMBLE?.capabilities??{}}),A=window.__FRAME_PREAMBLE?.transforms,k=window.__FRAME_PREAMBLE?.comments,C=/^[\w.-]+\.js$/,ie=/^[a-z][a-z0-9_-]{0,63}$/;let F=null,v=null;function N(e,t,n){try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!1,enumerable:!0})}catch{try{Object.defineProperty(e,t,{value:n,writable:!1,configurable:!0,enumerable:!0})}catch{}}}let I=!1;function H(e){const t=document.documentElement;e==="light"||e==="dark"?(t.dataset.theme=e,t.style.colorScheme=e,I=!0):I&&(delete t.dataset.theme,t.style.colorScheme="",I=!1)}const E={mcp:{watchTool:{handlerArg:3}}},P=new Map;function ae(e,t){const n=P.get(e);if(!n)return;Object.assign(n.impl,t),n.impl.__settled=()=>Promise.reject({code:"capability_removed",message:`${e}: method not in this runtime`});const u=n.queue;n.queue=[];for(const o of u){const s=t[o.method];if(s)if(E[e]?.[o.method])try{o.resolve(s(...o.args))}catch{O(o,E[e][o.method].handlerArg,{code:"transform_error",message:`${e}.${o.method} rejected its arguments`})}else s(...o.args).then(o.resolve,o.reject);else{const f={code:"capability_removed",message:`${e}.${o.method} is not in this runtime`},a=E[e]?.[o.method];if(a){O(o,a.handlerArg,f);continue}o.reject(f)}}}function $(e,t){const n=P.get(e);if(!n)return;n.impl.__settled=()=>Promise.reject(t);const u=n.queue;n.queue=[];for(const o of u){const s=E[e]?.[o.method];if(s){O(o,s.handlerArg,t);continue}o.reject(t)}}function O(e,t,n){if(e.syncState?.dead)return;const u=e.args[t];typeof u=="function"&&queueMicrotask(()=>{if(!e.syncState?.dead)try{u({type:"error",error:n})}catch(o){Y(o)}})}const q=Object.getOwnPropertyDescriptor(window,"claude");if(window!==top&&!(q&&q.writable===!1)){Z(),ee();const e=q?.value??{};N(window,"claude",e);const t=i=>{const p={impl:Object.create(null),queue:[]};P.set(i,p);const h=new Proxy(p.impl,{get:(c,l)=>{if(typeof l!="string"||l==="then"||l==="toJSON"||l==="valueOf")return;if(l==="toString")return Object.prototype.toString;const m=E[i]?.[l];return m?(...d)=>{if(typeof d[m.handlerArg]!="function")throw new TypeError(`${i}.${l} requires a handler function`);const g=c[l];if(g)return g(...d);if(c.__settled){const _={dead:!1},S={args:[...d],syncState:_};return c.__settled().catch(j=>O(S,m.handlerArg,j)),()=>{_.dead=!0}}let y=null;const w={dead:!1};return p.queue.push({method:l,args:d,resolve:_=>{y=typeof _=="function"?_:null,w.dead&&y?.()},reject:()=>{},syncState:w}),()=>{w.dead=!0,y?.()}}:(...d)=>{const g=c[l]??c.__settled;return g?g(...d):new Promise((y,w)=>{p.queue.push({method:l,args:d,resolve:y,reject:w})})}},set:()=>!1});N(e,i,h)};for(const i of Object.keys(R)){if(e[i]!==void 0){N(e,i,e[i]);continue}t(i)}let n=null,u=null,o=0;const s=i=>{i.source!==parent||!se(i.origin)||G(i.data)&&(n=i.data.__frame_init,v=i.origin,removeEventListener("message",s),clearTimeout(o),u?.())};addEventListener("message",s),parent.postMessage({__frame_connect:!0},"*");const f=new Promise(i=>{u=i,o=setTimeout(()=>{removeEventListener("message",s),i()},re)}),a=document.readyState==="loading"?new Promise(i=>document.addEventListener("DOMContentLoaded",()=>i(),{once:!0})):Promise.resolve();f.then(async()=>{if(!n||!v){for(const r of P.keys())$(r,{code:"not_granted",message:"frame initialization did not arrive - capability unavailable"});return}H(n.theme);const i=v;let p=!1;addEventListener("message",r=>{if(r.source!==parent||r.origin!==i)return;V(r.data)&&H(r.data.__frame_theme.theme);const b=r.data?.__fc_mode;b&&typeof b=="object"&&!p&&k&&C.test(k)&&(p=!0,h(k).then(L=>L.install?.(i,b.on===!0)).catch(()=>{}))});const h=r=>x(()=>import("/_runtime/"+r),void 0),c=Object.keys(n.capabilities??{});for(const r of c)Object.hasOwn(R,r)||ie.test(r)&&e[r]===void 0&&(t(r),$(r,{code:"capability_disabled",message:"capability not in this runtime generation"}));const l=c.filter(r=>Object.hasOwn(R,r)).map(r=>[r,R[r]]).filter(r=>typeof r[1]=="string"&&C.test(r[1])),[m,...d]=await Promise.allSettled([A&&C.test(A)?h(A):Promise.resolve({}),...l.map(([,r])=>h(r))]),g=v;F=ne(n,m.status==="fulfilled"&&m.value?.TRANSFORMS||{},{shellOrigin:g,mount:ae},r=>parent.postMessage({__frame_cap_telemetry:r},g));const y=r=>parent.postMessage({__frame_cap_telemetry:{kind:"cap-load-error",cap:r}},g),w=F;d.forEach((r,b)=>{const L=l[b][0];if(r.status!=="fulfilled"){y(L);return}try{r.value?.install?.(w)}catch{y(L)}});for(const[r,b]of P)b.queue.length===0&&Object.keys(b.impl).length>0||$(r,{code:c.includes(r)?"capability_disabled":"not_granted",message:"capability not available in this session"});await a,parent.postMessage({__frame_ready:!0},v);let _=-1,S=0;const j=()=>{S=0;const r=Math.max(document.documentElement.scrollHeight,document.body?document.body.scrollHeight:0);r!==_&&(_=r,parent.postMessage({__frame_size:!0,h:r},g))},M=()=>{S||(S=setTimeout(j,200))},W=new ResizeObserver(M);W.observe(document.documentElement),document.body&&W.observe(document.body),document.addEventListener("load",M,!0),document.fonts?.ready.then(M,()=>{}),addEventListener("beforeprint",()=>{_=-1,j()}),M(),addEventListener("message",r=>{r.source!==parent||r.origin!==g||J(r.data)&&(_=-1,M())})})}})();</script><!-- /frame-runtime --><meta name="viewport" content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}</style></head><body>
+<title>ResNet &amp; Skip Connections, ELI5</title>
+<style>
+  :root {
+    --bg: #f5f8f8;
+    --surface: #fdfefe;
+    --ink: #182528;
+    --muted: #5a6b70;
+    --line: #d3dee0;
+    --accent: #0a8a9e;
+    --accent-soft: rgba(10, 138, 158, 0.16);
+    --skip: #d2622f;
+    --skip-soft: rgba(210, 98, 47, 0.14);
+    --plus: #6d5fae;
+    --plus-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+      --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.22);
+      --skip: #d96c2c; --skip-soft: rgba(217, 108, 44, 0.20);
+      --plus: #8e7dd6; --plus-soft: rgba(142, 125, 214, 0.26);
+      --chip-bg: #1e2d32;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #10191c; --surface: #172327; --ink: #e4edee; --muted: #93a6aa;
+    --line: #2c3c41; --accent: #1ca5b8; --accent-soft: rgba(28, 165, 184, 0.22);
+    --skip: #d96c2c; --skip-soft: rgba(217, 108, 44, 0.20);
+    --plus: #8e7dd6; --plus-soft: rgba(142, 125, 214, 0.26);
+    --chip-bg: #1e2d32;
+  }
+  :root[data-theme="light"] {
+    --bg: #f5f8f8; --surface: #fdfefe; --ink: #182528; --muted: #5a6b70;
+    --line: #d3dee0; --accent: #0a8a9e; --accent-soft: rgba(10, 138, 158, 0.16);
+    --skip: #d2622f; --skip-soft: rgba(210, 98, 47, 0.14);
+    --plus: #6d5fae; --plus-soft: rgba(109, 95, 174, 0.18);
+    --chip-bg: #e8eff0;
+  }
+
+  body {
+    background: var(--bg); color: var(--ink);
+    font-family: "Avenir Next", "Seravek", system-ui, sans-serif;
+    line-height: 1.6; padding: 3rem 1.25rem 4rem;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; gap: 2.5rem; }
+
+  header .eyebrow {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em;
+    color: var(--accent); font-weight: 600; margin-bottom: 0.5rem;
+  }
+  h1 { font-size: 2rem; font-weight: 600; line-height: 1.15; text-wrap: balance; margin-bottom: 0.6rem; }
+  header p.lede { color: var(--muted); max-width: 46rem; font-size: 1.02rem; }
+
+  .label {
+    font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em;
+    font-weight: 600; color: var(--muted);
+  }
+  section { display: flex; flex-direction: column; gap: 0.9rem; }
+  section h2 { font-size: 1.22rem; font-weight: 600; text-wrap: balance; }
+  section > p { max-width: 46rem; }
+  .t-skip { color: var(--skip); font-weight: 600; }
+  .t-plus { color: var(--plus); font-weight: 600; }
+
+  .panel {
+    background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    padding: 1.25rem; overflow-x: auto;
+  }
+
+  /* chart */
+  .charthead { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .charthead button {
+    font: inherit; font-size: 0.85rem; font-weight: 600; color: var(--ink);
+    background: var(--surface); border: 1.5px solid var(--accent); border-radius: 999px;
+    padding: 0.35rem 1rem; cursor: pointer;
+  }
+  .charthead button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  #chartTitle { font-size: 0.95rem; font-weight: 600; }
+  .legend { display: flex; gap: 1rem; font-size: 0.8rem; color: var(--muted); margin-top: 0.4rem; }
+  .legend .dot { display: inline-block; width: 9px; height: 9px; border-radius: 50%; margin-right: 0.35rem; }
+  .chartnote { font-size: 0.76rem; color: var(--muted); margin-top: 0.5rem; }
+  #chart { width: 100%; max-width: 620px; height: auto; display: block; }
+  #chart text { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 11px; fill: var(--muted); }
+  #chart .endlab { font-family: "Avenir Next", system-ui, sans-serif; font-size: 12px; font-weight: 600; fill: var(--ink); }
+
+  /* block diagram */
+  .blockrow { display: flex; gap: 2rem; align-items: center; flex-wrap: wrap; }
+  .blockrow svg { flex: 0 1 380px; max-width: 400px; height: auto; }
+  .blockrow svg text { font-family: "Avenir Next", system-ui, sans-serif; }
+  .blockrow .points { flex: 1 1 280px; display: flex; flex-direction: column; gap: 0.9rem; }
+  .point { display: flex; gap: 0.7rem; font-size: 0.92rem; }
+  .point .bullet { width: 10px; height: 10px; border-radius: 50%; margin-top: 0.45rem; flex-shrink: 0; }
+  .point p { color: var(--muted); }
+  .point p strong { color: var(--ink); }
+  .formula {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.9rem;
+    background: var(--surface); border: 1px solid var(--line); border-radius: 8px;
+    padding: 0.7rem 1rem; overflow-x: auto; white-space: nowrap;
+  }
+  .formula .fx { color: var(--plus); font-weight: 700; }
+  .formula .fs { color: var(--skip); font-weight: 700; }
+  .formula .cm { color: var(--muted); }
+
+  /* architecture strip */
+  .strip { display: flex; align-items: center; gap: 0.6rem; min-width: 860px; padding: 0.25rem 0; }
+  .strip .sep { color: var(--muted); flex-shrink: 0; }
+  .strip .sep .down { display: block; font-size: 0.62rem; color: var(--skip); text-align: center;
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; white-space: nowrap; }
+  .node {
+    border: 1.5px solid var(--line); border-radius: 8px; padding: 0.5rem 0.7rem;
+    background: var(--surface); text-align: center; flex-shrink: 0;
+  }
+  .node .nm { font-weight: 600; font-size: 0.82rem; }
+  .node .sub { font-size: 0.68rem; color: var(--muted); font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .node.stage { border-color: var(--accent); background: var(--accent-soft); }
+  .node.gap { border-color: var(--plus); background: var(--plus-soft); }
+  .node .arcs { display: block; height: 14px; margin-bottom: 2px; }
+  .node .arcs svg { height: 14px; width: auto; display: block; margin: 0 auto; }
+  .stripnote { font-size: 0.85rem; color: var(--muted); margin-top: 0.9rem; max-width: 46rem; }
+  .stripnote strong { color: var(--ink); }
+
+  /* gradient highway */
+  #hw { width: 100%; max-width: 640px; height: auto; display: block; }
+  #hw text { font-family: "Avenir Next", system-ui, sans-serif; font-size: 12px; fill: var(--muted); }
+
+  /* history */
+  .timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+  @media (max-width: 700px) { .timeline { grid-template-columns: 1fr; } }
+  .era { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+  .era .yr { font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em; color: var(--accent);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace; }
+  .era h3 { font-size: 0.95rem; font-weight: 600; margin: 0.2rem 0; }
+  .era p { font-size: 0.84rem; color: var(--muted); }
+  .era.win { border-color: var(--accent); }
+
+  .takeaway {
+    border-left: 3px solid var(--accent); padding: 0.35rem 0 0.35rem 1.1rem;
+    font-size: 1.02rem; font-weight: 500; max-width: 46rem; text-wrap: balance;
+  }
+</style>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">ELI5 · Convolutional networks</div>
+    <h1>ResNet: The Skip Connection That Unlocked Depth</h1>
+    <p class="lede">By 2015, everyone knew deeper networks <em>should</em> be better — but past
+    ~20 layers they mysteriously got <em>worse</em>. ResNet's fix is one wire: let every block's
+    input skip around it and get added back to its output. That wire took networks from
+    20 layers to 152.</p>
+  </header>
+
+  <section>
+    <div class="label">1 · The problem</div>
+    <h2>Deeper was worse — and not because of overfitting</h2>
+    <p>This was the shocking part: the 56-layer network had worse <em>training</em> error than
+    the 20-layer one. It wasn't memorizing too much — it couldn't even fit the training data.
+    Depth was breaking optimization itself.</p>
+    <div class="panel">
+      <div class="charthead">
+        <span id="chartTitle">Plain nets: the 56-layer is WORSE than the 20-layer</span>
+        <button id="toggleBtn">Add skip connections →</button>
+      </div>
+      <svg id="chart" viewBox="0 0 620 260" role="img" aria-label="Training error curves comparing shallow and deep networks"><line x1="55" y1="220" x2="480" y2="220" stroke="var(--line)" stroke-width="1"></line><text x="47" y="224" text-anchor="end">0%</text><line x1="55" y1="181" x2="480" y2="181" stroke="var(--line)" stroke-width="1"></line><text x="47" y="185" text-anchor="end">10%</text><line x1="55" y1="142" x2="480" y2="142" stroke="var(--line)" stroke-width="1"></line><text x="47" y="146" text-anchor="end">20%</text><line x1="55" y1="103" x2="480" y2="103" stroke="var(--line)" stroke-width="1"></line><text x="47" y="107" text-anchor="end">30%</text><line x1="55" y1="64" x2="480" y2="64" stroke="var(--line)" stroke-width="1"></line><text x="47" y="68" text-anchor="end">40%</text><line x1="55" y1="25" x2="480" y2="25" stroke="var(--line)" stroke-width="1"></line><text x="47" y="29" text-anchor="end">50%</text><line x1="55" y1="220" x2="480" y2="220" stroke="var(--muted)" stroke-width="1.5"></line><text x="267.5" y="248" text-anchor="middle">training time (epochs, illustrative)</text><text x="16" y="122.5" transform="rotate(-90 16 122.5)" text-anchor="middle">training error</text><path d="M 55.0 44.5 L 97.5 122.5 L 140.0 153.7 L 182.5 169.3 L 225.0 177.1 L 267.5 181.0 L 310.0 183.3 L 352.5 184.9 L 395.0 186.1 L 437.5 186.8 L 480.0 187.6" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"></path><path d="M 55.0 32.8 L 97.5 103.0 L 140.0 134.2 L 182.5 149.8 L 225.0 159.6 L 267.5 165.4 L 310.0 168.5 L 352.5 171.3 L 395.0 173.2 L 437.5 174.4 L 480.0 175.2" fill="none" stroke="var(--skip)" stroke-width="2.5" stroke-linejoin="round"></path><circle cx="480" cy="187.63" r="4" fill="var(--accent)"></circle><circle cx="480" cy="175.15" r="4" fill="var(--skip)"></circle><text class="endlab" x="490" y="199.63">20 layers</text><text class="endlab" x="490" y="171.15">56 layers — worse!</text></svg>
+      <div class="legend" id="legend"><span><span class="dot" style="background: var(--accent)"></span>shallower net</span><span><span class="dot" style="background: var(--skip)"></span>deeper net</span></div>
+      <div class="chartnote">Illustrative sketch of He et al. 2016, Figures 1 &amp; 4 (CIFAR-10 / ImageNet) — shapes faithful, values approximate.</div>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">2 · The idea</div>
+    <h2>Edit the draft — don't retype the document</h2>
+    <p>A plain deep net retypes the whole representation at every layer: if layer 23 garbles it,
+    everything downstream inherits the damage. A residual block instead receives a draft,
+    computes a <span class="t-plus">suggested edit F(x)</span>, and the
+    <span class="t-skip">skip wire</span> carries the original draft around to be
+    recombined: <strong>output = draft + edit</strong>.</p>
+    <div class="panel">
+      <div class="blockrow">
+        <svg viewBox="0 0 480 480" role="img" aria-label="Residual block: input x flows through Conv, BatchNorm, ReLU, Conv, BatchNorm, while a skip connection carries x around to be added before a final ReLU">
+          <defs>
+            <marker id="mA" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0 0 L7 4 L0 8 Z" fill="var(--muted)"></path>
+            </marker>
+            <marker id="mS" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+              <path d="M0 0 L7 4 L0 8 Z" fill="var(--skip)"></path>
+            </marker>
+          </defs>
+          <text x="180" y="20" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">x — the draft coming in</text>
+          <circle cx="180" cy="36" r="4" fill="var(--ink)"></circle>
+          <line x1="180" y1="42" x2="180" y2="56" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <rect x="105" y="60" width="150" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"></rect>
+          <text x="180" y="83" text-anchor="middle" font-size="13" fill="var(--ink)">Conv 3×3</text>
+          <line x1="180" y1="96" x2="180" y2="110" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <rect x="105" y="114" width="150" height="36" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"></rect>
+          <text x="180" y="137" text-anchor="middle" font-size="13" fill="var(--ink)">BatchNorm</text>
+          <line x1="180" y1="150" x2="180" y2="164" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <rect x="105" y="168" width="150" height="36" rx="8" fill="var(--chip-bg)" stroke="var(--line)" stroke-width="1.5"></rect>
+          <text x="180" y="191" text-anchor="middle" font-size="13" fill="var(--ink)">ReLU</text>
+          <line x1="180" y1="204" x2="180" y2="218" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <rect x="105" y="222" width="150" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"></rect>
+          <text x="180" y="245" text-anchor="middle" font-size="13" fill="var(--ink)">Conv 3×3</text>
+          <line x1="180" y1="258" x2="180" y2="272" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <rect x="105" y="276" width="150" height="36" rx="8" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"></rect>
+          <text x="180" y="299" text-anchor="middle" font-size="13" fill="var(--ink)">BatchNorm</text>
+          <line x1="180" y1="312" x2="180" y2="328" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+
+          <circle cx="180" cy="352" r="18" fill="var(--plus-soft)" stroke="var(--plus)" stroke-width="2"></circle>
+          <line x1="171" y1="352" x2="189" y2="352" stroke="var(--plus)" stroke-width="2.5"></line>
+          <line x1="180" y1="343" x2="180" y2="361" stroke="var(--plus)" stroke-width="2.5"></line>
+
+          <line x1="180" y1="370" x2="180" y2="384" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+          <rect x="105" y="388" width="150" height="36" rx="8" fill="var(--chip-bg)" stroke="var(--line)" stroke-width="1.5"></rect>
+          <text x="180" y="411" text-anchor="middle" font-size="13" fill="var(--ink)">ReLU</text>
+          <line x1="180" y1="424" x2="180" y2="438" stroke="var(--muted)" stroke-width="2" marker-end="url(#mA)"></line>
+          <text x="180" y="460" text-anchor="middle" font-size="13" font-weight="600" fill="var(--ink)">x + F(x) — draft + edit</text>
+
+          <path d="M 180 36 C 340 42, 376 110, 376 190 C 376 268, 300 332, 202 349" fill="none" stroke="var(--skip)" stroke-width="3" marker-end="url(#mS)"></path>
+          <text x="388" y="170" font-size="12.5" font-weight="600" fill="var(--skip)">the skip:</text>
+          <text x="388" y="186" font-size="12.5" fill="var(--muted)">carry x</text>
+          <text x="388" y="202" font-size="12.5" fill="var(--muted)">unchanged</text>
+
+          <text x="92" y="170" text-anchor="end" font-size="12.5" font-weight="600" fill="var(--plus)">the detour:</text>
+          <text x="92" y="186" text-anchor="end" font-size="12.5" fill="var(--muted)">learn only</text>
+          <text x="92" y="202" text-anchor="end" font-size="12.5" fill="var(--muted)">the edit F(x)</text>
+        </svg>
+        <div class="points">
+          <div class="point"><span class="bullet" style="background: var(--plus)"></span>
+            <p><strong>The detour learns the change, not the content.</strong> Conv → BN → ReLU →
+            Conv → BN (you already know every piece — BN lives inside each block) computes
+            F(x): "here's what I'd improve about this draft."</p></div>
+          <div class="point"><span class="bullet" style="background: var(--skip)"></span>
+            <p><strong>The skip costs nothing and learns nothing.</strong> It's a wire, not a layer —
+            0 parameters. It just hands the original x to the ⊕.</p></div>
+          <div class="point"><span class="bullet" style="background: var(--accent)"></span>
+            <p><strong>The worst case is now harmless.</strong> If a block has nothing useful to add,
+            it learns F(x) ≈ 0 and the draft passes through untouched. Learning "zero edit" is easy;
+            learning "perfectly copy the input through 5 layers" (what plain nets needed) is hard.
+            That's why adding blocks can't make things worse.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="formula">
+      output = <span class="fs">x</span> + <span class="fx">F(x)</span>
+      <span class="cm">// keep the draft, add the edit — "residual" = the edit</span>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">3 · The whole network</div>
+    <h2>Blocks all the way down — then GAP, like always</h2>
+    <div class="panel">
+      <div class="strip" id="strip"><div class="node"><div class="nm">image</div><div class="sub">224×224×3</div></div><div class="sep">→</div><div class="node"><div class="nm">Conv 7×7 + pool</div><div class="sub">→ 56² · 64ch</div></div><div class="sep">→</div><div class="node stage"><span class="arcs"><svg viewBox="0 0 64 16"><path d="M4 14 Q 18 0, 30 14" fill="none" stroke="var(--skip)" stroke-width="2"></path><path d="M34 14 Q 48 0, 60 14" fill="none" stroke="var(--skip)" stroke-width="2"></path></svg></span><div class="nm">64 ch</div><div class="sub">2 blocks · 56²</div></div><div class="sep">→<span class="down">↓2 · 1×1 skip</span></div><div class="node stage"><span class="arcs"><svg viewBox="0 0 64 16"><path d="M4 14 Q 18 0, 30 14" fill="none" stroke="var(--skip)" stroke-width="2"></path><path d="M34 14 Q 48 0, 60 14" fill="none" stroke="var(--skip)" stroke-width="2"></path></svg></span><div class="nm">128 ch</div><div class="sub">2 blocks · 28²</div></div><div class="sep">→<span class="down">↓2 · 1×1 skip</span></div><div class="node stage"><span class="arcs"><svg viewBox="0 0 64 16"><path d="M4 14 Q 18 0, 30 14" fill="none" stroke="var(--skip)" stroke-width="2"></path><path d="M34 14 Q 48 0, 60 14" fill="none" stroke="var(--skip)" stroke-width="2"></path></svg></span><div class="nm">256 ch</div><div class="sub">2 blocks · 14²</div></div><div class="sep">→<span class="down">↓2 · 1×1 skip</span></div><div class="node stage"><span class="arcs"><svg viewBox="0 0 64 16"><path d="M4 14 Q 18 0, 30 14" fill="none" stroke="var(--skip)" stroke-width="2"></path><path d="M34 14 Q 48 0, 60 14" fill="none" stroke="var(--skip)" stroke-width="2"></path></svg></span><div class="nm">512 ch</div><div class="sub">2 blocks · 7²</div></div><div class="sep">→</div><div class="node gap"><div class="nm">GAP</div><div class="sub">→ 512 numbers</div></div><div class="sep">→</div><div class="node"><div class="nm">Dense</div><div class="sub">→ 1000 classes</div></div></div>
+      <p class="stripnote">Look familiar? <strong>Maps shrink, channels grow</strong> (56²×64 →
+      7²×512), and it ends with <strong>GAP → one number per concept channel → Dense</strong> —
+      the same pattern as our Week 8 CNN, just repeated 8 blocks deep. At each stage boundary
+      (<span style="color: var(--skip); font-weight:600">↓2</span>) the map halves and channels double,
+      so the skip there uses a 1×1 conv to match shapes — the only skips with any weights at all.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">4 · Why it trains</div>
+    <h2>The skips are a gradient highway</h2>
+    <p>Training feedback must travel backward from the loss to layer 1. Through a plain stack it
+    fades a little at every layer — after 50+ layers, almost nothing arrives. But the ⊕ passes
+    gradient <em>straight through</em> the skip, so feedback rides the arcs past every block:</p>
+    <div class="panel">
+      <svg id="hw" viewBox="0 0 640 150" role="img" aria-label="Gradient flowing backward from the loss over skip-connection arcs, bypassing the blocks">
+        <defs>
+          <marker id="mH" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+            <path d="M0 0 L7 4 L0 8 Z" fill="var(--skip)"></path>
+          </marker>
+        </defs>
+        <text x="30" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)">input</text>
+        <text x="605" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="var(--ink)">loss</text>
+        <line x1="52" y1="100" x2="578" y2="100" stroke="var(--line)" stroke-width="2"></line>
+        <rect x="120" y="82" width="90" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"></rect>
+        <text x="165" y="105" text-anchor="middle" font-size="12" fill="var(--ink)">block 1</text>
+        <rect x="275" y="82" width="90" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"></rect>
+        <text x="320" y="105" text-anchor="middle" font-size="12" fill="var(--ink)">block 2</text>
+        <rect x="430" y="82" width="90" height="36" rx="8" fill="var(--surface)" stroke="var(--ink)" stroke-width="1.5"></rect>
+        <text x="475" y="105" text-anchor="middle" font-size="12" fill="var(--ink)">block …</text>
+        <path d="M 560 96 C 540 40, 410 40, 388 94" fill="none" stroke="var(--skip)" stroke-width="3" marker-end="url(#mH)"></path>
+        <path d="M 405 96 C 385 40, 255 40, 233 94" fill="none" stroke="var(--skip)" stroke-width="3" marker-end="url(#mH)"></path>
+        <path d="M 250 96 C 230 40, 100 40, 78 94" fill="none" stroke="var(--skip)" stroke-width="3" marker-end="url(#mH)"></path>
+        <text x="320" y="26" text-anchor="middle" font-size="12" font-weight="600" fill="var(--skip)">gradient rides the skips — no fading, no matter the depth</text>
+      </svg>
+    </div>
+  </section>
+
+  <section>
+    <div class="label">5 · Why it mattered</div>
+    <div class="timeline">
+      <div class="era"><div class="yr">2012</div><h3>AlexNet · 8 layers</h3>
+        <p>15.3% top-5 error. The ImageNet moment — your Segment 2 story.</p></div>
+      <div class="era"><div class="yr">2014</div><h3>VGG · 19 layers</h3>
+        <p>7.3%. All 3×3 filters. Tried going deeper — hit the wall.</p></div>
+      <div class="era win"><div class="yr">2015</div><h3>ResNet · 152 layers</h3>
+        <p>3.6% — past the ~5% human benchmark. One wire unlocked 8× the depth.</p></div>
+    </div>
+  </section>
+
+  <p class="takeaway">A residual block promises: "at worst, I'll do nothing." Give every layer an
+  escape hatch to the identity, and depth stops being a risk — gradients ride the skips backward,
+  drafts ride them forward, and 152 layers train as easily as 20.</p>
+</div>
+
+<script>
+  (function () {
+    // ---- Section 1: toggleable training-error chart ----
+    var DATA = {
+      plain: {
+        title: "Plain nets: the 56-layer is WORSE than the 20-layer",
+        btn: "Add skip connections →",
+        a: { label: "20 layers", pts: [[0,45],[10,25],[20,17],[30,13],[40,11],[50,10],[60,9.4],[70,9],[80,8.7],[90,8.5],[100,8.3]] },
+        b: { label: "56 layers — worse!", pts: [[0,48],[10,30],[20,22],[30,18],[40,15.5],[50,14],[60,13.2],[70,12.5],[80,12],[90,11.7],[100,11.5]] }
+      },
+      res: {
+        title: "With skips: deeper wins again — as it always should have",
+        btn: "← Remove skip connections",
+        a: { label: "18 layers", pts: [[0,45],[10,22],[20,15],[30,11.5],[40,9.8],[50,8.8],[60,8.2],[70,7.8],[80,7.6],[90,7.5],[100,7.4]] },
+        b: { label: "34 layers — better!", pts: [[0,46],[10,20],[20,13],[30,9.5],[40,8],[50,7.2],[60,6.7],[70,6.4],[80,6.2],[90,6.1],[100,6.0]] }
+      }
+    };
+    var mode = "plain";
+    var chart = document.getElementById("chart");
+    var X0 = 55, X1 = 480, Y0 = 220, Y1 = 25; // plot area; right margin for end labels
+    function px(e) { return X0 + (e / 100) * (X1 - X0); }
+    function py(v) { return Y0 - (v / 50) * (Y0 - Y1); }
+    function pathOf(pts) {
+      return pts.map(function (p, i) { return (i ? "L " : "M ") + px(p[0]).toFixed(1) + " " + py(p[1]).toFixed(1); }).join(" ");
+    }
+    function render() {
+      var d = DATA[mode];
+      var s = "";
+      for (var v = 0; v <= 50; v += 10) {
+        s += '<line x1="' + X0 + '" y1="' + py(v) + '" x2="' + X1 + '" y2="' + py(v) + '" stroke="var(--line)" stroke-width="1"></line>';
+        s += '<text x="' + (X0 - 8) + '" y="' + (py(v) + 4) + '" text-anchor="end">' + v + '%</text>';
+      }
+      s += '<line x1="' + X0 + '" y1="' + Y0 + '" x2="' + X1 + '" y2="' + Y0 + '" stroke="var(--muted)" stroke-width="1.5"></line>';
+      s += '<text x="' + ((X0 + X1) / 2) + '" y="248" text-anchor="middle">training time (epochs, illustrative)</text>';
+      s += '<text x="16" y="' + ((Y0 + Y1) / 2) + '" transform="rotate(-90 16 ' + ((Y0 + Y1) / 2) + ')" text-anchor="middle">training error</text>';
+      s += '<path d="' + pathOf(d.a.pts) + '" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-linejoin="round"></path>';
+      s += '<path d="' + pathOf(d.b.pts) + '" fill="none" stroke="var(--skip)" stroke-width="2.5" stroke-linejoin="round"></path>';
+      var la = d.a.pts[d.a.pts.length - 1], lb = d.b.pts[d.b.pts.length - 1];
+      var ya = py(la[1]), yb = py(lb[1]);
+      if (Math.abs(ya - yb) < 16) { if (ya < yb) { ya -= 8; yb += 8; } else { ya += 8; yb -= 8; } }
+      s += '<circle cx="' + px(100) + '" cy="' + py(la[1]) + '" r="4" fill="var(--accent)"></circle>';
+      s += '<circle cx="' + px(100) + '" cy="' + py(lb[1]) + '" r="4" fill="var(--skip)"></circle>';
+      s += '<text class="endlab" x="' + (px(100) + 10) + '" y="' + (ya + 4) + '">' + d.a.label + '</text>';
+      s += '<text class="endlab" x="' + (px(100) + 10) + '" y="' + (yb + 4) + '">' + d.b.label + '</text>';
+      chart.innerHTML = s;
+      document.getElementById("chartTitle").textContent = d.title;
+      document.getElementById("toggleBtn").textContent = d.btn;
+      document.getElementById("legend").innerHTML =
+        '<span><span class="dot" style="background: var(--accent)"></span>shallower net</span>' +
+        '<span><span class="dot" style="background: var(--skip)"></span>deeper net</span>';
+    }
+    document.getElementById("toggleBtn").addEventListener("click", function () {
+      mode = mode === "plain" ? "res" : "plain";
+      render();
+    });
+    render();
+
+    // ---- Section 3: architecture strip ----
+    var ARCS = '<svg viewBox="0 0 64 16"><path d="M4 14 Q 18 0, 30 14" fill="none" stroke="var(--skip)" stroke-width="2"></path><path d="M34 14 Q 48 0, 60 14" fill="none" stroke="var(--skip)" stroke-width="2"></path></svg>';
+    var NODES = [
+      { nm: "image", sub: "224×224×3" },
+      { nm: "Conv 7×7 + pool", sub: "→ 56² · 64ch" },
+      { stage: true, nm: "64 ch", sub: "2 blocks · 56²" },
+      { down: true },
+      { stage: true, nm: "128 ch", sub: "2 blocks · 28²" },
+      { down: true },
+      { stage: true, nm: "256 ch", sub: "2 blocks · 14²" },
+      { down: true },
+      { stage: true, nm: "512 ch", sub: "2 blocks · 7²" },
+      { gap: true, nm: "GAP", sub: "→ 512 numbers" },
+      { nm: "Dense", sub: "→ 1000 classes" }
+    ];
+    var strip = document.getElementById("strip");
+    NODES.forEach(function (n, i) {
+      if (n.down) {
+        var sep = document.createElement("div");
+        sep.className = "sep";
+        sep.innerHTML = "→<span class='down'>↓2 · 1×1 skip</span>";
+        strip.appendChild(sep);
+        return;
+      }
+      if (i > 0 && !NODES[i - 1].down) {
+        var s2 = document.createElement("div");
+        s2.className = "sep";
+        s2.textContent = "→";
+        strip.appendChild(s2);
+      }
+      var d = document.createElement("div");
+      d.className = "node" + (n.stage ? " stage" : "") + (n.gap ? " gap" : "");
+      d.innerHTML = (n.stage ? "<span class='arcs'>" + ARCS + "</span>" : "") +
+        "<div class='nm'>" + n.nm + "</div><div class='sub'>" + n.sub + "</div>";
+      strip.appendChild(d);
+    });
+  })();
+</script>
+
+</body></html>
