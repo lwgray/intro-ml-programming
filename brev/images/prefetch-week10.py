@@ -30,8 +30,10 @@ for task in ['sentiment-analysis', 'fill-mask', 'ner', 'zero-shot-classification
     except Exception as e:
         print(f'skipping pipeline({task!r}) prefetch: {e}')
 
-# Datasets
-load_dataset('ag_news')  # day 1 fine-tune
-load_dataset('imdb')     # post-class
+# Datasets. Current datasets/huggingface_hub require namespaced repo ids —
+# bare 'ag_news'/'imdb' now raise HfUriError (the notebooks use these
+# namespaced ids too).
+load_dataset('fancyzhx/ag_news')   # day 1 fine-tune
+load_dataset('stanfordnlp/imdb')   # post-class
 
 print('week10 prefetch complete')
