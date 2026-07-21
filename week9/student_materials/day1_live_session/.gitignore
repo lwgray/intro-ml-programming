@@ -1,5 +1,5 @@
-# Image datasets — regenerate from the notebooks' download/build cells; don't commit
-flowers/
+# Image datasets that regenerate from the notebooks' download/build cells; don't commit.
+# flowers/ is intentionally tracked — no student-facing cell can rebuild it.
 flowers_hard/
 cats_and_dogs_filtered/
 eurosat/
