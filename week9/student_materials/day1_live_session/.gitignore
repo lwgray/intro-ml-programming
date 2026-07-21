@@ -4,5 +4,6 @@ flowers_hard/
 cats_and_dogs_filtered/
 eurosat/
 *.zip
-# Saved models
+# Saved models — except the shipped fallback checkpoint (README references it)
 *.keras
+!week9_flowers_finetuned.keras
