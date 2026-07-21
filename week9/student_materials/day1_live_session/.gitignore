@@ -1,0 +1,8 @@
+# Image datasets — regenerate from the notebooks' download/build cells; don't commit
+flowers/
+flowers_hard/
+cats_and_dogs_filtered/
+eurosat/
+*.zip
+# Saved models
+*.keras

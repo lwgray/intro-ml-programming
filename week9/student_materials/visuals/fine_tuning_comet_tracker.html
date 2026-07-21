@@ -1,0 +1,731 @@
+<title>Comet Tracker — the fine-tuning learning-rate demo</title>
+<style>
+  :root {
+    --sky-deep: #070b1a;
+    --sky-horizon: #101a33;
+    --star: #e8ecf7;
+    --comet: #9fd8ff;
+    --comet-tail: #4a7bd4;
+    --brass: #c9a86a;
+    --brass-dim: #8a7449;
+    --lock: #57d98b;
+    --alert: #ff5d5d;
+    --panel: rgba(10, 15, 32, 0.84);
+    --ink: #c6cee4;
+    --ink-dim: #8b96b3;
+    --mono: "SF Mono", "Cascadia Code", Consolas, "DejaVu Sans Mono", monospace;
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    background: var(--sky-deep);
+    color: var(--ink);
+    font-family: var(--serif);
+    overflow: hidden;
+  }
+  #sky { position: fixed; inset: 0; display: block; }
+
+  .plaque {
+    position: fixed;
+    top: 20px;
+    left: 22px;
+    max-width: 440px;
+    padding: 16px 18px 14px;
+    background: var(--panel);
+    border: 1px solid rgba(201, 168, 106, 0.35);
+    border-radius: 6px;
+    backdrop-filter: blur(8px);
+  }
+  .plaque .eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: var(--brass);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .plaque h1 {
+    font-size: 21px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: var(--star);
+    text-wrap: balance;
+    margin-bottom: 8px;
+  }
+  .plaque p {
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink);
+  }
+  .plaque p strong { color: var(--brass); font-weight: 600; }
+
+  .console {
+    position: fixed;
+    left: 50%;
+    bottom: 18px;
+    transform: translateX(-50%);
+    width: min(1020px, calc(100vw - 28px));
+    background: var(--panel);
+    border: 1px solid rgba(201, 168, 106, 0.35);
+    border-top: 2px solid var(--brass);
+    border-radius: 6px;
+    backdrop-filter: blur(10px);
+    padding: 14px 18px 12px;
+  }
+  .console-grid {
+    display: flex;
+    gap: 22px;
+    align-items: stretch;
+    flex-wrap: wrap;
+  }
+  .label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    margin-bottom: 6px;
+    white-space: nowrap;
+  }
+  .dial-block { flex: 1 1 300px; min-width: 260px; }
+  .dial-block input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 26px;
+    background: transparent;
+    cursor: pointer;
+  }
+  .dial-block input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--lock), var(--brass) 55%, var(--alert));
+    opacity: 0.85;
+  }
+  .dial-block input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px; height: 20px;
+    margin-top: -7px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f0dfb8, var(--brass) 55%, #6f5c37);
+    border: 1px solid #3a2f18;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.6);
+  }
+  .dial-block input[type="range"]::-moz-range-track {
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--lock), var(--brass) 55%, var(--alert));
+    opacity: 0.85;
+  }
+  .dial-block input[type="range"]::-moz-range-thumb {
+    width: 20px; height: 20px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #f0dfb8, var(--brass) 55%, #6f5c37);
+    border: 1px solid #3a2f18;
+  }
+  .dial-block input[type="range"]:focus-visible {
+    outline: 2px solid var(--brass);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+  .scale {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-dim);
+    margin-top: 2px;
+  }
+  .presets { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+  button {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: rgba(20, 28, 52, 0.9);
+    color: var(--ink);
+    border: 1px solid rgba(139, 150, 179, 0.45);
+    cursor: pointer;
+  }
+  button:hover { border-color: var(--brass); color: var(--star); }
+  button:focus-visible { outline: 2px solid var(--brass); outline-offset: 2px; }
+  button.nudge { border-color: rgba(87, 217, 139, 0.6); color: var(--lock); }
+  button.wrench { border-color: rgba(255, 93, 93, 0.6); color: var(--alert); }
+  button.mode[aria-pressed="true"] {
+    border-color: var(--brass);
+    color: var(--brass);
+    background: rgba(201, 168, 106, 0.14);
+    box-shadow: 0 0 8px rgba(201, 168, 106, 0.25);
+  }
+  .target-block { flex: 0 0 auto; }
+  .target-note {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.05em;
+    color: var(--ink-dim);
+    margin-top: 7px;
+    max-width: 190px;
+    line-height: 1.5;
+  }
+
+  .readouts {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    flex: 0 0 auto;
+  }
+  .readout .value {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 24px;
+    color: var(--brass);
+    line-height: 1.1;
+  }
+  .readout .value.small { font-size: 24px; color: var(--star); }
+  .status-pill {
+    font-family: var(--mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    padding: 5px 10px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border: 1px solid;
+  }
+  .status-pill .lamp {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: currentColor;
+    box-shadow: 0 0 8px currentColor;
+  }
+  .status-tracking { color: var(--brass); border-color: rgba(201, 168, 106, 0.5); }
+  .status-locked { color: var(--lock); border-color: rgba(87, 217, 139, 0.55); }
+  .status-runaway { color: var(--alert); border-color: rgba(255, 93, 93, 0.55); }
+
+  .scope-block { flex: 0 0 auto; }
+  #scope {
+    display: block;
+    width: 220px;
+    height: 74px;
+    border: 1px solid rgba(139, 150, 179, 0.35);
+    border-radius: 4px;
+    background: #060a16;
+  }
+
+  .verdict {
+    margin-top: 10px;
+    padding-top: 8px;
+    border-top: 1px solid rgba(139, 150, 179, 0.22);
+    font-size: 13.5px;
+    line-height: 1.4;
+    color: var(--ink);
+    min-height: 1.4em;
+  }
+  .verdict.good { color: var(--lock); }
+  .verdict.bad { color: var(--alert); }
+
+  .footer-tag {
+    position: fixed;
+    right: 16px;
+    top: 16px;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+    text-align: right;
+  }
+  .footer-tag b { color: var(--brass); font-weight: 600; }
+
+  @media (max-width: 760px) {
+    .plaque { max-width: calc(100vw - 44px); font-size: 13px; }
+    .scope-block { display: none; }
+  }
+</style>
+
+<canvas id="sky"></canvas>
+
+<div class="plaque">
+  <div class="eyebrow">Week 9 · Segment 3 · Gotcha #1 — Live Demo</div>
+  <h1>Comet Tracker: Recalibration Night</h1>
+  <p>
+    This mount was built for <strong>big, slow comets</strong> on wide, flat approaches — coarse
+    dial turns are safe there. That's training from scratch at 1e-3. Tonight a
+    <strong>small, fast comet</strong> crosses on a narrow, sharp approach. Same gears, same math —
+    but now every correction must be a nudge. That's fine-tuning at 1e-5.
+    <strong>The learning rate is how far the dial turns per correction.</strong>
+  </p>
+</div>
+
+<div class="footer-tag">Transfer learning · <b>nudge (1e-5)</b>, don't wrench (1e-3)</div>
+
+<div class="console" role="group" aria-label="Tracker console">
+  <div class="console-grid">
+    <div class="dial-block">
+      <div class="label">Tracking rate — learning rate</div>
+      <input id="lr" type="range" min="0" max="200" value="0" step="1"
+             aria-label="Learning rate, from 1e-5 to 1e-3, logarithmic scale">
+      <div class="scale"><span>1e-5</span><span>1e-4</span><span>1e-3</span></div>
+      <div class="presets">
+        <button class="nudge" id="btn-nudge">NUDGE 1e-5 ✓</button>
+        <button class="wrench" id="btn-wrench">WRENCH 1e-3 ✗</button>
+        <button id="btn-reset">RESET MOUNT</button>
+        <button id="btn-comet">NEW COMET</button>
+        <button id="btn-run">PAUSE</button>
+      </div>
+    </div>
+    <div class="target-block">
+      <div class="label">Tonight's target</div>
+      <div class="presets">
+        <button class="mode" id="btn-big" aria-pressed="true">BIG · SLOW</button>
+        <button class="mode" id="btn-small" aria-pressed="false">SMALL · FAST</button>
+      </div>
+      <div class="target-note" id="target-note">wide, flat approach — coarse dial turns are safe</div>
+    </div>
+    <div class="readouts">
+      <div class="readout">
+        <div class="label">Rate</div>
+        <div class="value" id="lr-read">1.0e-5</div>
+      </div>
+      <div class="readout">
+        <div class="label">Error</div>
+        <div class="value small" id="err-read">—</div>
+      </div>
+      <div class="readout">
+        <div class="label">Status</div>
+        <div class="status-pill status-tracking" id="status">
+          <span class="lamp"></span><span id="status-text">TRACKING</span>
+        </div>
+      </div>
+    </div>
+    <div class="scope-block">
+      <div class="label">Tracking error — scope</div>
+      <canvas id="scope" width="440" height="148"></canvas>
+    </div>
+  </div>
+  <div class="verdict" id="verdict">Correcting toward the comet…</div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  const sky = document.getElementById('sky');
+  const ctx = sky.getContext('2d');
+  const scope = document.getElementById('scope');
+  const sctx = scope.getContext('2d');
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  let W = 0, H = 0, DPR = 1;
+  function resize() {
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = window.innerWidth;
+    H = window.innerHeight;
+    sky.width = W * DPR;
+    sky.height = H * DPR;
+    sky.style.width = W + 'px';
+    sky.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    makeStars();
+  }
+
+  // ---------------------------------------------------------------- stars
+  let stars = [];
+  function makeStars() {
+    const n = Math.round((W * H) / 5200);
+    const rnd = mulberry32(42);
+    stars = [];
+    for (let i = 0; i < n; i++) {
+      stars.push({
+        x: rnd() * W,
+        y: rnd() * H * 0.9,
+        r: 0.4 + rnd() * 1.2,
+        a: 0.25 + rnd() * 0.6,
+        ph: rnd() * Math.PI * 2,
+        sp: 0.4 + rnd() * 1.2,
+      });
+    }
+  }
+  function mulberry32(seed) {
+    let a = seed;
+    return function () {
+      a |= 0; a = (a + 0x6d2b79f5) | 0;
+      let t = Math.imul(a ^ (a >>> 15), 1 | a);
+      t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  }
+
+  // ---------------------------------------------------------------- comet
+  // Two quarries. k is the basin curvature of the tracking problem: the big, slow
+  // comet approaches on a wide FLAT basin (k small — coarse corrections are stable,
+  // timid ones lag hopelessly), the small, fast one on a narrow SHARP basin (k = 1 —
+  // the same dial setting that was safe before now overshoots). Gradient descent
+  // diverges when lr * GAIN * k > 2, so the contrast is the real mathematics.
+  const MODES = {
+    big: {
+      k: 0.15, durMin: 80, durMax: 110,
+      head: 44, core: 5.5, tailN: 70, tailDt: 0.12, tailMax: 13,
+      colorFar: '#c9a86a', colorNear: '#f2e6bd',
+      glowInner: 'rgba(255,250,235,0.95)', glowMid: 'rgba(242,230,189,0.55)',
+      note: 'wide, flat approach — coarse dial turns are safe',
+    },
+    small: {
+      k: 1.0, durMin: 40, durMax: 55,
+      head: 20, core: 2.6, tailN: 46, tailDt: 0.06, tailMax: 5.5,
+      colorFar: '#4a7bd4', colorNear: '#9fd8ff',
+      glowInner: 'rgba(233,246,255,0.95)', glowMid: 'rgba(159,216,255,0.6)',
+      note: 'narrow, sharp approach — only a nudge holds',
+    },
+  };
+  let mode = 'big';
+  let comet = null;
+  function newComet() {
+    const m = MODES[mode];
+    const durScale = Math.max(W, 900) / 1500;   // keep px-per-tick speed screen-independent
+    comet = {
+      mode: mode,
+      m: m,
+      t0: perf(),
+      dur: (m.durMin + Math.random() * (m.durMax - m.durMin)) * durScale,
+      y0: H * (0.16 + Math.random() * 0.14),
+      y1: H * (0.30 + Math.random() * 0.22),
+      cy: H * (0.05 + Math.random() * 0.3),       // control point height (arc)
+    };
+  }
+  function cometPos(now) {
+    let s = ((now - comet.t0) / comet.dur) % 1;
+    if (s < 0) s += 1;
+    const x0 = -0.08 * W, x1 = 1.08 * W, cx = 0.5 * W;
+    const u = 1 - s;
+    return {
+      x: u * u * x0 + 2 * u * s * cx + s * s * x1,
+      y: u * u * comet.y0 + 2 * u * s * comet.cy + s * s * comet.y1,
+      s: s,
+    };
+  }
+
+  // ---------------------------------------------------------------- tracker
+  // The aim point runs literal gradient descent on L = 1/2 |aim - comet|^2 at
+  // TICK_HZ discrete updates: aim += -eta * (aim - comet). eta = lr * GAIN.
+  // eta < 1 smooth lock · 1 < eta < 2 ringing · eta > 2 divergence.
+  const TICK_HZ = 30;
+  const GAIN = 6000;
+  const LOCK_PX = 30;
+  let lr = 1e-5;
+  let aim = { x: 0, y: 0 };
+  let errHist = [];
+  let lockTicks = 0;
+  let paused = reduced;   // reduced-motion users start paused; RUN begins the demo
+  let prevCal = { x: 0, y: 0 };
+
+  function resetMount() {
+    prevCal = { x: W * 0.78, y: H * 0.2 };  // where the old big, slow comet sat
+    aim.x = prevCal.x;
+    aim.y = prevCal.y;
+    errHist = [];
+    lockTicks = 0;
+  }
+
+  function tick(now) {
+    const c = cometPos(now);
+    const eta = Math.min(lr * GAIN * comet.m.k, 8);
+    aim.x += -eta * (aim.x - c.x) + (Math.random() - 0.5) * 0.8;
+    aim.y += -eta * (aim.y - c.y) + (Math.random() - 0.5) * 0.8;
+    // pin to just inside the sky so a runaway reticle visibly slams edge to edge
+    const lim = 0.03;
+    aim.x = Math.max(-lim * W, Math.min((1 + lim) * W, aim.x));
+    aim.y = Math.max(-lim * H, Math.min((1 + lim) * H, aim.y));
+    const err = Math.hypot(aim.x - c.x, aim.y - c.y);
+    errHist.push(err);
+    if (errHist.length > 340) errHist.shift();
+    lockTicks = err < LOCK_PX ? lockTicks + 1 : 0;
+    return err;
+  }
+
+  // ---------------------------------------------------------------- status
+  const statusEl = document.getElementById('status');
+  const statusText = document.getElementById('status-text');
+  const verdictEl = document.getElementById('verdict');
+  const errRead = document.getElementById('err-read');
+  const lrRead = document.getElementById('lr-read');
+
+  function statusOf(err) {
+    // judge runaway on the recent error peak so the oscillation doesn't flicker the status
+    let emax = err;
+    for (let i = Math.max(0, errHist.length - 20); i < errHist.length; i++) {
+      if (errHist[i] > emax) emax = errHist[i];
+    }
+    if (emax > 0.4 * Math.min(W, H)) return 'runaway';
+    if (lockTicks >= 12) return 'locked';
+    return 'tracking';
+  }
+  // [class, text, stall-text shown if TRACKING persists > 8s]
+  const VERDICTS = {
+    big: {
+      tracking: ['', 'Correcting toward the comet…',
+        'Closing at a crawl. On a wide, flat approach, timid turns just lose the night — spin the dial: 1e-3 is safe here. (Training from scratch takes big steps.)'],
+      locked: ['good', 'Locked. Coarse dial turns are safe on a wide, flat approach — this is why training from scratch runs at 1e-3.'],
+      runaway: ['bad', 'Every correction overshoots harder than the last. RESET MOUNT and ease off the dial.'],
+    },
+    small: {
+      tracking: ['', 'Correcting toward the comet…',
+        'Still closing — the sharp approach forgives patience, never wrenching.'],
+      locked: ['good', 'Locked on. A nudge preserved the calibration — same gears, new comet. (Fine-tuning runs at 1e-5.)'],
+      runaway: ['bad', 'Every correction overshoots harder than the last — the dial has been wrenched past the target. RESET MOUNT (reload the pretrained weights) and try 1e-5.'],
+    },
+  };
+  let lastStatus = '';
+  let statusChangedAt = 0;
+  function paintStatus(err) {
+    const st = statusOf(err);
+    errRead.textContent = err < 9999 ? (err * 0.6).toFixed(1) + '′' : '∞';
+    if (st !== lastStatus) {
+      lastStatus = st;
+      statusChangedAt = perf();
+      statusEl.className = 'status-pill status-' + st;
+      statusText.textContent = st.toUpperCase();
+    }
+    const v = VERDICTS[comet.mode][st];
+    let text = v[1];
+    if (st === 'tracking' && v[2] && perf() - statusChangedAt > 8) text = v[2];
+    if (verdictEl.textContent !== text) {
+      verdictEl.className = 'verdict ' + v[0];
+      verdictEl.textContent = text;
+    }
+  }
+
+  // ---------------------------------------------------------------- drawing
+  function drawSky(now) {
+    const g = ctx.createLinearGradient(0, 0, 0, H);
+    g.addColorStop(0, '#050814');
+    g.addColorStop(0.72, '#070b1a');
+    g.addColorStop(1, '#101a33');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+
+    ctx.save();
+    for (const st of stars) {
+      const tw = reduced ? 1 : 0.75 + 0.25 * Math.sin(now * st.sp + st.ph);
+      ctx.globalAlpha = st.a * tw;
+      ctx.fillStyle = '#e8ecf7';
+      ctx.beginPath();
+      ctx.arc(st.x, st.y, st.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    // horizon silhouette + observatory dome
+    ctx.fillStyle = '#03050c';
+    ctx.beginPath();
+    ctx.moveTo(0, H);
+    ctx.lineTo(0, H * 0.92);
+    ctx.quadraticCurveTo(W * 0.25, H * 0.9, W * 0.5, H * 0.925);
+    ctx.quadraticCurveTo(W * 0.75, H * 0.95, W, H * 0.9);
+    ctx.lineTo(W, H);
+    ctx.closePath();
+    ctx.fill();
+    const dx = W * 0.855, dy = H * 0.915;
+    ctx.beginPath();
+    ctx.arc(dx, dy, 26, Math.PI, 0);
+    ctx.rect(dx - 26, dy, 52, 10);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(201,168,106,0.55)';
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.moveTo(dx + 4, dy - 24);
+    ctx.lineTo(dx + 16, dy - 40);
+    ctx.stroke();
+  }
+
+  function drawComet(now) {
+    const m = comet.m;
+    const head = cometPos(now);
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    const N = m.tailN;
+    for (let k = N; k >= 1; k--) {
+      const p = cometPos(now - k * m.tailDt);
+      if (Math.abs(p.s - head.s) > 0.5) continue;    // don't draw across a loop seam
+      const f = 1 - k / N;
+      ctx.globalAlpha = 0.05 + 0.16 * f;
+      ctx.fillStyle = k > N * 0.35 ? m.colorFar : m.colorNear;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, 1.2 + (m.tailMax - 1.2) * f, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    const glow = ctx.createRadialGradient(head.x, head.y, 0, head.x, head.y, m.head);
+    glow.addColorStop(0, m.glowInner);
+    glow.addColorStop(0.25, m.glowMid);
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, m.head, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = '#f4faff';
+    ctx.beginPath();
+    ctx.arc(head.x, head.y, m.core, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawPrevCal() {
+    ctx.save();
+    ctx.strokeStyle = 'rgba(201,168,106,0.4)';
+    ctx.setLineDash([4, 4]);
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.arc(prevCal.x, prevCal.y, 20, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = 'rgba(201,168,106,0.55)';
+    ctx.font = '10px ' + getComputedStyle(document.body).getPropertyValue('--mono');
+    ctx.textAlign = 'center';
+    ctx.fillText('PREVIOUS CALIBRATION', prevCal.x, prevCal.y - 28);
+    ctx.fillText('(big, slow comet)', prevCal.x, prevCal.y - 16);
+    ctx.restore();
+  }
+
+  function drawReticle(err) {
+    const st = statusOf(err);
+    const color = st === 'locked' ? '#57d98b' : st === 'runaway' ? '#ff5d5d' : '#c9a86a';
+    let x = aim.x, y = aim.y;
+    if (st === 'runaway') {
+      x += (Math.random() - 0.5) * 5;
+      y += (Math.random() - 0.5) * 5;
+    }
+    const R = 30;
+    ctx.save();
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 1.6;
+    ctx.shadowColor = color;
+    ctx.shadowBlur = 8;
+    ctx.beginPath();
+    ctx.arc(x, y, R, 0, Math.PI * 2);
+    ctx.stroke();
+    for (const a of [0, Math.PI / 2, Math.PI, 3 * Math.PI / 2]) {
+      ctx.beginPath();
+      ctx.moveTo(x + Math.cos(a) * (R - 7), y + Math.sin(a) * (R - 7));
+      ctx.lineTo(x + Math.cos(a) * (R + 7), y + Math.sin(a) * (R + 7));
+      ctx.stroke();
+    }
+    ctx.shadowBlur = 0;
+    ctx.fillStyle = color;
+    ctx.font = '10px ' + getComputedStyle(document.body).getPropertyValue('--mono');
+    ctx.textAlign = 'center';
+    ctx.fillText('GUIDE SCOPE', x, y + R + 16);
+    ctx.restore();
+  }
+
+  function drawScope(err) {
+    const w = scope.width, h = scope.height;
+    sctx.fillStyle = '#060a16';
+    sctx.fillRect(0, 0, w, h);
+    sctx.strokeStyle = 'rgba(139,150,179,0.18)';
+    sctx.lineWidth = 1;
+    for (let i = 1; i < 4; i++) {
+      sctx.beginPath();
+      sctx.moveTo(0, (h / 4) * i);
+      sctx.lineTo(w, (h / 4) * i);
+      sctx.stroke();
+    }
+    if (!errHist.length) return;
+    const st = statusOf(err);
+    const yOf = e => h - (Math.log10(Math.max(e, 1)) / 3.4) * (h - 8) - 4;
+    sctx.strokeStyle = st === 'runaway' ? '#ff5d5d' : '#57d98b';
+    sctx.lineWidth = 2;
+    sctx.shadowColor = sctx.strokeStyle;
+    sctx.shadowBlur = 5;
+    sctx.beginPath();
+    errHist.forEach((e, i) => {
+      const x = (i / 339) * w;
+      i === 0 ? sctx.moveTo(x, yOf(e)) : sctx.lineTo(x, yOf(e));
+    });
+    sctx.stroke();
+    sctx.shadowBlur = 0;
+    sctx.fillStyle = 'rgba(139,150,179,0.8)';
+    sctx.font = '11px ' + getComputedStyle(document.body).getPropertyValue('--mono');
+    sctx.fillText('log err', 8, 16);
+  }
+
+  // ---------------------------------------------------------------- loop
+  function perf() { return performance.now() / 1000; }
+  let lastFrame = perf();
+  let acc = 0;
+  let lastErr = 0;
+
+  function frame() {
+    const now = perf();
+    let dt = now - lastFrame;
+    lastFrame = now;
+    if (dt > 0.25) dt = 0.25;
+    if (!paused) {
+      acc += dt;
+      const step = 1 / TICK_HZ;
+      while (acc >= step) {
+        lastErr = tick(now);
+        acc -= step;
+      }
+    }
+    drawSky(now);
+    drawPrevCal();
+    drawComet(now);
+    drawReticle(lastErr);
+    drawScope(lastErr);
+    paintStatus(lastErr);
+    requestAnimationFrame(frame);
+  }
+
+  // ---------------------------------------------------------------- controls
+  const slider = document.getElementById('lr');
+  function sliderToLr(v) { return 1e-5 * Math.pow(10, v / 100); }
+  function lrToSlider(x) { return Math.round(100 * Math.log10(x / 1e-5)); }
+  function fmt(x) {
+    const e = Math.floor(Math.log10(x));
+    return (x / Math.pow(10, e)).toFixed(1) + 'e' + e;
+  }
+  function setLr(x) {
+    lr = x;
+    slider.value = lrToSlider(x);
+    lrRead.textContent = fmt(x);
+  }
+  slider.addEventListener('input', () => {
+    lr = sliderToLr(Number(slider.value));
+    lrRead.textContent = fmt(lr);
+  });
+  document.getElementById('btn-nudge').addEventListener('click', () => setLr(1e-5));
+  document.getElementById('btn-wrench').addEventListener('click', () => setLr(1e-3));
+  document.getElementById('btn-reset').addEventListener('click', resetMount);
+  document.getElementById('btn-comet').addEventListener('click', newComet);
+  const runBtn = document.getElementById('btn-run');
+  function paintRun() { runBtn.textContent = paused ? 'RUN' : 'PAUSE'; }
+  runBtn.addEventListener('click', () => { paused = !paused; paintRun(); });
+
+  const bigBtn = document.getElementById('btn-big');
+  const smallBtn = document.getElementById('btn-small');
+  const targetNote = document.getElementById('target-note');
+  // Switching targets keeps the aim and the dial where they are — the drama of
+  // "same setting, new comet" is the whole lesson.
+  function setMode(m) {
+    mode = m;
+    bigBtn.setAttribute('aria-pressed', String(m === 'big'));
+    smallBtn.setAttribute('aria-pressed', String(m === 'small'));
+    targetNote.textContent = MODES[m].note;
+    newComet();
+  }
+  bigBtn.addEventListener('click', () => setMode('big'));
+  smallBtn.addEventListener('click', () => setMode('small'));
+
+  // ---------------------------------------------------------------- go
+  window.addEventListener('resize', () => { resize(); resetMount(); });
+  resize();
+  newComet();
+  resetMount();
+  setLr(1e-3);   // opening act: the mount's own quarry, at the coarse from-scratch setting
+  paintRun();
+  requestAnimationFrame(frame);
+})();
+</script>
