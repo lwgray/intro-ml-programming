@@ -1,0 +1,15 @@
+# Keep .git — the base service fast-forwards the checkout at boot so notebook
+# fixes reach students without an image rebuild.
+
+# Regenerable local data/models (the notebooks' own download/build cells recreate these)
+week9/student_materials/day1_live_session/cats_and_dogs_filtered/
+week9/student_materials/day1_live_session/flowers_hard/
+week9/student_materials/day1_live_session/eurosat/
+week10/**/week10_distilbert_agnews/
+week10/**/distilbert_agnews/
+
+# Local noise
+logs/
+.DS_Store
+**/.ipynb_checkpoints/
+**/__pycache__/

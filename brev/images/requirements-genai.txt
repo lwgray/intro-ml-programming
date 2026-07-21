@@ -1,0 +1,2 @@
+# Week 11 extras
+diffusers >= 0.31

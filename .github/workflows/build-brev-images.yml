@@ -1,0 +1,76 @@
+name: Build Brev images
+
+# Builds the five course images and pushes them to ghcr.io so Brev Launchables
+# pull prebuilt (data- and model-warm) images instead of building on boot.
+#
+# Notebook-only edits do NOT need a rebuild — the base service fast-forwards
+# the git checkout at boot. Rebuild when dependencies, prefetch scripts, or
+# entrypoints change (automatic below), or run it manually from the Actions tab.
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Image to build (all, part1, part2, vision, transformers, genai)"
+        default: "all"
+  push:
+    branches: [main]
+    paths:
+      - "brev/**"
+      - ".github/workflows/build-brev-images.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        target: [part1, part2, vision, transformers, genai]
+    steps:
+      - name: Skip if not selected
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.target != 'all' && github.event.inputs.target != matrix.target
+        run: echo "skip=true" >> "$GITHUB_ENV"
+
+      # The GPU images run 15-25 GB; stock runners only have ~14 GB free.
+      - name: Free disk space
+        if: env.skip != 'true'
+        uses: jlumbroso/free-disk-space@v1.3.1
+        with:
+          tool-cache: true
+          android: true
+          dotnet: true
+          haskell: true
+          large-packages: true
+          swap-storage: true
+
+      - name: Checkout
+        if: env.skip != 'true'
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        if: env.skip != 'true'
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to GitHub Container Registry
+        if: env.skip != 'true'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push
+        if: env.skip != 'true'
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          file: brev/images/dockerfile
+          target: ${{ matrix.target }}
+          push: true
+          tags: |
+            ghcr.io/lwgray/intro-ml-${{ matrix.target }}:latest
+            ghcr.io/lwgray/intro-ml-${{ matrix.target }}:${{ github.sha }}

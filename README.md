@@ -78,6 +78,7 @@ weekN/
 
 ## Compute & External Dependencies
 
+- **Brev Launchables:** each week has its own Launchable backed by a prebuilt image with that week's data and models baked in — see [docs/brev_setup.md](docs/brev_setup.md) for the architecture and per-week creation steps.
 - **Weeks 1–7** run anywhere — CPU only.
 - **Weeks 8–11** assume the Brev **L4 22 GB** GPU tier. CPU works with degraded pacing everywhere except Week 11's Stable Diffusion, where GPU is effectively required.
 - **Pre-downloads matter.** The heavy models (DistilBERT ~250 MB in Week 10; Phi-3-mini ~2 GB and Stable Diffusion ~4 GB for Week 11) are downloaded in the *prior* week's post-class, not on class day. Each GPU week's README and technical-setup doc carries the checklist and the fallback ladder (reduced steps → cached checkpoint → pre-generated gallery → HF Inference API).

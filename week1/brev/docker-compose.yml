@@ -1,0 +1,46 @@
+name: &week-name week1
+
+x-config:
+  image: &image ghcr.io/lwgray/intro-ml-part1:latest
+  working-dir: &working-dir /intro-ml-programming/week1/student_materials
+  default-jupyter-url: &default-jupyter-url ["/lab/tree/intro-ml-programming/week1/student_materials/day1_live_session/week1_live_session.ipynb?file-browser-path=/intro-ml-programming/week1/student_materials"]
+  common-env: &common-env
+    BREV_ENV_ID: ${BREV_ENV_ID:-}
+    IML_WEEK: *week-name
+    IML_RUN_TESTS: ${IML_RUN_TESTS:-}
+    IML_TEST_ARGS: ${IML_TEST_ARGS:-}
+    IML_USER: ${IML_USER:-student}
+    IML_UID: ${IML_UID:-1000}
+    IML_GID: ${IML_GID:-1000}
+  common-service: &common-service
+    pull_policy: missing
+    volumes:
+      - intro-ml-programming:/intro-ml-programming
+    environment: *common-env
+    user: root
+    working_dir: *working-dir
+
+services:
+  base:
+    <<: *common-service
+    image: *image
+    entrypoint: ["/intro-ml-programming/brev/entrypoint.bash", "base"]
+    build:
+      context: ../..
+      dockerfile: brev/images/dockerfile
+      target: part1
+    restart: "no"
+  jupyter:
+    <<: *common-service
+    image: *image
+    entrypoint: ["/intro-ml-programming/brev/entrypoint.bash", "jupyter"]
+    command: *default-jupyter-url
+    depends_on:
+      base:
+        condition: service_completed_successfully
+    restart: unless-stopped
+    ports:
+      - "0.0.0.0:8888:8888" # JupyterLab
+
+volumes:
+  intro-ml-programming:
