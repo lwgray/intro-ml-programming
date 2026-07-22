@@ -14,7 +14,10 @@ export HOME="${IML_TARGET_HOME}"
 # checkout; failures (no network, local edits) are non-fatal.
 if [ -d /intro-ml-programming/.git ]; then
   git -C /intro-ml-programming remote set-url origin https://github.com/lwgray/intro-ml-programming.git 2>/dev/null || true
-  git -C /intro-ml-programming pull --ff-only 2>&1 | tail -1 || echo "git pull skipped (offline or diverged); using baked-in materials"
+  # Drop any CI auth header baked in by actions/checkout — an expired token
+  # makes anonymous pulls fail with a 401/credential prompt.
+  git -C /intro-ml-programming config --unset-all http.https://github.com/.extraheader 2>/dev/null || true
+  GIT_TERMINAL_PROMPT=0 git -C /intro-ml-programming pull --ff-only 2>&1 | tail -1 || echo "git pull skipped (offline or diverged); using baked-in materials"
 fi
 
 if [ -n "${IML_WEEK:-}" ] && [ -n "${IML_RUN_TESTS:-}" ]; then

@@ -47,9 +47,14 @@ jobs:
           large-packages: true
           swap-storage: true
 
+      # persist-credentials: false keeps the checkout's short-lived CI token out
+      # of .git/config — that file gets baked into the images, and a stale token
+      # makes every anonymous `git pull` on the instances prompt for credentials.
       - name: Checkout
         if: env.skip != 'true'
         uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up Docker Buildx
         if: env.skip != 'true'
