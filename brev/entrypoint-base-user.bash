@@ -17,6 +17,9 @@ if [ -d /intro-ml-programming/.git ]; then
   # Drop any CI auth header baked in by actions/checkout — an expired token
   # makes anonymous pulls fail with a 401/credential prompt.
   git -C /intro-ml-programming config --unset-all http.https://github.com/.extraheader 2>/dev/null || true
+  # The image COPY chmods everything to 0777, which git would otherwise report
+  # as local modifications on every tracked file and refuse to pull over.
+  git -C /intro-ml-programming config core.filemode false 2>/dev/null || true
   GIT_TERMINAL_PROMPT=0 git -C /intro-ml-programming pull --ff-only 2>&1 | tail -1 || echo "git pull skipped (offline or diverged); using baked-in materials"
 fi
 
